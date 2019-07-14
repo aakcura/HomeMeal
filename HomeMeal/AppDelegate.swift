@@ -2,23 +2,31 @@
 //  AppDelegate.swift
 //  HomeMeal
 //
-//  Created by Batuhan Abay on 2.07.2019.
 //  Copyright © 2019 Arin Akcura. All rights reserved.
 //
 
 import UIKit
 import Firebase
+import IQKeyboardManagerSwift
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    let gcmMessageIDKey = "gcm.message_id"
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        FirebaseApp.configure()
+        setupFirebase()
+        setupNavBarTheme()
+        setupIQKeyboardManager()
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TestViewController") as? TestViewController
         
         return true
     }
@@ -39,6 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        //handle any deeplink
+        DeepLinkManager.shared.checkDeepLink()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -48,3 +59,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+// Custom MEthods
+extension AppDelegate{
+    
+    /// Firebase setup.
+    func setupFirebase(){
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
+        //Messaging.messaging().delegate = self
+    }
+    
+    /// Sets application navigation bar theme.
+    func setupNavBarTheme(){
+        //NAvigation bar rengini değiştirdik
+        let navigationBarAppearace = UINavigationBar.appearance()
+        navigationBarAppearace.tintColor = .white //left ve right button rengini belirtir
+        navigationBarAppearace.barTintColor = AppColors.navBarBlueColor //background rengini belirtir
+        navigationBarAppearace.isTranslucent = false
+    }
+    
+    /// IQKeyboardManager bağlantı ayarları
+    func setupIQKeyboardManager(){
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = true //kalvye üstünde açılan toolbar ı açar/kapatır
+        //IQKeyboardManager.shared.overrideKeyboardAppearance = true //klave görünümünü değiştirmemizi sağlar
+        //IQKeyboardManager.shared.keyboardAppearance = .dark //kalvye görünümünü siyah yapar
+        //IQKeyboardManager.shared.keyboardDistanceFromTextField = 100 //textfield ile açılan klavye arasındaki uzaklıktır defauşt ta 10 dur
+        //IQKeyboardManager.shared.toolbarBarTintColor = .red
+        //IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Hide Keyboard"
+        IQKeyboardManager.shared.toolbarDoneBarButtonItemImage = AppIcons.angleDown
+        //IQKeyboardManager.shared.shouldShowToolbarPlaceholder = true //default is true
+        //IQKeyboardManager.shared.placeholderFont = UIFont(name: "Times New Roman", size: 15.0)
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true //textview veya textfield dışında biryere tıklanınca keyboardu dismiss etmeye yarar
+        IQKeyboardManager.shared.shouldPlayInputClicks = false //default is true bu ayar textfieldlar arasında geçis yaparken ses çıkmasına yarar
+    }
+}

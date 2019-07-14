@@ -20,6 +20,15 @@
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>ms-outlook</string>
+		<string>googlegmail</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Required to determine profile photo</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Required to list dishes near you. The location information you share is processed instantly and is not uploaded to our servers.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -41,9 +50,12 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fa-regular-400.ttf</string>
+		<string>fa-brands-400.ttf</string>
+		<string>fa-solid-900.ttf</string>
 	</array>
 </dict>
 </plist>

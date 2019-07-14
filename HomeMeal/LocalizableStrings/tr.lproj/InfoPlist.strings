@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  HomeMeal
+
+  Created by Batuhan Abay on 8.07.2019.
+  Copyright © 2019 Arin Akcura. All rights reserved.
+*/
+"NSPhotoLibraryUsageDescription" = "HomeMeal profilinizde görüntülenecek profil fotoğrafınızı seçmek için fotoğraflara erişim izni vermelisiniz. Profil fotoğrafınız için seçtiğiniz ve onayladığınız fotoğraf dışında herhangi bir fotoğraf sunucularımıza yüklenmemektedir.";
+"NSLocationWhenInUseUsageDescription" = "Yakınınızda bulunan ve sipariş edilebilecek yemekleri listelemek için konum bilginizi istiyoruz. Uygulama ile paylaşacağınız konum bilginiz anlık olarak işlenmekte ve hiçbir şekilde sunucularımıza yüklenmemektedir. Bu istek reddedilirse, uygulama işlevlerinin çoğunun devre dışı bırakılacağını lütfen unutmayın.";
