@@ -15,4 +15,5 @@ target 'HomeMeal' do
   pod 'Firebase/Messaging'
   pod 'Fabric'
   pod 'Crashlytics'
+  pod 'Validator'
 end

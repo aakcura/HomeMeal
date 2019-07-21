@@ -2,6 +2,65 @@
   Localizable.strings
   HomeMeal
 
-  Created by Batuhan Abay on 8.07.2019.
   Copyright © 2019 Arin Akcura. All rights reserved.
 */
+
+// APP SPESIFIC
+"As Customer" = "As Customer";
+"As Chef" = "As Chef";
+"Sign Up As Customer" = "Sign Up As Customer";
+"Sign Up As Chef" = "Sign Up As Chef";
+"AllergiesPlaceholderText" = "Enter your allergies";
+"BiographyPlaceholderText" = "Enter your biography";
+"Allergies" = "Allergies";
+"Biography" = "Biography";
+"Resume" = "Resume";
+"Upload a Resume" = "Upload a Resume";
+"Pick Your Kitchen Location" = "Pick Your Kitchen Location";
+
+//GENERAL
+"NoInternetConnectionError" = "No Internet Connection";
+"NoInternetConnectionErrorMessage" = "Please connect to the internet and try again.";
+"Name" = "Name";
+"Email" = "Email";
+"Password" = "Password";
+"Confirm Password" = "Confirm Password";
+"Forgot password?" = "Forgot password?";
+"Sign In" = "Sign In";
+"Sign Up" = "Sign Up";
+"Sign Out" = "Sign Out";
+"You" = "You";
+"Yesterday" = "Yesterday";
+"Today" = "Today";
+"OK" = "OK";
+"Yes" = "Yes";
+"No" = "No";
+"Cancel" = "Cancel";
+"Close" = "Close";
+"Next" = "Next";
+"Back" = "Back";
+"Invite" = "Invite";
+"Day" = "Day";
+"Error" = "Error";
+"Choose Email" = "Choose Email";
+"Contact Us" = "Contact Us";
+"Through Mail" = "Through Mail";
+"Through Gmail" = "Through Gmail";
+"Through Outlook" = "Through Outlook";
+"Through Website" = "Through Website";
+"Done" = "Done";
+"Block" = "Block";
+"Unblock" = "Unblock";
+"Complain" = "Complain";
+"User Blocked" = "User Blocked";
+"User Unblocked" = "User Unblocked";
+"Blocked" = "Blocked";
+"Unblocked" = "Unblocked";
+"Update" = "Update";
+"Phone" = "Phone";
+"Go to Profile Settings" = "Go to Profile Settings";
+"Profile Settings" = "Profile Settings";
+"Update failed, please try again later." = "Update failed, please try again later.";
+"There is no changes for updating." = "There is no changes for updating.";
+"Try Again" = "Try Again";
+"Go To Settings" = "Go To Settings";

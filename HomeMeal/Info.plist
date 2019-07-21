@@ -57,5 +57,16 @@
 		<string>fa-brands-400.ttf</string>
 		<string>fa-solid-900.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.arinakcura.HomeMeal</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>homemeal</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

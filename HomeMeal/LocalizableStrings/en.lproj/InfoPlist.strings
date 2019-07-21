@@ -2,7 +2,6 @@
   InfoPlist.strings
   HomeMeal
 
-  Created by Batuhan Abay on 8.07.2019.
   Copyright © 2019 Arin Akcura. All rights reserved.
 */
 "NSPhotoLibraryUsageDescription" = "In order to select your profile photo to be displayed on your HomeMeal profile, you should grant access to the photos. No photos are uploaded to our servers except for the photo that you have chose and approved for your profile photo.";

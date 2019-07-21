@@ -96,6 +96,7 @@ PODS:
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
+  - Validator (3.2.1)
 
 DEPENDENCIES:
   - Crashlytics
@@ -107,6 +108,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - IQKeyboardManagerSwift
   - SDWebImage
+  - Validator
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -130,6 +132,7 @@ SPEC REPOS:
     - nanopb
     - Protobuf
     - SDWebImage
+    - Validator
 
 SPEC CHECKSUMS:
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
@@ -152,7 +155,8 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
+  Validator: 80a6f567220c962dfd2d9928ae98a8c1d164f6f4
 
-PODFILE CHECKSUM: cc4619b763d9a4bcdf91cd6106f400e05f143cf4
+PODFILE CHECKSUM: 8ff14dc9af58edf4b81b3e6bf0de2b863b80e47a
 
 COCOAPODS: 1.5.3

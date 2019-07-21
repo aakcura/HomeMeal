@@ -2,6 +2,65 @@
   Localizable.strings
   HomeMeal
 
-  Created by Batuhan Abay on 8.07.2019.
   Copyright © 2019 Arin Akcura. All rights reserved.
 */
+
+//APP SPESIFIC
+"As Customer" = "Müşteri Olarak";
+"As Chef" = "Şef Olarak";
+"Sign Up As Customer" = "Müşteri Olarak Kaydol";
+"Sign Up As Chef" = "Şef Olarak Kaydol";
+"AllergiesPlaceholderText" = "Alerjiniz var ise lütfen giriniz";
+"BiographyPlaceholderText" = "Biyografinizi yazınız";
+"Allergies" = "Alerjileriniz";
+"Biography" = "Biyografiniz";
+"Resume" = "Özgeçmiş";
+"Upload a Resume" = "Özgeçmiş Yükle";
+"Pick Your Kitchen Location" = "Mutfağınızın Konumunu Seçin";
+
+//GENERAL
+"NoInternetConnectionError" = "İnternet Bağlantısı Yok";
+"NoInternetConnectionErrorMessage" = "Lütfen internete bağlanın ve tekrar deneyin.";
+"Name" = "İsim Soyisim";
+"Email" = "Email";
+"Password" = "Şifre";
+"Confirm Password" = "Şifre Tekrar";
+"Forgot password?" = "Parolanızı mı unuttunuz?";
+"Sign In" = "Oturum Aç";
+"Sign Up" = "Kaydol";
+"Sign Out" = "Oturumu Kapat";
+"You" = "Siz";
+"Yesterday" = "Dün";
+"Today" = "Bugün";
+"OK" = "Tamam";
+"Yes" = "Evet";
+"No" = "Hayır";
+"Cancel" = "İptal";
+"Close" = "Kapat";
+"Next" = "İleri";
+"Back" = "Geri";
+"Invite" = "Davet Et";
+"Day" = "Gün";
+"Error" = "Hata";
+"Choose Email" = "Email Seç";
+"Contact Us" = "Bize Ulaşın";
+"Through Mail" = "Mail Aracılığıyla";
+"Through Gmail" = "Gmail Aracılığıyla";
+"Through Outlook" = "Outlook Aracılığıyla";
+"Through Website" = "Web Sitesi Aracılığıyla";
+"Done" = "Tamamlandı";
+"Block" = "Engelle";
+"Unblock" = "Engeli Kaldır";
+"Complain" = "Şikayet Et";
+"User Blocked" = "Kullanıcı Engellendi";
+"User Unblocked" = "Kullanıcı Engeli Kaldırıldı";
+"Blocked" = "Engellenenler";
+"Unblocked" = "Engellenmemiş";
+"Update" = "Güncelle";
+"Phone" = "Telefon No";
+"Go to Profile Settings" = "Profil Ayarlarına Git";
+"Profile Settings" = "Profil Ayarları";
+"Update failed, please try again later." = "Güncelleme başarısız oldu, lütfen daha sonra tekrar deneyin.";
+"There is no changes for updating." = "Güncellenecek değişiklik yok.";
+"Try Again" = "Tekrar Deneyin";
+"Go To Settings" = "Ayarlara Git";
