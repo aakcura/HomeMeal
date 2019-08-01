@@ -12,7 +12,8 @@ import Validator
 class AppConstants{
     static let usernameAndEmailCharacterCountLimit = 64
     static let passwordCharacterCountLimit = 32
-    static let allergiesAndBiographyCharacterCountLimit = 512
+    static let biographyCharacterCountLimit = 512
+    static let addressDescriptionCharacterCountLimit = 512
     
     static let complaintMessageCharacterCountLimit = 512
     static let instantChatMessageCharacterCountLimit = 2048

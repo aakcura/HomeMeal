@@ -23,7 +23,7 @@ class SignUpOptionsBackgroundView: UIView {
         drawMyShape()
         
         // Specify the fill color and apply it to the path.
-        AppColors.appGreenColor.setFill()
+        AppColors.appOrangeColor.setFill()
         path.fill()
     }
     
@@ -38,11 +38,13 @@ class SignUpOptionsBackgroundView: UIView {
         path.addLine(to: CGPoint(x: 0.0, y: self.frame.size.height))
         path.close()
         
+        /*
         let borderLayer = CAShapeLayer()
         borderLayer.path = path.cgPath
         borderLayer.fillColor = UIColor.clear.cgColor
         borderLayer.strokeColor = AppColors.appLavaColor.cgColor
         borderLayer.lineWidth = 1
         self.layer.addSublayer(borderLayer)
+        */
     }
 }

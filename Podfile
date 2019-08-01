@@ -16,4 +16,5 @@ target 'HomeMeal' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Validator'
+  pod 'FlagPhoneNumber'
 end

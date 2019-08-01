@@ -17,6 +17,22 @@
 "Resume" = "Özgeçmiş";
 "Upload a Resume" = "Özgeçmiş Yükle";
 "Pick Your Kitchen Location" = "Mutfağınızın Konumunu Seçin";
+"Choose profile photo" = "Profil fotoğrafı seç";
+"User Info" = "Kullanıcı Bilgileri";
+"Social Media Accounts" = "Sosyal Medya Hesapları";
+
+"LinkedinTFPlaceHolder" = "linkedin kullanıcı adınızı yazın";
+"TwitterTFPlaceHolder" = "twitter kullanıcı adınızı yazın";
+"InstagramTFPlaceHolder"  = "instagram kullanıcı adınızı yazın";
+"PinterestTFPlaceHolder" = "pinterest kullanıcı adınızı yazın";
+
+"AllergiesStackTitle" = "Alerjilerim:";
+"FavoriteDishesStackTitle" = "benim en sevdiğim yemek";
+
+"BiographyPlaceHolder" = "Kendin hakkında bir şeyler yaz...";
+
+"AllergyTFPlaceHolder" = "alerjini yaz";
+"FavoriteDishTFPlaceHolder" = "Favorini yaz";
 
 //GENERAL
 "NoInternetConnectionError" = "İnternet Bağlantısı Yok";
@@ -64,3 +80,13 @@
 "There is no changes for updating." = "Güncellenecek değişiklik yok.";
 "Try Again" = "Tekrar Deneyin";
 "Go To Settings" = "Ayarlara Git";
+"Invalid Mail Address" = "Geçersiz Mail Adresi";
+"Invalid Personal Informations" = "Kişisel Bilgiler Geçersiz";
+"All areas must be filled in correctly. Please check and try again." = "Tüm alanların doğru doldurulması zorunludur. Lütfen kontrol edip tekrar deneyin.";
+"Please enter a correct email address." = "Lütfen doğru bir mail adresi girin.";
+"TermsAndDataPolicyText" = "* Kaydolarak HomeMeal'ın $ kabul etmiş olursunuz.";
+"Terms, and Data Policy" = "Şartlarını ve Veri Politikasını";
+"Terms, and Data Policy URL" = "http://cloakersapp.com/Cloaker-Terms-and-Conditions/Tr.html";
+"Show Terms and Data Policy" = "Şartları ve Veri Politikasını Göster";
+"Failed to load profile image" = "Profil resmi yüklenemedi, tekrar deneyin.";
+"Please wait" = "Lütfen bekleyin.";

@@ -22,15 +22,23 @@ class AppColors{
     static let blockedRedColor = UIColor(red: (255/255), green: (51/255), blue: (51/255), alpha: 1.0)
     
     
-    //Color Test
-    static let navBarNativeOrangeColor = UIColor(red: (200/255), green: (80/255), blue: (32/255), alpha: 1.0)
-    static let navBarRGBOrangeColor = UIColor(red: (206/255), green: (91/255), blue: (35/255), alpha: 1.0)
-    static let navBarAdobeOrangeColor = UIColor(red: (181/255), green: (91/255), blue: (44/255), alpha: 1.0)
+    // COLOR TEST
+    // APP COLORS
+    static let appBlackColor = UIColor.colorFromHex("#262223")
+    static let appYellowColor = UIColor.colorFromHex("#F2E52E")
+    static let appGoldColor = UIColor.colorFromHex("#F2C12E")
+    static let appOrangeColor = UIColor.colorFromHex("#F28B30")
+    static let appOrangeRedColor = UIColor.colorFromHex("#F25835")
     
-    static let appOrangeColor = UIColor.colorFromHex("#D95829")
+    // NAVIGATION BAR COLORS
+    static let navBarBackgroundColor = UIColor.colorFromHex("#F25835")
+    static let navBarTintColor = UIColor.white
+    static let navBarTitleColor = UIColor.white
+    
+    //static let appOrangeColor = UIColor.colorFromHex("#D95829")
     static let appDarkOrangeColor = UIColor.colorFromHex("#8C2F0D")
     static let appLightOrangeColor = UIColor.colorFromHex("#FF7A4A")
-    static let appBlackColor = UIColor.colorFromHex("0D0D0D")
+    //static let appBlackColor = UIColor.colorFromHex("0D0D0D")
     static let appLightestOrangeColor = UIColor.colorFromHex("#D98E73")
     static let appLightGreenColor = UIColor.colorFromHex("#29D9B6")
     static let appGreenColor = UIColor.colorFromHex("#008C70")

@@ -17,6 +17,27 @@
 "Resume" = "Resume";
 "Upload a Resume" = "Upload a Resume";
 "Pick Your Kitchen Location" = "Pick Your Kitchen Location";
+"Choose profile photo" = "Choose profile photo";
+"User Info" = "User Info";
+"Social Media Accounts" = "Social Media Accounts";
+
+"LinkedinTFPlaceHolder" = "type your linkedin username";
+"TwitterTFPlaceHolder" = "type your twitter username";
+"InstagramTFPlaceHolder" = "type your instagram username";
+"PinterestTFPlaceHolder" = "type your pinterest username";
+
+"LinkedinBaseURL" = "https://www.linkedin.com/in/";
+"TwitterBaseURL" = "https://twitter.com/";
+"InstagramBaseURL" = "https://www.instagram.com/";
+"PinterestBaseURL" = "https://pinterest.com/";
+
+"AllergiesStackTitle" = "I'm allergic to";
+"FavoriteDishesStackTitle" = "is my favorite dish";
+
+"AllergyTFPlaceHolder" = "type your allergy";
+"FavoriteDishTFPlaceHolder" = "Type your favorite";
+
+"BiographyPlaceHolder" = "Type something about yourself...";
 
 //GENERAL
 "NoInternetConnectionError" = "No Internet Connection";
@@ -64,3 +85,13 @@
 "There is no changes for updating." = "There is no changes for updating.";
 "Try Again" = "Try Again";
 "Go To Settings" = "Go To Settings";
+"Invalid Mail Address" = "Invalid Mail Address";
+"Invalid Personal Informations" = "Invalid Personal Informations";
+"All areas must be filled in correctly. Please check and try again." = "All areas must be filled in correctly. Please check and try again.";
+"Please enter a correct email address." = "Please enter a correct email address.";
+"TermsAndDataPolicyText" = "* By signing up, you agree to the HomeMeal's $.";
+"Terms, and Data Policy" = "Terms, and Data Policy";
+"Terms, and Data Policy URL" = "https://cloakersapp.com/Cloaker-Terms-and-Conditions/Eng.html";
+"Show Terms and Data Policy" = "Show Terms and Data Policy";
+"Failed to load profile image" = "Failed to load profile image, try again.";
+"Please wait" = "Please wait.";

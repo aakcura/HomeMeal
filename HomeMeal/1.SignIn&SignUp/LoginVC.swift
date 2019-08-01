@@ -24,12 +24,12 @@ class LoginVC: UIViewController {
     var signUpOptionsBackgroundView: SignUpOptionsBackgroundView!
     let signUpAsChefBtn: ImageButton = {
         let button = ImageButton(type: .system)
-        button.setImageButtonProperties(buttonImage: AppIcons.chefIcon, buttonTitle: "As Chef".getLocalizedString(), buttonBackgroundColor: AppColors.appRedColor, textColor: .black)
+        button.setImageButtonProperties(buttonImage: AppIcons.chefIcon, buttonTitle: "As Chef".getLocalizedString(), buttonBackgroundColor: AppColors.appGoldColor, textColor: .black)
         return button
     }()
     let signUpAsCustomerBtn: ImageButton = {
         let button = ImageButton(type: .system)
-        button.setImageButtonProperties(buttonImage: AppIcons.customerIcon, buttonTitle: "As Customer".getLocalizedString(), buttonBackgroundColor: AppColors.appRedColor, textColor: .black)
+        button.setImageButtonProperties(buttonImage: AppIcons.customerIcon, buttonTitle: "As Customer".getLocalizedString(), buttonBackgroundColor: AppColors.appYellowColor, textColor: .black)
         return button
     }()
     
@@ -220,7 +220,7 @@ class LoginVC: UIViewController {
     func setupSignUpOptionsView(){
         signUpOptionsBackgroundView = SignUpOptionsBackgroundView()
         signUpOptionsBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        signUpOptionsBackgroundView.backgroundColor = AppColors.appOrangeColor
+        signUpOptionsBackgroundView.backgroundColor = .clear//AppColors.appOrangeColor
         view.addSubview(signUpOptionsBackgroundView)
         signUpOptionsBackgroundView.anchor(top: signUpBtn.bottomAnchor, leading: emailTf.leadingAnchor, trailing: emailTf.trailingAnchor, bottom: nil, centerX: nil, centerY: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0), size: .zero)
         signUpOptionsBackgroundView.heightAnchor.constraint(lessThanOrEqualToConstant: 150).isActive = true
@@ -242,7 +242,8 @@ class LoginVC: UIViewController {
     
     @objc func signUpAsChefBtnClicked(){
         self.signUpOptionsBackgroundView.isHidden = true
-        let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefSignUpVC") as! ChefSignUpVC
+        //let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefSignUpVC") as! ChefSignUpVC
+        let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerSignUpVCTest") as! CustomerSignUpVCTest
         navigationController?.pushViewController(chefSignUpVC, animated: true)
     }
     

@@ -60,6 +60,9 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - FlagPhoneNumber (0.7.6):
+    - FlagPhoneNumber/libPhoneNumberiOS (= 0.7.6)
+  - FlagPhoneNumber/libPhoneNumberiOS (0.7.6)
   - GoogleAppMeasurement (6.0.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -106,6 +109,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - FlagPhoneNumber
   - IQKeyboardManagerSwift
   - SDWebImage
   - Validator
@@ -124,6 +128,7 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
+    - FlagPhoneNumber
     - GoogleAppMeasurement
     - GoogleUtilities
     - GTMSessionFetcher
@@ -147,6 +152,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 9782fcfb89e4d7da76cc28eac4b8543dc7be4a4b
   FirebaseMessaging: 6bb0bdaf64c55fef7a219b7bb1e94e94a0855ced
   FirebaseStorage: fdf753138620fbb9257679357daec4f266627c37
+  FlagPhoneNumber: ee8d015e7e92b776a3598e6a36718196e0d0dcf5
   GoogleAppMeasurement: 1e45fa601e6280c180880d57010390f6679cd971
   GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
@@ -157,6 +163,6 @@ SPEC CHECKSUMS:
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   Validator: 80a6f567220c962dfd2d9928ae98a8c1d164f6f4
 
-PODFILE CHECKSUM: 8ff14dc9af58edf4b81b3e6bf0de2b863b80e47a
+PODFILE CHECKSUM: 40e40ae589f7d2f04803e0ea8d4b3c48789f21ce
 
 COCOAPODS: 1.5.3

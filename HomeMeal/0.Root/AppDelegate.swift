@@ -140,9 +140,9 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate{
     func setupNavBarTheme(){
         //NAvigation bar rengini değiştirdik
         let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.tintColor = AppColors.appWhiteColor //left ve right button rengini belirtir
-        navigationBarAppearance.barTintColor = AppColors.appOrangeColor//navBarBlueColor //background rengini belirtir
-        let textAttributes = [NSAttributedString.Key.foregroundColor:AppColors.appWhiteColor]
+        navigationBarAppearance.tintColor = AppColors.navBarTintColor //left ve right button rengini belirtir
+        navigationBarAppearance.barTintColor = AppColors.navBarBackgroundColor //background rengini belirtir
+        let textAttributes = [NSAttributedString.Key.foregroundColor:AppColors.navBarTitleColor]
         navigationBarAppearance.titleTextAttributes = textAttributes // navbar title textinin attributelarını belirtir
         navigationBarAppearance.isTranslucent = false
     }

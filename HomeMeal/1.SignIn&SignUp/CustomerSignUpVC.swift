@@ -261,7 +261,7 @@ extension CustomerSignUpVC: UITextViewDelegate, UITextFieldDelegate{
         let currentText = textView.text ?? ""
         guard let stringRange = Range(range, in: currentText) else{ return false }
         let changedText = currentText.replacingCharacters(in: stringRange, with: text)
-        return changedText.count <= AppConstants.allergiesAndBiographyCharacterCountLimit
+        return changedText.count <= AppConstants.biographyCharacterCountLimit
     }
     // END TEXT VIEW METHODS
 }

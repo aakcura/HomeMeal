@@ -18,6 +18,7 @@
 		1532330D22CBD3F9006FA824 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532330B22CBD3F9006FA824 /* Main.storyboard */; };
 		1532330F22CBD3FB006FA824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1532330E22CBD3FB006FA824 /* Assets.xcassets */; };
 		1532331222CBD3FB006FA824 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532331022CBD3FB006FA824 /* LaunchScreen.storyboard */; };
+		1543DF7F22F0B9CE008A80EF /* CustomerSignUpVCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */; };
 		158A867122D3093E002D3C6C /* fa-regular-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866E22D3093E002D3C6C /* fa-regular-400.ttf */; };
 		158A867222D3093E002D3C6C /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866F22D3093E002D3C6C /* fa-solid-900.ttf */; };
 		158A867322D3093E002D3C6C /* fa-brands-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A867022D3093E002D3C6C /* fa-brands-400.ttf */; };
@@ -85,6 +86,7 @@
 		1532331122CBD3FB006FA824 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1532331922CBD4FC006FA824 /* HomeMeal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomeMeal.entitlements; sourceTree = "<group>"; };
 		1532331C22CBD66D006FA824 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSignUpVCTest.swift; sourceTree = "<group>"; };
 		158A866E22D3093E002D3C6C /* fa-regular-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.ttf"; sourceTree = "<group>"; };
 		158A866F22D3093E002D3C6C /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		158A867022D3093E002D3C6C /* fa-brands-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.ttf"; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				15CD9D4422E32ECA0031F4F2 /* SignUpOptionsBackgroundView.swift */,
 				15CD9D3E22DD24BC0031F4F2 /* ImageButton.swift */,
 				15CD9D4822E382A20031F4F2 /* CustomerSignUpVC.swift */,
+				1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */,
 				15CD9D4622E3828B0031F4F2 /* ChefSignUpVC.swift */,
 				1513FA6D22E44D7F00DAADC4 /* DocumentPickerVC.swift */,
 			);
@@ -475,6 +478,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-HomeMeal/Pods-HomeMeal-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FlagPhoneNumber/FlagPhoneNumber.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
@@ -486,6 +490,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FlagPhoneNumber.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
@@ -555,6 +560,7 @@
 				158A86A922D5B4E0002D3C6C /* LabelWithPadding.swift in Sources */,
 				1532330822CBD3F9006FA824 /* AppDelegate.swift in Sources */,
 				158A86B322DB1084002D3C6C /* DeepLinkManager.swift in Sources */,
+				1543DF7F22F0B9CE008A80EF /* CustomerSignUpVCTest.swift in Sources */,
 				1513FA6822E3C94000DAADC4 /* KitchenInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
