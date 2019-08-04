@@ -95,3 +95,13 @@
 "Show Terms and Data Policy" = "Show Terms and Data Policy";
 "Failed to load profile image" = "Failed to load profile image, try again.";
 "Please wait" = "Please wait.";
+"Information" = "Information";
+"KitchenLocationPickerInformationText" = "You must select the location of your kitchen from the map and enter the address description so that your kitchen can be found easily. Your account will not be approved if it is determined that the location you selected and the address description you entered is incorrect. In addition, the location you have selected and the address description you specified will be viewable by you and the customers using the application.";
+"Kitchen Address Description" = "Kitchen Address Description";
+"KitchenAddressDescriptionPlaceHolder" = "Please enter the address description so that your kitchen can be easily found.";
+"Confirm Location" = "Confirm Location";
+"Type address" = "Type address";
+"MyBestDishesStackTitle" = "My best dish is";
+"BestDishTFPlaceHolder" = "type your best dish";
+"Pick Your Kitchen Location" = "Pick Your Kitchen Location";
+"See Your Kitchen Location" = "See Your Kitchen Location";

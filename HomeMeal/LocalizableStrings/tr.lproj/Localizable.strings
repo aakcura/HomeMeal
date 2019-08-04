@@ -90,3 +90,13 @@
 "Show Terms and Data Policy" = "Şartları ve Veri Politikasını Göster";
 "Failed to load profile image" = "Profil resmi yüklenemedi, tekrar deneyin.";
 "Please wait" = "Lütfen bekleyin.";
+"Information" = "Bilgilendirme";
+"KitchenLocationPickerInformationText" = "Haritadan mutfağınızın konumu seçmeli ve mutfağınızın kolaylıkla bulunabilmesi için addres açıklaması girmelisiniz. Seçmiş olduğunuz konumun ve girdiğiniz adres açıklamasının yanlış olduğu belirlenilirse hesabınız onaylanmayacaktır. Ayrıca seçmiş olduğunuz konum ve belirttiğiniz adres açıklaması siz ve uygulamayı kullanan müşteriler tarafından görüntülenebilecektir.";
+"Kitchen Address Description" = "Mutfak Adresi Açıklaması";
+"KitchenAddressDescriptionPlaceHolder" = "Mutfağınızın kolayca bulunabilmesi için lütfen adres açıklaması giriniz.";
+"Confirm Location" = "Konumu Onayla";
+"Type address" = "Adres yazın";
+"MyBestDishesStackTitle" = "En iyi yaptığım yemek";
+"BestDishTFPlaceHolder" = "en iyi yemeğini yaz";
+"Pick Your Kitchen Location" = "Mutfağının Konumunu Seç";
+"See Your Kitchen Location" = "Mutfağının Konumunu Gör";

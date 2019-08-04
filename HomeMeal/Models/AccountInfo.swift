@@ -17,7 +17,7 @@ class AccountInfo{
             self.accountType = AccountType(rawValue: accountTypeNumber)
         }
         
-        if let status = dictionary["status"] as? Int{
+        if let status = dictionary["accountStatus"] as? Int{
             self.status = AccountStatus(rawValue: status)
         }
         

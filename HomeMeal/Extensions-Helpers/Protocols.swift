@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 protocol PopupVCDisplayProtocol {
 }
@@ -24,4 +25,9 @@ extension PopupVCDisplayProtocol {
             viewToRemove.removeFromSuperview()
         }
     }
+}
+
+protocol ActivityIndicatorDisplayProtocol {
+    func showActivityIndicatorView(isUserInteractionEnabled:Bool)
+    func hideActivityIndicatorView(isUserInteractionEnabled:Bool)
 }

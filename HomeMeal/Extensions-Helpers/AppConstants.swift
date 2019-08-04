@@ -11,9 +11,10 @@ import Validator
 
 class AppConstants{
     static let usernameAndEmailCharacterCountLimit = 64
-    static let passwordCharacterCountLimit = 32
+    static let passwordMinLength = 6
+    static let passwordMaxLength = 32
     static let biographyCharacterCountLimit = 512
-    static let addressDescriptionCharacterCountLimit = 512
+    static let kitchenAddressDescriptionCharacterCountLimit = 512
     
     static let complaintMessageCharacterCountLimit = 512
     static let instantChatMessageCharacterCountLimit = 2048
@@ -135,7 +136,36 @@ enum SessionStatus: Int{
 }
 
 
-enum ValidationErrors: String, ValidationError {
+enum MyValidationErrors: String, ValidationError {
+    case emptyText = "Empty text"
     case emailInvalid = "Email address is invalid"
+    case passwordInvalid = "Password should between 6-32 and not null. Cannot contain whitespace"
+    case nameInvalid = "Name boş olamaz"
     var message: String { return self.rawValue }
+}
+
+struct PasswordValidationRule: ValidationRule {
+    typealias InputType = String
+    var error: ValidationError
+    func validate(input: String?) -> Bool {
+        guard let input = input else {return false}
+        if input != "" && !input.contains(" ") && (input.count >= AppConstants.passwordMinLength && input.count <= AppConstants.passwordMaxLength) {
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
+struct DefaultTextValidationRule: ValidationRule {
+    typealias InputType = String
+    var error: ValidationError
+    func validate(input: String?) -> Bool {
+        guard let input = input else {return false}
+        if input != "" && !input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+            return true
+        }else{
+            return false
+        }
+    }
 }

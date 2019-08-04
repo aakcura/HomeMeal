@@ -9,66 +9,39 @@ import UIKit
 import Validator
 import Firebase
 
-class LoginVC: UIViewController {
-    
+class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
+   
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var appIcon: UIImageView!
-    @IBOutlet weak var emailTf: UITextField!
-    @IBOutlet weak var passwordTf: UITextField!
-    @IBOutlet weak var passwordValidationLbl: UILabel!
-    @IBOutlet weak var forgotPasswordBtn: UIButton!
-    @IBOutlet weak var buttonsStackView: UIStackView!
-    @IBOutlet weak var signInBtn: UIButton!
-    @IBOutlet weak var signUpBtn: UIButton!
+    @IBOutlet weak var tfEmail: UITextField!
+    @IBOutlet weak var tfPassword: UITextField!
+    @IBOutlet weak var lblPasswordValidationInfo: UILabel!
+    @IBOutlet weak var btnForgotPassword: UIButton!
+    @IBOutlet weak var stackButtons: UIStackView!
+    @IBOutlet weak var btnSignUp: UIButton!
+    @IBOutlet weak var btnSignIn: UIButton!
     
     var signUpOptionsBackgroundView: SignUpOptionsBackgroundView!
-    let signUpAsChefBtn: ImageButton = {
+    let btnSignUpAsChef: ImageButton = {
         let button = ImageButton(type: .system)
         button.setImageButtonProperties(buttonImage: AppIcons.chefIcon, buttonTitle: "As Chef".getLocalizedString(), buttonBackgroundColor: AppColors.appGoldColor, textColor: .black)
         return button
     }()
-    let signUpAsCustomerBtn: ImageButton = {
+    let btnSignUpAsCustomer: ImageButton = {
         let button = ImageButton(type: .system)
         button.setImageButtonProperties(buttonImage: AppIcons.customerIcon, buttonTitle: "As Customer".getLocalizedString(), buttonBackgroundColor: AppColors.appYellowColor, textColor: .black)
         return button
     }()
     
+    var isEmailValid:Bool = false
+    var isPasswordValid:Bool = false
+    let emailValidationRule = ValidationRulePattern(pattern: EmailValidationPattern.simple, error: MyValidationErrors.emailInvalid)
+    let passwordValidationRule = PasswordValidationRule(error: MyValidationErrors.passwordInvalid)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.removeNavBarBackButtonText()
         setupUIProperties()
-        setupSignUpOptionsView()
-    }
-    
-    func setupUIProperties(){
-        emailTf.translatesAutoresizingMaskIntoConstraints = false
-        passwordTf.translatesAutoresizingMaskIntoConstraints = false
-        emailTf.delegate = self
-        emailTf.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
-        passwordTf.delegate = self
-        passwordTf.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
-        emailTf.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
-        passwordTf.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
-        let placeHolderAttributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor: UIColor.white
-        ]
-        let emailTFPlaceHolderText = NSAttributedString(string: "Email".getLocalizedString(), attributes: placeHolderAttributes)
-        let passwordTFPlaceHolderText = NSAttributedString(string: "Password".getLocalizedString(), attributes: placeHolderAttributes)
-        emailTf.attributedPlaceholder = emailTFPlaceHolderText
-        passwordTf.attributedPlaceholder = passwordTFPlaceHolderText
-        emailTf.font = UIFont.boldSystemFont(ofSize: 18)
-        passwordTf.font = UIFont.boldSystemFont(ofSize: 18)
-        emailTf.textColor = UIColor.white
-        passwordTf.textColor = UIColor.white
-        forgotPasswordBtn.setTitle("Forgot password?".getLocalizedString(), for: .normal)
-        signInBtn.setTitle("Sign In".getLocalizedString(), for: .normal)
-        signUpBtn.setTitle("Sign Up".getLocalizedString(), for: .normal)
-        signInBtn.translatesAutoresizingMaskIntoConstraints = false
-        signUpBtn.translatesAutoresizingMaskIntoConstraints = false
-        signInBtn.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
-        signUpBtn.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
-        passwordValidationLbl.text = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,30 +54,89 @@ class LoginVC: UIViewController {
         self.hideNavBar(false, animated: animated)
     }
     
-    @IBAction func forgotPasswordBtnClicked(_ sender: Any) {
-        print("forgotPasswordBtnClicked")
+    func setupUIProperties(){
+        let placeHolderAttributes = [
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        
+        tfEmail.translatesAutoresizingMaskIntoConstraints = false
+        tfEmail.delegate = self
+        tfEmail.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        tfEmail.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        let tfEmailPlaceHolderText = NSAttributedString(string: "Email".getLocalizedString(), attributes: placeHolderAttributes)
+        tfEmail.attributedPlaceholder = tfEmailPlaceHolderText
+        tfEmail.font = UIFont.boldSystemFont(ofSize: 18)
+        tfEmail.textColor = UIColor.white
+        
+        tfPassword.translatesAutoresizingMaskIntoConstraints = false
+        tfPassword.delegate = self
+        tfPassword.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        tfPassword.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        let tfPasswordPlaceHolderText = NSAttributedString(string: "Password".getLocalizedString(), attributes: placeHolderAttributes)
+        tfPassword.attributedPlaceholder = tfPasswordPlaceHolderText
+        tfPassword.font = UIFont.boldSystemFont(ofSize: 18)
+        tfPassword.textColor = UIColor.white
+        
+        btnForgotPassword.setTitle("Forgot password?".getLocalizedString(), for: .normal)
+        btnSignIn.setTitle("Sign In".getLocalizedString(), for: .normal)
+        btnSignIn.translatesAutoresizingMaskIntoConstraints = false
+        btnSignIn.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        
+        btnSignUp.setTitle("Sign Up".getLocalizedString(), for: .normal)
+        btnSignUp.translatesAutoresizingMaskIntoConstraints = false
+        btnSignUp.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        
+        lblPasswordValidationInfo.text = ""
+        
+        setupSignUpOptionsView()
+    }
+    
+    private func setupSignUpOptionsView(){
+        signUpOptionsBackgroundView = SignUpOptionsBackgroundView()
+        signUpOptionsBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        signUpOptionsBackgroundView.backgroundColor = .clear//AppColors.appOrangeColor
+        view.addSubview(signUpOptionsBackgroundView)
+        signUpOptionsBackgroundView.anchor(top: btnSignUp.bottomAnchor, leading: tfEmail.leadingAnchor, trailing: tfEmail.trailingAnchor, bottom: nil, centerX: nil, centerY: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0), size: .zero)
+        signUpOptionsBackgroundView.heightAnchor.constraint(lessThanOrEqualToConstant: 150).isActive = true
+        btnSignUpAsCustomer.addTarget(self, action: #selector(signUpAsCustomerTapped), for: .touchUpInside)
+        btnSignUpAsChef.addTarget(self, action: #selector(signUpAsChefTapped), for: .touchUpInside)
+        let signUpOptionsHSV = SignUpOptionsHSV()
+        signUpOptionsHSV.setSignUpOptions(items: [btnSignUpAsCustomer,btnSignUpAsChef])
+        signUpOptionsHSV.spacing = 25
+        signUpOptionsBackgroundView.addSubview(signUpOptionsHSV)
+        signUpOptionsHSV.anchor(top: signUpOptionsBackgroundView.topAnchor, leading: signUpOptionsBackgroundView.leadingAnchor, trailing: signUpOptionsBackgroundView.trailingAnchor, bottom: signUpOptionsBackgroundView.bottomAnchor, padding: .init(top: 25, left: 10, bottom: 10, right: 10), size: .zero)
+        signUpOptionsBackgroundView.isHidden = true
+    }
+    
+    func showActivityIndicatorView(isUserInteractionEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+            self?.view.isUserInteractionEnabled = isUserInteractionEnabled
+        }
+    }
+    
+    func hideActivityIndicatorView(isUserInteractionEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.stopAnimating()
+            self?.view.isUserInteractionEnabled = isUserInteractionEnabled
+        }
+    }
+    
+    
+    @IBAction func forgotPasswordTapped(_ sender: Any) {
         let forgotPasswordAlert = UIAlertController(title: "Forgot Password".getLocalizedString(), message: "Enter your email".getLocalizedString(), preferredStyle: .alert)
-        forgotPasswordAlert.addTextField(configurationHandler: { [weak self] (emailTF:UITextField) in
-            emailTF.placeholder = "Email".getLocalizedString()
-            emailTF.textColor = UIColor.black
-            emailTF.delegate = self
+        forgotPasswordAlert.addTextField(configurationHandler: { [weak self] (tfEmail:UITextField) in
+            tfEmail.placeholder = "Email".getLocalizedString()
+            tfEmail.textColor = UIColor.black
+            tfEmail.delegate = self
         })
         let resetAction = UIAlertAction(title: "Reset".getLocalizedString(), style: .destructive) { [weak self] (action) in
-            if let email = forgotPasswordAlert.textFields![0].text {
-                if !email.isEmpty && !email.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
-                    Auth.auth().sendPasswordReset(withEmail: email) { error in
-                        if let error = error {
-                            // TODO: Error handling
-                            print(error.localizedDescription)
-                            return
-                        }
-                    }
-                }else{
-                    AlertService.showAlert(in: self, message: "Email not entered".getLocalizedString(), title: "", style: .actionSheet)
-                }
-            }else{
-                AlertService.showAlert(in: self, message: "Email not entered".getLocalizedString(), title: "", style: .actionSheet)
+            guard let emailForResetPassword = forgotPasswordAlert.textFields![0].text else{
+                 AlertService.showAlert(in: self, message: "Email not entered".getLocalizedString(), title: "", style: .alert)
+                return
             }
+            self?.sendPasswordResetEmail(to: emailForResetPassword)
         }
         let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
         forgotPasswordAlert.addAction(closeAction)
@@ -114,76 +146,77 @@ class LoginVC: UIViewController {
         }
     }
     
-    @IBAction func signInBtnClicked(_ sender: Any) {
-        self.activityIndicator.startAnimating()
-        if isMailValid && isPassValid {
+    private func sendPasswordResetEmail(to email:String){
+        let isEmailValid = email.validate(rule: emailValidationRule).isValid
+        if isEmailValid{
             if NetworkManager.isConnectedNetwork() {
-                let email = emailTf.text!
-                let password = passwordTf.text!
-                Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
-                    if let authResult = authResult {
-                        let dbRef = Database.database().reference().child("sessions").child(authResult.user.uid)
-                        guard let sessionKey = dbRef.childByAutoId().key else{
-                            // TODO: Error handling
-                            return
-                        }
-                        
-                        let device = DeviceAndAppInfo()
-                        let deviceAndAppInfo = [
-                            "deviceOSName": device.deviceOSName,
-                            "deviceOSVersionName": device.deviceOSVersionName,
-                            "deviceModel": device.deviceModel,
-                            "deviceName": device.deviceName,
-                            "applicationVersionNumber": device.applicationVersionNumber
-                            ] as [String: AnyObject]
-                        
-                        let values = [
-                            "startTime": Date().timeIntervalSince1970,
-                            "status": SessionStatus.active.rawValue,
-                            "deviceAndAppInfo": deviceAndAppInfo
-                            ] as [String: AnyObject]
-                        
-                        dbRef.child(sessionKey).setValue(values, withCompletionBlock: { (error, databaseRef) in
-                            if let error = error {
-                                DispatchQueue.main.async {
-                                    self?.activityIndicator.stopAnimating()
-                                    AlertService.showAlert(in: self, message: error.localizedDescription, title: "Error".getLocalizedString(), style: .alert)
-                                }
-                            }else{
-                                DispatchQueue.main.async {
-                                    self?.activityIndicator.stopAnimating()
-                                    // store the user session (example only, not for the production)
-                                    UserDefaults.standard.set(sessionKey, forKey: UserDefaultsKeys.userSessionId)
-                                    AppDelegate.shared.rootViewController.switchToMainScreen()
-                                    // navigate to the Main Screen
-                                }
-                            }
-                        })
+                Auth.auth().sendPasswordReset(withEmail: email) { error in
+                    if let error = error {
+                        // TODO: Error handling
+                        AlertService.showAlert(in: self, message: error.localizedDescription, title: "", style: .alert)
                     }else{
-                        DispatchQueue.main.async {
-                            self?.activityIndicator.stopAnimating()
-                            AlertService.showAlert(in: self, message: error!.localizedDescription, title: "Error".getLocalizedString(), style: .alert)
-                        }
+                        AlertService.showAlert(in: self, message: "Şifre sıfırlama maili \(email) adresine gönderildi. Mailinizdeki adımları takip edebilirsiniz".getLocalizedString(), title: "", style: .alert)
                     }
                 }
-            } else{
-                DispatchQueue.main.async { [weak self] in
-                    self?.activityIndicator.stopAnimating()
-                    AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .alert)
-                }
+            }else{
+                AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .actionSheet)
             }
         }else{
-            DispatchQueue.main.async { [weak self] in
-                self?.activityIndicator.stopAnimating()
-                AlertService.showAlert(in: self, message: "Geçersiz mail veya parola !", title: "", style: .alert)
+            AlertService.showAlert(in: self, message: "Geçersiz mail adresi".getLocalizedString(), title: "", style: .alert)
+        }
+    }
+    
+    @IBAction func signInTapped(_ sender: Any) {
+        if isEmailValid && isPasswordValid {
+            if NetworkManager.isConnectedNetwork() {
+                signIn()
+            } else{
+                AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .alert)
+            }
+        }else{
+            AlertService.showAlert(in: self, message: "Geçersiz mail veya parola !", title: "", style: .alert)
+        }
+    }
+    
+    private func signIn(){
+        let email = tfEmail.text!
+        let password = tfPassword.text!
+        showActivityIndicatorView(isUserInteractionEnabled: false)
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+            if let authResult = authResult {
+                Database.database().reference().child("users").child(authResult.user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject], let accountInfoDictionary = dictionary["accountInfo"] as? [String:AnyObject]{
+                        let accountInfo = AccountInfo(dictionary: accountInfoDictionary)
+                        if let accountStatus = accountInfo.status, let accountType = accountInfo.accountType {
+                            switch accountStatus {
+                            case .enabled:
+                                self?.createUserSession(userId: authResult.user.uid, accountType: accountType)
+                                return
+                            case .disabled:
+                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                AlertService.showAlert(in: self, message: "Hesabınız engellenmiş. Lütfen geliştirici ile iletişime geçiniz".getLocalizedString(), style: .alert)
+                                return
+                            case .pendingApproval:
+                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                AlertService.showAlert(in: self, message: "Hesabınıza giriş yapabilmek için admin onayı bekleniyor. Hesabınız onaylandıktan sonra giriş yapabilirsiiniz".getLocalizedString(), style: .alert)
+                                return
+                            }
+                        }
+                    }else{
+                        self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                        AlertService.showAlert(in: self, message: "snapshot null geldi".getLocalizedString(), style: .alert)
+                    }
+                })
+            }else{
+                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                DispatchQueue.main.async {
+                    AlertService.showAlert(in: self, message: error!.localizedDescription, title: "Error".getLocalizedString(), style: .alert)
+                }
             }
         }
     }
     
-    
-    @IBAction func signUpBtnClicked(_ sender: Any) {
-        print("signUpBtnClicked")
-        
+    @IBAction func signUpTapped(_ sender: Any) {
         UIView.animate(withDuration: 0.5, delay: 2, options: .curveEaseInOut, animations: {
             self.signUpOptionsBackgroundView.isHidden = !self.signUpOptionsBackgroundView.isHidden
         }, completion: nil)
@@ -217,99 +250,114 @@ class LoginVC: UIViewController {
         }
     }
     
-    func setupSignUpOptionsView(){
-        signUpOptionsBackgroundView = SignUpOptionsBackgroundView()
-        signUpOptionsBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        signUpOptionsBackgroundView.backgroundColor = .clear//AppColors.appOrangeColor
-        view.addSubview(signUpOptionsBackgroundView)
-        signUpOptionsBackgroundView.anchor(top: signUpBtn.bottomAnchor, leading: emailTf.leadingAnchor, trailing: emailTf.trailingAnchor, bottom: nil, centerX: nil, centerY: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0), size: .zero)
-        signUpOptionsBackgroundView.heightAnchor.constraint(lessThanOrEqualToConstant: 150).isActive = true
-        signUpAsCustomerBtn.addTarget(self, action: #selector(signUpAsCustomerBtnClicked), for: .touchUpInside)
-        signUpAsChefBtn.addTarget(self, action: #selector(signUpAsChefBtnClicked), for: .touchUpInside)
-        let signUpOptionsHSV = SignUpOptionsHSV()
-        signUpOptionsHSV.setSignUpOptions(items: [signUpAsCustomerBtn,signUpAsChefBtn])
-        signUpOptionsHSV.spacing = 25
-        signUpOptionsBackgroundView.addSubview(signUpOptionsHSV)
-        signUpOptionsHSV.anchor(top: signUpOptionsBackgroundView.topAnchor, leading: signUpOptionsBackgroundView.leadingAnchor, trailing: signUpOptionsBackgroundView.trailingAnchor, bottom: signUpOptionsBackgroundView.bottomAnchor, padding: .init(top: 25, left: 10, bottom: 10, right: 10), size: .zero)
-        signUpOptionsBackgroundView.isHidden = true
-    }
-    
-    @objc func signUpAsCustomerBtnClicked(){
+    @objc func signUpAsCustomerTapped(){
         self.signUpOptionsBackgroundView.isHidden = true
         let customerSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerSignUpVC") as! CustomerSignUpVC
         navigationController?.pushViewController(customerSignUpVC, animated: true)
     }
     
-    @objc func signUpAsChefBtnClicked(){
+    @objc func signUpAsChefTapped(){
         self.signUpOptionsBackgroundView.isHidden = true
-        //let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefSignUpVC") as! ChefSignUpVC
-        let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerSignUpVCTest") as! CustomerSignUpVCTest
+        let chefSignUpVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefSignUpVC") as! ChefSignUpVC
         navigationController?.pushViewController(chefSignUpVC, animated: true)
     }
+}
+
+// HANDLE SIGN IN
+extension LoginVC{
     
-    var isPassValid:Bool = false
-    var isMailValid:Bool = false
-    let emailRule = ValidationRulePattern(pattern: EmailValidationPattern.simple, error: ValidationErrors.emailInvalid)
-    @objc func textFieldDidChange(_ textField: UITextField) {
-       
-        if textField.tag == 1000 {
-            let isMailValid = emailTf.text!.validate(rule: emailRule)
-            if isMailValid.isValid {
+    private func createUserSession(userId:String, accountType:AccountType){
+        let sessionsDbRef = Database.database().reference().child("sessions").child(userId)
+        guard let sessionKey = sessionsDbRef.childByAutoId().key else{
+            // TODO: Error handling
+            self.hideActivityIndicatorView(isUserInteractionEnabled: true)
+            DispatchQueue.main.async {
+                AlertService.showAlert(in: self, message: "Giriş yapılamadı tekrar deneyiniz", title: "", style: .alert)
+            }
+            return
+        }
+        
+        let device = DeviceAndAppInfo()
+        let deviceAndAppInfo = [
+            "deviceOSName": device.deviceOSName,
+            "deviceOSVersionName": device.deviceOSVersionName,
+            "deviceModel": device.deviceModel,
+            "deviceName": device.deviceName,
+            "applicationVersionNumber": device.applicationVersionNumber
+            ] as [String: AnyObject]
+        
+        let values = [
+            "startTime": Date().timeIntervalSince1970,
+            "sessionStatus": SessionStatus.active.rawValue,
+            "deviceAndAppInfo": deviceAndAppInfo
+            ] as [String: AnyObject]
+        
+        sessionsDbRef.child(sessionKey).setValue(values, withCompletionBlock: { (error, databaseRef) in
+            if let error = error {
                 DispatchQueue.main.async { [weak self] in
-                    self?.emailTf.backgroundColor = AppColors.appGreenColor//.withAlphaComponent(0.5)
-                    self?.isMailValid = true
+                    self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                    AlertService.showAlert(in: self, message: error.localizedDescription, title: "Error".getLocalizedString(), style: .alert)
                 }
             }else{
                 DispatchQueue.main.async { [weak self] in
-                    self?.emailTf.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
-                    self?.isMailValid = false
+                    self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                    // store the user session (example only, not for the production)
+                    UserDefaults.standard.set(sessionKey, forKey: UserDefaultsKeys.userSessionId)
+                    
+                    // TO DO: Navigate user to the Main Screen related by account type
+                    AppDelegate.shared.rootViewController.switchToMainScreen(by: accountType)
+                }
+            }
+        })
+    }
+}
+
+// TEXT FIELD
+extension LoginVC: UITextFieldDelegate{
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if textField.tag == tfEmail.tag {
+            guard let email = tfEmail.text else {return}
+            isEmailValid = email.validate(rule: emailValidationRule).isValid
+            if isEmailValid {
+                DispatchQueue.main.async { [weak self] in
+                    self?.tfEmail.backgroundColor = AppColors.appGreenColor//.withAlphaComponent(0.5)
+                }
+            }else{
+                DispatchQueue.main.async { [weak self] in
+                    self?.tfEmail.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
                 }
             }
         }
         
-        if textField.tag == 1001 {
-            if let password = passwordTf.text, !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                //print("Pass=\(password)\nTrimmed=\(password.trimmingCharacters(in: .whitespacesAndNewlines))")
-                
-                if password.count < 6 {
-                    DispatchQueue.main.async { [weak self] in
-                        //self?.passwordValidationLbl.isHidden = false
-                        self?.passwordValidationLbl.text = "Şifreniz min 6 karakter olmalı ve boşluk içermemelidir"
-                        self?.passwordTf.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
-                        self?.isPassValid = false
-                    }
-                }else{
-                    DispatchQueue.main.async { [weak self] in
-                        self?.passwordValidationLbl.text = ""
-                        //self?.passwordValidationLbl.isHidden = true
-                        self?.passwordTf.backgroundColor = AppColors.appGreenColor//.withAlphaComponent(0.5)
-                        self?.isPassValid = true
-                    }
+        if textField.tag == tfPassword.tag {
+            guard let password = tfPassword.text else {return}
+            isPasswordValid = password.validate(rule: passwordValidationRule).isValid
+            if isPasswordValid{
+                DispatchQueue.main.async { [weak self] in
+                    self?.lblPasswordValidationInfo.text = ""
+                    self?.tfPassword.backgroundColor = AppColors.appGreenColor//.withAlphaComponent(0.5)
                 }
             }else{
                 DispatchQueue.main.async { [weak self] in
-                    //self?.passwordValidationLbl.isHidden = false
-                    self?.passwordValidationLbl.text = "Şifre boş bırakılamaz"
-                    self?.passwordTf.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
-                    self?.isPassValid = false
+                    self?.lblPasswordValidationInfo.text = MyValidationErrors.passwordInvalid.message
+                    self?.tfPassword.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
                 }
             }
         }
     }
     
-}
-
-extension LoginVC: UITextFieldDelegate{
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
         switch textField.tag {
-        case 1000:
+        case tfEmail.tag:
             return updatedText.count <= AppConstants.usernameAndEmailCharacterCountLimit
-        case 1001:
-            return updatedText.count <= AppConstants.passwordCharacterCountLimit
+        case tfPassword.tag:
+            return updatedText.count <= AppConstants.passwordMaxLength
         default:
             return updatedText.count <= AppConstants.usernameAndEmailCharacterCountLimit
         }

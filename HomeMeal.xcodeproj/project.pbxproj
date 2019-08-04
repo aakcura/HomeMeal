@@ -12,13 +12,12 @@
 		1513FA6822E3C94000DAADC4 /* KitchenInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1513FA6722E3C93F00DAADC4 /* KitchenInformation.swift */; };
 		1513FA6A22E3C94200DAADC4 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1513FA6922E3C94200DAADC4 /* AccountInfo.swift */; };
 		1513FA6C22E41D9600DAADC4 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1513FA6B22E41D9600DAADC4 /* AlertService.swift */; };
-		1513FA6E22E44D7F00DAADC4 /* DocumentPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1513FA6D22E44D7F00DAADC4 /* DocumentPickerVC.swift */; };
 		1532330822CBD3F9006FA824 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532330722CBD3F9006FA824 /* AppDelegate.swift */; };
 		1532330A22CBD3F9006FA824 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532330922CBD3F9006FA824 /* TestViewController.swift */; };
 		1532330D22CBD3F9006FA824 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532330B22CBD3F9006FA824 /* Main.storyboard */; };
 		1532330F22CBD3FB006FA824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1532330E22CBD3FB006FA824 /* Assets.xcassets */; };
 		1532331222CBD3FB006FA824 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532331022CBD3FB006FA824 /* LaunchScreen.storyboard */; };
-		1543DF7F22F0B9CE008A80EF /* CustomerSignUpVCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */; };
+		1543DF7F22F0B9CE008A80EF /* CustomerSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543DF7E22F0B9CE008A80EF /* CustomerSignUpVC.swift */; };
 		158A867122D3093E002D3C6C /* fa-regular-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866E22D3093E002D3C6C /* fa-regular-400.ttf */; };
 		158A867222D3093E002D3C6C /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866F22D3093E002D3C6C /* fa-solid-900.ttf */; };
 		158A867322D3093E002D3C6C /* fa-brands-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A867022D3093E002D3C6C /* fa-brands-400.ttf */; };
@@ -60,8 +59,10 @@
 		15CD9D4322E324080031F4F2 /* Extension-UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D4222E324080031F4F2 /* Extension-UIColor.swift */; };
 		15CD9D4522E32ECA0031F4F2 /* SignUpOptionsBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D4422E32ECA0031F4F2 /* SignUpOptionsBackgroundView.swift */; };
 		15CD9D4722E3828B0031F4F2 /* ChefSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D4622E3828B0031F4F2 /* ChefSignUpVC.swift */; };
-		15CD9D4922E382A20031F4F2 /* CustomerSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D4822E382A20031F4F2 /* CustomerSignUpVC.swift */; };
 		15CD9D4B22E393A30031F4F2 /* Extension-UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D4A22E393A30031F4F2 /* Extension-UIViewController.swift */; };
+		15EED37C22F75130002D937B /* KitchenLocationPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EED37B22F75130002D937B /* KitchenLocationPickerVC.swift */; };
+		15EED37E22F7517B002D937B /* LocationSearchTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EED37D22F7517B002D937B /* LocationSearchTVC.swift */; };
+		15EED38022F767BD002D937B /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EED37F22F767BD002D937B /* BaseVC.swift */; };
 		15F7D75622DC8691001DF7B1 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F7D75522DC8691001DF7B1 /* RootViewController.swift */; };
 		15F7D75822DC8775001DF7B1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F7D75722DC8775001DF7B1 /* LoginVC.swift */; };
 		15F7D75A22DC8783001DF7B1 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F7D75922DC8783001DF7B1 /* MainVC.swift */; };
@@ -77,7 +78,6 @@
 		1513FA6722E3C93F00DAADC4 /* KitchenInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenInformation.swift; sourceTree = "<group>"; };
 		1513FA6922E3C94200DAADC4 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
 		1513FA6B22E41D9600DAADC4 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
-		1513FA6D22E44D7F00DAADC4 /* DocumentPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerVC.swift; sourceTree = "<group>"; };
 		1532330422CBD3F9006FA824 /* HomeMeal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeMeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1532330722CBD3F9006FA824 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1532330922CBD3F9006FA824 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		1532331122CBD3FB006FA824 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1532331922CBD4FC006FA824 /* HomeMeal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomeMeal.entitlements; sourceTree = "<group>"; };
 		1532331C22CBD66D006FA824 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSignUpVCTest.swift; sourceTree = "<group>"; };
+		1543DF7E22F0B9CE008A80EF /* CustomerSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSignUpVC.swift; sourceTree = "<group>"; };
 		158A866E22D3093E002D3C6C /* fa-regular-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.ttf"; sourceTree = "<group>"; };
 		158A866F22D3093E002D3C6C /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		158A867022D3093E002D3C6C /* fa-brands-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.ttf"; sourceTree = "<group>"; };
@@ -132,8 +132,10 @@
 		15CD9D4222E324080031F4F2 /* Extension-UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension-UIColor.swift"; sourceTree = "<group>"; };
 		15CD9D4422E32ECA0031F4F2 /* SignUpOptionsBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpOptionsBackgroundView.swift; sourceTree = "<group>"; };
 		15CD9D4622E3828B0031F4F2 /* ChefSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefSignUpVC.swift; sourceTree = "<group>"; };
-		15CD9D4822E382A20031F4F2 /* CustomerSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSignUpVC.swift; sourceTree = "<group>"; };
 		15CD9D4A22E393A30031F4F2 /* Extension-UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension-UIViewController.swift"; sourceTree = "<group>"; };
+		15EED37B22F75130002D937B /* KitchenLocationPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenLocationPickerVC.swift; sourceTree = "<group>"; };
+		15EED37D22F7517B002D937B /* LocationSearchTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTVC.swift; sourceTree = "<group>"; };
+		15EED37F22F767BD002D937B /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		15F7D75522DC8691001DF7B1 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		15F7D75722DC8775001DF7B1 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		15F7D75922DC8783001DF7B1 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				1532330722CBD3F9006FA824 /* AppDelegate.swift */,
 				15F7D75522DC8691001DF7B1 /* RootViewController.swift */,
+				15EED37F22F767BD002D937B /* BaseVC.swift */,
 			);
 			path = 0.Root;
 			sourceTree = "<group>";
@@ -182,10 +185,10 @@
 				15F7D75722DC8775001DF7B1 /* LoginVC.swift */,
 				15CD9D4422E32ECA0031F4F2 /* SignUpOptionsBackgroundView.swift */,
 				15CD9D3E22DD24BC0031F4F2 /* ImageButton.swift */,
-				15CD9D4822E382A20031F4F2 /* CustomerSignUpVC.swift */,
-				1543DF7E22F0B9CE008A80EF /* CustomerSignUpVCTest.swift */,
+				1543DF7E22F0B9CE008A80EF /* CustomerSignUpVC.swift */,
 				15CD9D4622E3828B0031F4F2 /* ChefSignUpVC.swift */,
-				1513FA6D22E44D7F00DAADC4 /* DocumentPickerVC.swift */,
+				15EED37B22F75130002D937B /* KitchenLocationPickerVC.swift */,
+				15EED37D22F7517B002D937B /* LocationSearchTVC.swift */,
 			);
 			path = "1.SignIn&SignUp";
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				158A869522D5ADBB002D3C6C /* Reachability.swift in Sources */,
+				15EED38022F767BD002D937B /* BaseVC.swift in Sources */,
 				15CD9D3C22DD10050031F4F2 /* PaddingLabel.swift in Sources */,
 				15CD9D4722E3828B0031F4F2 /* ChefSignUpVC.swift in Sources */,
 				1513FA6A22E3C94200DAADC4 /* AccountInfo.swift in Sources */,
@@ -525,13 +529,12 @@
 				158A869822D5ADBB002D3C6C /* Extension-UIImageView.swift in Sources */,
 				158A86C122DBB9EB002D3C6C /* NotificationParser.swift in Sources */,
 				158A869B22D5ADBB002D3C6C /* Extension-Date.swift in Sources */,
-				1513FA6E22E44D7F00DAADC4 /* DocumentPickerVC.swift in Sources */,
 				15F7D75E22DCEBEE001DF7B1 /* SplashVC.swift in Sources */,
 				15CD9D4B22E393A30031F4F2 /* Extension-UIViewController.swift in Sources */,
 				15CD9D4122DD30B30031F4F2 /* Extension-UIButton.swift in Sources */,
 				158A869922D5ADBB002D3C6C /* Protocols.swift in Sources */,
-				15CD9D4922E382A20031F4F2 /* CustomerSignUpVC.swift in Sources */,
 				158A86AA22D5B4E0002D3C6C /* AppIcons.swift in Sources */,
+				15EED37C22F75130002D937B /* KitchenLocationPickerVC.swift in Sources */,
 				15CD9D3D22DD10050031F4F2 /* PaddingTextField.swift in Sources */,
 				158A86BA22DB9C79002D3C6C /* DeepLinkNavigator.swift in Sources */,
 				1513FA6422E3C00000DAADC4 /* Chef.swift in Sources */,
@@ -551,6 +554,7 @@
 				15F7D75622DC8691001DF7B1 /* RootViewController.swift in Sources */,
 				158A869A22D5ADBB002D3C6C /* ChooseEmailActionSheetPresenter.swift in Sources */,
 				15CD9D3F22DD24BC0031F4F2 /* ImageButton.swift in Sources */,
+				15EED37E22F7517B002D937B /* LocationSearchTVC.swift in Sources */,
 				158A869422D5ADBB002D3C6C /* DeviceAndAppInfo.swift in Sources */,
 				158A869322D5ADBB002D3C6C /* AppStoreReviewHelper.swift in Sources */,
 				15CD9D4322E324080031F4F2 /* Extension-UIColor.swift in Sources */,
@@ -560,7 +564,7 @@
 				158A86A922D5B4E0002D3C6C /* LabelWithPadding.swift in Sources */,
 				1532330822CBD3F9006FA824 /* AppDelegate.swift in Sources */,
 				158A86B322DB1084002D3C6C /* DeepLinkManager.swift in Sources */,
-				1543DF7F22F0B9CE008A80EF /* CustomerSignUpVCTest.swift in Sources */,
+				1543DF7F22F0B9CE008A80EF /* CustomerSignUpVC.swift in Sources */,
 				1513FA6822E3C94000DAADC4 /* KitchenInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

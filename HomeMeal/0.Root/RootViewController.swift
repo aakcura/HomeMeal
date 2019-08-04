@@ -62,12 +62,25 @@ class RootViewController: UIViewController {
         currentVC = new
     }
     
-    func switchToMainScreen() {
+    func switchToMainScreen(by accountType:AccountType) {
         let mainViewController = MainVC()
         let mainScreen =  MainNavigationController(rootViewController: mainViewController) //UINavigationController(rootViewController: mainViewController)
         animateFadeTransition(to: mainScreen) { [weak self] in
             self?.handleDeepLink()
         }
+        
+        if accountType == .customer {
+            print("go to customer main page")
+        }
+        
+        if accountType == .chef {
+            print("go to customer main page")
+        }
+        
+        /* if accountType == .admin {
+            print("go to customer main page")
+        } */
+       
     }
     
     

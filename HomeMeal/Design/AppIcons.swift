@@ -18,10 +18,16 @@ class AppIcons {
     static let addPhoto = UIImage(named: "add-photo")!
     static let signOutIcon = UIImage(named: "signOut")!
 
+    // Font Awesome Brand Icons
     static let faLinkedin = "";
     static let faInstagram = "";
     static let faTwitter = "";
     static let faPinterest = "";
     
+    // Font Awesome Solic Icons
+    static let faSearchLocation = "";
+    static let faMapMarkedAlt = "";
+    
+    // Font Awesome Regular Icons
     static let faAddressCard = " ";
 }

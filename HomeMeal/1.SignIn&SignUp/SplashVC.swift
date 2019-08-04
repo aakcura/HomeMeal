@@ -12,65 +12,71 @@ class SplashVC: UIViewController {
     
     @IBOutlet weak var appIconImageView: UIImageView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var lblInfo: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.checkUserSession()
+        self.checkUserAccountStatusAndSession()
     }
     
-    @objc private func checkUserSession(){
+    @objc private func checkUserAccountStatusAndSession(){
         self.activityIndicatorView.startAnimating()
         if let sessionID = UserDefaults.standard.string(forKey: UserDefaultsKeys.userSessionId), let currentUserId = AppConstants.currentUserId {
             if NetworkManager.isConnectedNetwork(){
-                let dbRef = Database.database().reference().child("sessions/\(currentUserId)/\(sessionID)")
-                dbRef.observeSingleEvent(of: .value) { (snapshot) in
-                    if let dictionary = snapshot.value as? [String: AnyObject] {
-                        if let status = dictionary["status"] as? Int{
-                            if status == SessionStatus.active.rawValue {
-                                self.showMainVC()
+                let dbRef = Database.database().reference()
+                dbRef.child("users").child(currentUserId).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject], let accountInfoDictionary = dictionary["accountInfo"] as? [String:AnyObject]{
+                        let accountInfo = AccountInfo(dictionary: accountInfoDictionary)
+                        if let accountStatus = accountInfo.status, let accountType = accountInfo.accountType {
+                            if accountStatus == .enabled {
+                                dbRef.child("sessions/\(currentUserId)/\(sessionID)").observeSingleEvent(of: .value) { (snapshot) in
+                                    if let dictionary = snapshot.value as? [String: AnyObject], let sessionStatus = dictionary["sessionStatus"] as? Int {
+                                        if sessionStatus == SessionStatus.active.rawValue {
+                                            self.showMainVC(for: accountType)
+                                        }else{
+                                            self.showLoginVC()
+                                        }
+                                    }else{
+                                        self.showLoginVC()
+                                    }
+                                }
                             }else{
-                                UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userSessionId)
                                 self.showLoginVC()
                             }
-                        }else{
-                            UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userSessionId)
-                            self.showLoginVC()
                         }
                     }else{
-                        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userSessionId)
                         self.showLoginVC()
                     }
-                }
+                })
             }else{
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicatorView.stopAnimating()
-                    self?.infoLabel.text = "NoInternetConnectionErrorMessage".getLocalizedString()
-                    self?.infoLabel.isUserInteractionEnabled = true
-                    self?.infoLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self?.checkUserSession)))
+                    self?.lblInfo.text = "NoInternetConnectionErrorMessage".getLocalizedString()
+                    self?.lblInfo.isUserInteractionEnabled = true
+                    self?.lblInfo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self?.checkUserAccountStatusAndSession)))
                 }
             }
         }else{
-            UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userSessionId)
             self.showLoginVC()
         }
     }
     
     private func showLoginVC(){
         if activityIndicatorView.isAnimating{
-            self.activityIndicatorView.stopAnimating()
+            DispatchQueue.main.async { self.activityIndicatorView.stopAnimating() }
         }
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userSessionId)
         AppDelegate.shared.rootViewController.switchToLogout()
     }
     
-    private func showMainVC(){
+    private func showMainVC(for accountType: AccountType){
         if activityIndicatorView.isAnimating{
-            self.activityIndicatorView.stopAnimating()
+            DispatchQueue.main.async { self.activityIndicatorView.stopAnimating() }
         }
-        AppDelegate.shared.rootViewController.switchToMainScreen()
+        AppDelegate.shared.rootViewController.switchToMainScreen(by: accountType)
     }
 }
 
