@@ -28,14 +28,14 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     @IBOutlet weak var lblInstagram: UILabel!
     @IBOutlet weak var lblPinterest: UILabel!
     @IBOutlet weak var lblAllergiesStackTitle: UILabel!
-    @IBOutlet weak var lblFavoriteDishesStackTitle: UILabel!
+    @IBOutlet weak var lblFavoriteMealsStackTitle: UILabel!
     
     @IBOutlet weak var stackUserInfo: UIStackView!
     @IBOutlet weak var stackPassword: UIStackView!
     @IBOutlet weak var stackBiography: UIStackView!
     @IBOutlet weak var stackSocialMediaAccounts: UIStackView!
     @IBOutlet weak var stackAllergies: UIStackView!
-    @IBOutlet weak var stackFavoriteDishes: UIStackView!
+    @IBOutlet weak var stackFavoriteMeals: UIStackView!
     
     @IBOutlet weak var tfName: UITextField!
     @IBOutlet weak var tfEmail: UITextField!
@@ -47,20 +47,20 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     @IBOutlet weak var tfInstagram: UITextField!
     @IBOutlet weak var tfPinterest: UITextField!
     @IBOutlet weak var tfAllergy: UITextField!
-    @IBOutlet weak var tfFavoriteDish: UITextField!
+    @IBOutlet weak var tfFavoriteMeal: UITextField!
     
     @IBOutlet weak var tvBiography: UITextView!
     @IBOutlet weak var tvTermsAndDataPolicy: UITextView!
     
     @IBOutlet weak var tableAllergies: UITableView!
-    @IBOutlet weak var tableFavoriteDishes: UITableView!
+    @IBOutlet weak var tableFavoriteMeals: UITableView!
     
     @IBOutlet weak var btnAddAllergy: UIButton!
-    @IBOutlet weak var btnAddFavoriteDish: UIButton!
+    @IBOutlet weak var btnAddFavoriteMeal: UIButton!
     @IBOutlet weak var btnSignUp: UIButton!
     
     var allergies: [String] = []
-    var favoriteDishes: [String] = []
+    var favoriteMeals: [String] = []
 
     var phoneNumber = ""
     var isNameValid:Bool = false
@@ -90,7 +90,7 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
         lblBiographyStackTitle.text = "Biography".getLocalizedString()
         lblSocialMediaAccountsStackTitle.text = "Social Media Accounts".getLocalizedString()
         lblAllergiesStackTitle.text = "AllergiesStackTitle".getLocalizedString()
-        lblFavoriteDishesStackTitle.text = "FavoriteDishesStackTitle".getLocalizedString()
+        lblFavoriteMealsStackTitle.text = "FavoriteMealsStackTitle".getLocalizedString()
 
         tfName.placeholder = "Name".getLocalizedString()
         tfName.delegate = self
@@ -123,11 +123,11 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
         tfPinterest.placeholder = "PinterestTFPlaceHolder".getLocalizedString()
         
         tfAllergy.placeholder = "AllergyTFPlaceHolder".getLocalizedString()
-        tfFavoriteDish.placeholder = "FavoriteDishTFPlaceHolder".getLocalizedString()
+        tfFavoriteMeal.placeholder = "FavoriteMealTFPlaceHolder".getLocalizedString()
         
         // Table lara ait olan delegate ve datasource lar storyboard üzerinden verildi.
         tableAllergies.tableFooterView = UIView(frame: .zero)
-        tableFavoriteDishes.tableFooterView = UIView(frame: .zero)
+        tableFavoriteMeals.tableFooterView = UIView(frame: .zero)
         
         let termsAndDataPolicyText = NSMutableAttributedString(string: "TermsAndDataPolicyText".getLocalizedString())
         termsAndDataPolicyText.addCustomAttributes(fontSize: 18, color: .black)
@@ -153,11 +153,11 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
         }
     }
 
-    private func insertNewFavoriteDish(){
-        if let favoriteDish = tfFavoriteDish.text, !favoriteDish.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            favoriteDishes.append(favoriteDish)
-            tableFavoriteDishes.reloadData()
-            tfFavoriteDish.text = ""
+    private func insertNewFavoriteMeal(){
+        if let favoriteMeal = tfFavoriteMeal.text, !favoriteMeal.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            favoriteMeals.append(favoriteMeal)
+            tableFavoriteMeals.reloadData()
+            tfFavoriteMeal.text = ""
             view.endEditing(true)
         }
     }
@@ -185,8 +185,8 @@ class CustomerSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     }
     
     
-    @IBAction func addFavoriteDishTapped(_ sender: Any) {
-        insertNewFavoriteDish()
+    @IBAction func addFavoriteMealTapped(_ sender: Any) {
+        insertNewFavoriteMeal()
     }
     
     @IBAction func signUpTapped(_ sender: Any) {
@@ -237,7 +237,7 @@ extension CustomerSignUpVC{
             "allergies": allergies,
             "biography": biography,
             "email": email,
-            "favoriteDishes": favoriteDishes,
+            "favoriteMeals": favoriteMeals,
             "name": name,
             "phoneNumber": phoneNumber,
             "socialAccounts": socialAccounts
@@ -399,7 +399,7 @@ extension CustomerSignUpVC: UITextFieldDelegate{
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
         switch textField.tag {
-        case tfName.tag,tfEmail.tag,tfLinkedin.tag,tfTwitter.tag,tfInstagram.tag,tfPinterest.tag,tfAllergy.tag,tfFavoriteDish.tag:
+        case tfName.tag,tfEmail.tag,tfLinkedin.tag,tfTwitter.tag,tfInstagram.tag,tfPinterest.tag,tfAllergy.tag,tfFavoriteMeal.tag:
             return updatedText.count <= AppConstants.usernameAndEmailCharacterCountLimit
         case tfPassword.tag,tfPasswordConfirm.tag:
             return updatedText.count <= AppConstants.passwordMaxLength
@@ -445,11 +445,11 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
                 return allergies.count
             }
         }
-        if tableView == tableFavoriteDishes {
-            if favoriteDishes.isEmpty {
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty {
                 return 1
             }else{
-                return favoriteDishes.count
+                return favoriteMeals.count
             }
         }
         return 0
@@ -478,19 +478,18 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        if tableView == tableFavoriteDishes {
-            if favoriteDishes.isEmpty {
-                let emptyFavoriteDishCell = UITableViewCell()
-                //emptyFavoriteDishCell.setBorder(borderWidth: 1, borderColor: .black)
-                emptyFavoriteDishCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
-                emptyFavoriteDishCell.backgroundColor = .white
-                emptyFavoriteDishCell.textLabel?.numberOfLines = 0
-                emptyFavoriteDishCell.textLabel?.textAlignment = .center
-                emptyFavoriteDishCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır."
-                return emptyFavoriteDishCell
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty {
+                let emptyFavoriteMealCell = UITableViewCell()
+                emptyFavoriteMealCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+                emptyFavoriteMealCell.backgroundColor = .white
+                emptyFavoriteMealCell.textLabel?.numberOfLines = 0
+                emptyFavoriteMealCell.textLabel?.textAlignment = .center
+                emptyFavoriteMealCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır."
+                return emptyFavoriteMealCell
             }else{
-                let favoriteDish = favoriteDishes[indexPath.row]
-                cell.textLabel?.text = favoriteDish
+                let favoriteMeal = favoriteMeals[indexPath.row]
+                cell.textLabel?.text = favoriteMeal
             }
         }
         
@@ -505,8 +504,8 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
                 return 30
             }
         }
-        if tableView == tableFavoriteDishes {
-            if favoriteDishes.isEmpty{
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty{
                 return tableView.frame.height
             }else{
                 return 30
@@ -530,8 +529,8 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
         if tableView == tableAllergies {
             allergies.remove(at: indexPath.row)
         }
-        if tableView == tableFavoriteDishes {
-            favoriteDishes.remove(at: indexPath.row)
+        if tableView == tableFavoriteMeals {
+            favoriteMeals.remove(at: indexPath.row)
         }
         //tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.reloadData()

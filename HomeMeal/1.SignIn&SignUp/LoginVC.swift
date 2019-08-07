@@ -292,23 +292,38 @@ extension LoginVC{
             "deviceAndAppInfo": deviceAndAppInfo
             ] as [String: AnyObject]
         
-        sessionsDbRef.child(sessionKey).setValue(values, withCompletionBlock: { (error, databaseRef) in
+        sessionsDbRef.child(sessionKey).setValue(values, withCompletionBlock: { [weak self] (error, databaseRef) in
             if let error = error {
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async {
                     self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
                     AlertService.showAlert(in: self, message: error.localizedDescription, title: "Error".getLocalizedString(), style: .alert)
                 }
             }else{
-                DispatchQueue.main.async { [weak self] in
+                self?.registerFCMNotificationTokenToUserAccount(by: accountType, userId: userId)
+                UserDefaults.standard.set(sessionKey, forKey: UserDefaultsKeys.userSessionId)
+                DispatchQueue.main.async {
                     self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                    // store the user session (example only, not for the production)
-                    UserDefaults.standard.set(sessionKey, forKey: UserDefaultsKeys.userSessionId)
-                    
-                    // TO DO: Navigate user to the Main Screen related by account type
                     AppDelegate.shared.rootViewController.switchToMainScreen(by: accountType)
                 }
             }
         })
+    }
+    
+    func registerFCMNotificationTokenToUserAccount(by accountType: AccountType, userId: String){
+        if let fcmToken = UserDefaults.standard.value(forKey: UserDefaultsKeys.firebaseNotificationToken) as? String{
+            if NetworkManager.isConnectedNetwork() {
+                var path = ""
+                if accountType == .chef {
+                    path = "chefs"
+                }else if accountType == .customer {
+                    path = "customers"
+                }
+                
+                if path != "" {
+                    Database.database().reference().child(path).child(userId).updateChildValues(["fcmToken":fcmToken])
+                }
+            }
+        }
     }
 }
 

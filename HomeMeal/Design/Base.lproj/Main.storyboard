@@ -163,7 +163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qPq-hY-LLL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2163" y="131"/>
+            <point key="canvasLocation" x="2268" y="-114"/>
         </scene>
         <!--LoginVC-->
         <scene sceneID="QHl-AW-bel">
@@ -285,7 +285,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J9N-ek-CXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2884" y="129.98500749625188"/>
+            <point key="canvasLocation" x="2990" y="-113"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zu5-aJ-MHj">
@@ -586,7 +586,7 @@
                                                     <constraint firstAttribute="height" constant="135" id="Pmv-uL-4Xb"/>
                                                 </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Z2y-vY-F8n" userLabel="FavoriteDishesStack">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Z2y-vY-F8n">
                                                 <rect key="frame" x="25" y="855.5" width="325" height="135"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="p2t-ug-4It">
@@ -598,7 +598,7 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gav-KP-D3O" userLabel="Favorite Dishes">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gav-KP-D3O">
                                                                 <rect key="frame" x="142" y="0.0" width="138" height="40"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <attributedString key="attributedText">
@@ -613,7 +613,7 @@
                                                                 </attributedString>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37p-UE-8MM" userLabel="addFavoriteDish">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37p-UE-8MM">
                                                                 <rect key="frame" x="285" y="0.0" width="40" height="40"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="40" id="MpP-l1-3hK"/>
@@ -623,7 +623,7 @@
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="addFavoriteDishTapped:" destination="BSI-EL-n8i" eventType="touchUpInside" id="VEm-sL-5aY"/>
+                                                                    <action selector="addFavoriteMealTapped:" destination="BSI-EL-n8i" eventType="touchUpInside" id="Byu-2S-jhM"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -733,12 +733,12 @@
                     <connections>
                         <outlet property="activityIndicator" destination="0Yg-Tf-2qT" id="IPX-6t-V69"/>
                         <outlet property="btnAddAllergy" destination="WOM-x5-sti" id="oQA-dt-Kxb"/>
-                        <outlet property="btnAddFavoriteDish" destination="37p-UE-8MM" id="lZM-Hn-Xfh"/>
+                        <outlet property="btnAddFavoriteMeal" destination="37p-UE-8MM" id="QS0-FZ-MJj"/>
                         <outlet property="btnSignUp" destination="kXN-Ro-geH" id="Wg7-IO-lpM"/>
                         <outlet property="lblAllergiesStackTitle" destination="WeD-mN-Qkv" id="4lK-24-RGO"/>
                         <outlet property="lblBiographyStackTitle" destination="qev-k4-CoJ" id="Ll7-ew-dhU"/>
                         <outlet property="lblChooseProfilePhoto" destination="Nak-ID-55V" id="cqG-ri-Lh9"/>
-                        <outlet property="lblFavoriteDishesStackTitle" destination="gav-KP-D3O" id="r0i-Fe-tsL"/>
+                        <outlet property="lblFavoriteMealsStackTitle" destination="gav-KP-D3O" id="YmI-Qy-pa5"/>
                         <outlet property="lblInstagram" destination="fyu-Tn-xkF" id="WT7-rT-Wso"/>
                         <outlet property="lblLinkedin" destination="D74-AK-Hum" id="IUD-AV-kfe"/>
                         <outlet property="lblPasswordStackTitle" destination="V4r-lo-ej5" id="UvB-JR-O52"/>
@@ -752,15 +752,15 @@
                         <outlet property="scrollView" destination="7Nq-Zp-5aG" id="wb9-ho-G6O"/>
                         <outlet property="stackAllergies" destination="Ujb-ov-zbn" id="kMu-jV-6m0"/>
                         <outlet property="stackBiography" destination="211-gZ-2nS" id="b0K-hW-X9C"/>
-                        <outlet property="stackFavoriteDishes" destination="Z2y-vY-F8n" id="Itz-tl-5DL"/>
+                        <outlet property="stackFavoriteMeals" destination="Z2y-vY-F8n" id="ssF-ba-uuL"/>
                         <outlet property="stackPassword" destination="xMO-80-z7s" id="5VZ-21-4GH"/>
                         <outlet property="stackSocialMediaAccounts" destination="BWS-V4-aAt" id="iIk-21-RTo"/>
                         <outlet property="stackUserInfo" destination="eD7-RK-aHm" id="AWh-hh-PGQ"/>
                         <outlet property="tableAllergies" destination="zYt-FR-PMx" id="YFJ-8E-YnR"/>
-                        <outlet property="tableFavoriteDishes" destination="h66-Ye-Id4" id="B2k-4U-Yuv"/>
+                        <outlet property="tableFavoriteMeals" destination="h66-Ye-Id4" id="yec-23-0Yi"/>
                         <outlet property="tfAllergy" destination="14z-K6-fsy" id="4Ij-GQ-0As"/>
                         <outlet property="tfEmail" destination="Jlt-NJ-l9b" id="jJQ-fy-HDw"/>
-                        <outlet property="tfFavoriteDish" destination="8d0-e7-G5T" id="c4V-o0-3t6"/>
+                        <outlet property="tfFavoriteMeal" destination="8d0-e7-G5T" id="Ns2-g4-llF"/>
                         <outlet property="tfInstagram" destination="4m9-db-6x3" id="Vaz-x5-fDQ"/>
                         <outlet property="tfLinkedin" destination="Bvh-GW-JAY" id="5Wg-6A-nSr"/>
                         <outlet property="tfName" destination="btC-N0-02Z" id="n5H-KJ-RHY"/>
@@ -775,7 +775,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttc-u2-Ev5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4854" y="130"/>
+            <point key="canvasLocation" x="3673" y="127"/>
         </scene>
         <!--Chef Sign UpVC-->
         <scene sceneID="Ipo-dX-D6s">
@@ -910,7 +910,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b13-TI-bW6">
-                                                <rect key="frame" x="275" y="515.5" width="75" height="20"/>
+                                                <rect key="frame" x="270" y="535.5" width="75" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="VXA-9m-jbB"/>
                                                     <constraint firstAttribute="width" constant="75" id="xP0-Sj-DCG"/>
@@ -1007,14 +1007,14 @@
                                                     <constraint firstAttribute="height" constant="140" id="mj3-DH-0c0"/>
                                                 </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FKu-Kv-QEc" userLabel="BestDishesStack">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FKu-Kv-QEc">
                                                 <rect key="frame" x="25" y="705.5" width="325" height="127.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="CQh-1S-zgj">
                                                         <rect key="frame" x="0.0" y="0.0" width="325" height="40"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4n-k1-bgn" userLabel="My Best Dishes">
-                                                                <rect key="frame" x="0.0" y="0.0" width="117" height="40"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4n-k1-bgn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="116" height="40"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <attributedString key="attributedText">
                                                                     <fragment content="My best dish is">
@@ -1028,13 +1028,13 @@
                                                                 </attributedString>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textField opaque="NO" tag="1010" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your favorite dish" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bqi-lT-gFA">
-                                                                <rect key="frame" x="122" y="0.0" width="158" height="40"/>
+                                                            <textField opaque="NO" tag="1010" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your favorite meal" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bqi-lT-gFA">
+                                                                <rect key="frame" x="121" y="0.0" width="159" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KE-7v-1FF" userLabel="addBestDish">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KE-7v-1FF">
                                                                 <rect key="frame" x="285" y="0.0" width="40" height="40"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="40" id="0jN-vT-d9g"/>
@@ -1044,7 +1044,7 @@
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="addBestDishTapped:" destination="zmF-d3-laE" eventType="touchUpInside" id="IzW-2M-ISa"/>
+                                                                    <action selector="addBestMealTapped:" destination="zmF-d3-laE" eventType="touchUpInside" id="IzW-2M-ISa"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -1104,15 +1104,15 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="IOW-OU-AgN" firstAttribute="top" secondItem="uLV-lR-O7N" secondAttribute="bottom" constant="15" id="00N-ib-rlX"/>
+                                            <constraint firstItem="b13-TI-bW6" firstAttribute="top" secondItem="icR-lk-IWq" secondAttribute="bottom" id="0aH-Xo-Mha"/>
                                             <constraint firstItem="A9R-qR-81i" firstAttribute="top" secondItem="IOW-OU-AgN" secondAttribute="bottom" constant="5" id="3sP-Kp-odT"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TBK-4P-Obu" secondAttribute="bottom" constant="15" id="4jn-uE-6Oj"/>
-                                            <constraint firstItem="b13-TI-bW6" firstAttribute="bottom" secondItem="icR-lk-IWq" secondAttribute="bottom" id="5f7-QP-1b3"/>
                                             <constraint firstItem="i6B-Ar-hxc" firstAttribute="leading" secondItem="efR-AF-jzb" secondAttribute="leading" constant="25" id="6i4-r2-xqX"/>
                                             <constraint firstItem="uLV-lR-O7N" firstAttribute="top" secondItem="Fkg-Kw-ocb" secondAttribute="bottom" constant="15" id="9TG-IU-LId"/>
                                             <constraint firstAttribute="trailing" secondItem="IOW-OU-AgN" secondAttribute="trailing" constant="25" id="BS2-J8-zPg"/>
                                             <constraint firstItem="Ia7-MF-NId" firstAttribute="top" secondItem="pXj-G6-ZD2" secondAttribute="bottom" constant="15" id="DC3-rA-Sf8"/>
                                             <constraint firstItem="icR-lk-IWq" firstAttribute="leading" secondItem="efR-AF-jzb" secondAttribute="leading" constant="25" id="HXf-fj-dyJ"/>
-                                            <constraint firstItem="b13-TI-bW6" firstAttribute="trailing" secondItem="icR-lk-IWq" secondAttribute="trailing" id="Ji4-IP-vxY"/>
+                                            <constraint firstItem="b13-TI-bW6" firstAttribute="trailing" secondItem="icR-lk-IWq" secondAttribute="trailing" constant="-5" id="Ji4-IP-vxY"/>
                                             <constraint firstAttribute="trailing" secondItem="icR-lk-IWq" secondAttribute="trailing" constant="25" id="LVd-jH-5HX"/>
                                             <constraint firstItem="xE4-ab-NiT" firstAttribute="centerX" secondItem="efR-AF-jzb" secondAttribute="centerX" id="OQn-Yn-svZ"/>
                                             <constraint firstItem="pXj-G6-ZD2" firstAttribute="leading" secondItem="efR-AF-jzb" secondAttribute="leading" constant="25" id="Ri1-Nl-bPu"/>
@@ -1165,7 +1165,7 @@
                     <size key="freeformSize" width="375" height="1200"/>
                     <connections>
                         <outlet property="activityIndicator" destination="LOu-eL-dSi" id="q4Y-yo-2Ac"/>
-                        <outlet property="btnAddBestDish" destination="3KE-7v-1FF" id="jIL-9w-PVN"/>
+                        <outlet property="btnAddBestMeal" destination="3KE-7v-1FF" id="jIL-9w-PVN"/>
                         <outlet property="btnPickKitchenLocation" destination="pXj-G6-ZD2" id="4Mg-Dr-BYY"/>
                         <outlet property="btnSignUp" destination="TBK-4P-Obu" id="hxb-cd-VL7"/>
                         <outlet property="lblBiographyCharacterCount" destination="b13-TI-bW6" id="b7G-cY-qWi"/>
@@ -1173,7 +1173,7 @@
                         <outlet property="lblChooseProfilePhoto" destination="Fkg-Kw-ocb" id="QoM-zT-iDQ"/>
                         <outlet property="lblInstagram" destination="7PX-bs-cCG" id="BRo-1R-fo8"/>
                         <outlet property="lblLinkedin" destination="8DR-eW-djr" id="K1f-ub-iFY"/>
-                        <outlet property="lblMyBestDishesStackTitle" destination="L4n-k1-bgn" id="ANW-AI-zme"/>
+                        <outlet property="lblMyBestMealsStackTitle" destination="L4n-k1-bgn" id="tqf-lW-JfR"/>
                         <outlet property="lblPasswordStackTitle" destination="9au-sB-5cs" id="O3y-mA-ckq"/>
                         <outlet property="lblPasswordValidationInfo" destination="A9R-qR-81i" id="Pvg-jx-nhu"/>
                         <outlet property="lblPinterest" destination="KrA-NV-het" id="0MM-At-Ret"/>
@@ -1184,12 +1184,12 @@
                         <outlet property="profileImageView" destination="xE4-ab-NiT" id="lJh-LH-MX0"/>
                         <outlet property="scrollView" destination="pgG-dZ-8aj" id="QEY-Ap-9wD"/>
                         <outlet property="stackBiography" destination="icR-lk-IWq" id="EgB-kz-iVD"/>
-                        <outlet property="stackMyBestDishes" destination="FKu-Kv-QEc" id="7zg-5p-yqz"/>
+                        <outlet property="stackMyBestMeals" destination="FKu-Kv-QEc" id="Yi7-Ce-T1l"/>
                         <outlet property="stackPassword" destination="IOW-OU-AgN" id="0r8-fv-XVA"/>
                         <outlet property="stackSocialMediaAccounts" destination="i6B-Ar-hxc" id="Ocz-nf-MTg"/>
                         <outlet property="stackUserInfo" destination="uLV-lR-O7N" id="Gsl-sr-ChO"/>
-                        <outlet property="tableMyBestDishes" destination="DuR-kn-aFt" id="8DK-8U-lUC"/>
-                        <outlet property="tfBestDish" destination="Bqi-lT-gFA" id="Ffe-as-8gg"/>
+                        <outlet property="tableBestMeals" destination="DuR-kn-aFt" id="8DK-8U-lUC"/>
+                        <outlet property="tfBestMeal" destination="Bqi-lT-gFA" id="0zg-Iz-Hmj"/>
                         <outlet property="tfEmail" destination="eGm-4a-wac" id="Frv-zl-7qD"/>
                         <outlet property="tfInstagram" destination="v3c-ec-l6l" id="Cgi-EA-E7I"/>
                         <outlet property="tfLinkedin" destination="ZKw-CX-kad" id="kY9-8O-iSv"/>
@@ -1205,7 +1205,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOg-Oz-a0e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5876" y="113"/>
+            <point key="canvasLocation" x="4390" y="130"/>
         </scene>
         <!--Kitchen Location PickerVC-->
         <scene sceneID="Cjv-wZ-1KG">
@@ -1227,56 +1227,47 @@
                                                     <constraint firstAttribute="height" constant="300" id="hC1-Mt-33v"/>
                                                 </constraints>
                                             </mapView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4d-fl-2VO" userLabel="Information Title">
-                                                <rect key="frame" x="25" y="315" width="325" height="20.5"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Information">
-                                                        <attributes>
-                                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                            <font key="NSFont" metaFont="system" size="17"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                            <integer key="NSUnderline" value="1"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="3pc-6e-AMZ" userLabel="Information Text">
-                                                <rect key="frame" x="25" y="340.5" width="325" height="0.0"/>
-                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
-                                                <color key="textColor" red="0.050980392159999999" green="0.050980392159999999" blue="0.050980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="1B4-4y-kiW" userLabel="KitchenAddressDescriptionStack">
-                                                <rect key="frame" x="25" y="355.5" width="325" height="150"/>
+                                                <rect key="frame" x="25" y="325" width="325" height="175"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUg-hk-th0" userLabel="Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="20.5"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Kitchen Address Description">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.050980392159999999" green="0.050980392159999999" blue="0.050980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" metaFont="system" size="17"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                    <integer key="NSUnderline" value="1"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="AwK-bL-OSd">
+                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="22"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUg-hk-th0" userLabel="Label">
+                                                                <rect key="frame" x="0.0" y="0.0" width="289" height="22"/>
+                                                                <attributedString key="attributedText">
+                                                                    <fragment content="Kitchen Address Description">
+                                                                        <attributes>
+                                                                            <color key="NSColor" red="0.050980392159999999" green="0.050980392159999999" blue="0.050980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <font key="NSFont" metaFont="system" size="17"/>
+                                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                            <integer key="NSUnderline" value="1"/>
+                                                                        </attributes>
+                                                                    </fragment>
+                                                                </attributedString>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJD-5U-jH8">
+                                                                <rect key="frame" x="294" y="0.0" width="31" height="22"/>
+                                                                <connections>
+                                                                    <action selector="infoTapped:" destination="VGf-hY-fXo" eventType="touchUpInside" id="I5p-qi-fFv"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fte-BJ-hCK">
-                                                        <rect key="frame" x="0.0" y="25.5" width="325" height="124.5"/>
+                                                        <rect key="frame" x="0.0" y="27" width="325" height="148"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="150" id="UQm-DG-KiM"/>
+                                                    <constraint firstAttribute="height" constant="175" id="UQm-DG-KiM"/>
                                                 </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zfV-dT-OiC">
-                                                <rect key="frame" x="94" y="530.5" width="187.5" height="40"/>
+                                                <rect key="frame" x="94" y="525" width="187.5" height="40"/>
                                                 <color key="backgroundColor" red="0.94901960780000005" green="0.5450980392" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="amt-HU-Ffi"/>
@@ -1293,20 +1284,14 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="1B4-4y-kiW" secondAttribute="trailing" constant="25" id="4N8-9b-4b0"/>
-                                            <constraint firstAttribute="trailing" secondItem="d4d-fl-2VO" secondAttribute="trailing" constant="25" id="8M1-Kb-6dP"/>
-                                            <constraint firstItem="1B4-4y-kiW" firstAttribute="top" secondItem="3pc-6e-AMZ" secondAttribute="bottom" constant="15" id="Dwa-bA-L9P"/>
-                                            <constraint firstItem="3pc-6e-AMZ" firstAttribute="leading" secondItem="qma-sE-hpu" secondAttribute="leading" constant="25" id="Fwf-GV-75Z"/>
                                             <constraint firstItem="zfV-dT-OiC" firstAttribute="width" secondItem="qma-sE-hpu" secondAttribute="width" multiplier="0.5" id="MUY-i0-w5O"/>
-                                            <constraint firstItem="d4d-fl-2VO" firstAttribute="leading" secondItem="qma-sE-hpu" secondAttribute="leading" constant="25" id="PZP-NA-zDG"/>
                                             <constraint firstItem="PfF-hh-Fjh" firstAttribute="leading" secondItem="qma-sE-hpu" secondAttribute="leading" id="R3s-Vu-mGU"/>
                                             <constraint firstItem="PfF-hh-Fjh" firstAttribute="top" secondItem="qma-sE-hpu" secondAttribute="top" id="Rwx-C4-reK"/>
-                                            <constraint firstItem="d4d-fl-2VO" firstAttribute="top" secondItem="PfF-hh-Fjh" secondAttribute="bottom" constant="15" id="VJf-5Y-Xg7"/>
                                             <constraint firstAttribute="height" constant="800" id="XZu-qC-Xc8"/>
-                                            <constraint firstAttribute="trailing" secondItem="3pc-6e-AMZ" secondAttribute="trailing" constant="25" id="ZRw-Zy-8K1"/>
-                                            <constraint firstItem="3pc-6e-AMZ" firstAttribute="top" secondItem="d4d-fl-2VO" secondAttribute="bottom" constant="5" id="eLe-e4-WG8"/>
                                             <constraint firstAttribute="trailing" secondItem="PfF-hh-Fjh" secondAttribute="trailing" id="g8e-vd-YTg"/>
                                             <constraint firstItem="zfV-dT-OiC" firstAttribute="centerX" secondItem="qma-sE-hpu" secondAttribute="centerX" id="plU-nL-g9O"/>
                                             <constraint firstItem="zfV-dT-OiC" firstAttribute="top" secondItem="1B4-4y-kiW" secondAttribute="bottom" constant="25" id="r2z-lO-tiL"/>
+                                            <constraint firstItem="1B4-4y-kiW" firstAttribute="top" secondItem="PfF-hh-Fjh" secondAttribute="bottom" constant="25" id="tg4-La-VUa"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zfV-dT-OiC" secondAttribute="bottom" constant="25" id="xqK-19-Rsc"/>
                                             <constraint firstItem="1B4-4y-kiW" firstAttribute="leading" secondItem="qma-sE-hpu" secondAttribute="leading" constant="25" id="ymE-7h-mbd"/>
                                         </constraints>
@@ -1333,8 +1318,7 @@
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
                         <outlet property="btnConfirmLocation" destination="zfV-dT-OiC" id="xwB-je-w8T"/>
-                        <outlet property="lblInformationText" destination="3pc-6e-AMZ" id="rDB-ov-Cg9"/>
-                        <outlet property="lblInformationTitle" destination="d4d-fl-2VO" id="CUJ-KX-lkr"/>
+                        <outlet property="btnInfo" destination="TJD-5U-jH8" id="CXq-PH-P1c"/>
                         <outlet property="lblKitchenAddressDescriptionStackTitle" destination="bUg-hk-th0" id="fgE-W9-91y"/>
                         <outlet property="mainView" destination="qma-sE-hpu" id="kCe-ef-av5"/>
                         <outlet property="mapView" destination="PfF-hh-Fjh" id="cXQ-7N-K8n"/>
@@ -1345,7 +1329,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pYr-RF-cKZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6758" y="-50"/>
+            <point key="canvasLocation" x="5098" y="-50"/>
         </scene>
         <!--Location SearchTVC-->
         <scene sceneID="wuS-TJ-qul">
@@ -1389,7 +1373,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W4R-fz-eXq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7415" y="-110"/>
+            <point key="canvasLocation" x="5810" y="-110"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="OFM-hg-mer">
+            <objects>
+                <viewController id="qyx-R4-bcy" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QTx-LT-tQv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="YJd-Eb-Cst"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h82-xH-ocO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6806" y="-110"/>
         </scene>
     </scenes>
     <resources>

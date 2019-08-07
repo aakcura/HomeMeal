@@ -27,10 +27,16 @@ class MainVC: UIViewController {
         // store the user session (example only, not for the production)
         if NetworkManager.isConnectedNetwork(){
             do {
-                if let uid = AppConstants.currentUserId, let sessionId = UserDefaults.standard.string(forKey: UserDefaultsKeys.userSessionId){
-                    let dbRef = Database.database().reference().child("sessions").child(uid).child(sessionId)
-                    let values = [ "endTime" : Date().timeIntervalSince1970, "status": SessionStatus.passive.rawValue] as [String:AnyObject]
-                    dbRef.updateChildValues(values) { (error, ref) in
+                if let uid = AppConstants.currentUserId, let sessionId = UserDefaults.standard.string(forKey: UserDefaultsKeys.userSessionId), let accountType = AppDelegate.shared.currentUserAccountType{
+                    let dbRef = Database.database().reference()
+                    if accountType == .chef {
+                        dbRef.child("chefs").child(uid).child("fcmToken").removeValue()
+                    }else if accountType == .customer {
+                        dbRef.child("customers").child(uid).child("fcmToken").removeValue()
+                    }
+                    let sessionsRef = dbRef.child("sessions").child(uid).child(sessionId)
+                    let values = [ "endTime" : Date().timeIntervalSince1970, "sessionStatus": SessionStatus.passive.rawValue] as [String:AnyObject]
+                    sessionsRef.updateChildValues(values) { (error, ref) in
                         if let error = error {
                             // TODO: Error handling
                             print(error.localizedDescription)

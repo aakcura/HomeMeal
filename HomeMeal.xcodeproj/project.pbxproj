@@ -17,6 +17,11 @@
 		1532330D22CBD3F9006FA824 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532330B22CBD3F9006FA824 /* Main.storyboard */; };
 		1532330F22CBD3FB006FA824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1532330E22CBD3FB006FA824 /* Assets.xcassets */; };
 		1532331222CBD3FB006FA824 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532331022CBD3FB006FA824 /* LaunchScreen.storyboard */; };
+		153AFAD822F8DB80008AA86A /* CustomerTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */; };
+		153AFADA22F8DB90008AA86A /* ChefTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */; };
+		153AFADE22FB27DE008AA86A /* SocialAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFADD22FB27DE008AA86A /* SocialAccount.swift */; };
+		153AFAE022FB7F10008AA86A /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFADF22FB7F10008AA86A /* Meal.swift */; };
+		153AFAE222FB7F9D008AA86A /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAE122FB7F9D008AA86A /* Ingredient.swift */; };
 		1543DF7F22F0B9CE008A80EF /* CustomerSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543DF7E22F0B9CE008A80EF /* CustomerSignUpVC.swift */; };
 		158A867122D3093E002D3C6C /* fa-regular-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866E22D3093E002D3C6C /* fa-regular-400.ttf */; };
 		158A867222D3093E002D3C6C /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 158A866F22D3093E002D3C6C /* fa-solid-900.ttf */; };
@@ -86,6 +91,11 @@
 		1532331122CBD3FB006FA824 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1532331922CBD4FC006FA824 /* HomeMeal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomeMeal.entitlements; sourceTree = "<group>"; };
 		1532331C22CBD66D006FA824 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerTabBarController.swift; sourceTree = "<group>"; };
+		153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefTabBarController.swift; sourceTree = "<group>"; };
+		153AFADD22FB27DE008AA86A /* SocialAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAccount.swift; sourceTree = "<group>"; };
+		153AFADF22FB7F10008AA86A /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
+		153AFAE122FB7F9D008AA86A /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		1543DF7E22F0B9CE008A80EF /* CustomerSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSignUpVC.swift; sourceTree = "<group>"; };
 		158A866E22D3093E002D3C6C /* fa-regular-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.ttf"; sourceTree = "<group>"; };
 		158A866F22D3093E002D3C6C /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
@@ -160,10 +170,13 @@
 		1513FA5E22E3BF0700DAADC4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1513FA6322E3C00000DAADC4 /* Chef.swift */,
-				1513FA6722E3C93F00DAADC4 /* KitchenInformation.swift */,
 				1513FA6922E3C94200DAADC4 /* AccountInfo.swift */,
+				1513FA6722E3C93F00DAADC4 /* KitchenInformation.swift */,
+				153AFADD22FB27DE008AA86A /* SocialAccount.swift */,
+				1513FA6322E3C00000DAADC4 /* Chef.swift */,
 				1513FA6522E3C00A00DAADC4 /* Customer.swift */,
+				153AFADF22FB7F10008AA86A /* Meal.swift */,
+				153AFAE122FB7F9D008AA86A /* Ingredient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -173,6 +186,7 @@
 			children = (
 				1532330722CBD3F9006FA824 /* AppDelegate.swift */,
 				15F7D75522DC8691001DF7B1 /* RootViewController.swift */,
+				15CD9D3622DCF5A30031F4F2 /* MainNavigationController.swift */,
 				15EED37F22F767BD002D937B /* BaseVC.swift */,
 			);
 			path = 0.Root;
@@ -196,6 +210,7 @@
 		1513FA6122E3BF8F00DAADC4 /* Customer */ = {
 			isa = PBXGroup;
 			children = (
+				153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */,
 			);
 			path = Customer;
 			sourceTree = "<group>";
@@ -203,6 +218,7 @@
 		1513FA6222E3BFBD00DAADC4 /* Chef */ = {
 			isa = PBXGroup;
 			children = (
+				153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */,
 			);
 			path = Chef;
 			sourceTree = "<group>";
@@ -241,7 +257,6 @@
 				1513FA6222E3BFBD00DAADC4 /* Chef */,
 				1513FA6122E3BF8F00DAADC4 /* Customer */,
 				15F7D75922DC8783001DF7B1 /* MainVC.swift */,
-				15CD9D3622DCF5A30031F4F2 /* MainNavigationController.swift */,
 				15CD9D3822DCF6F80031F4F2 /* ActivityVC.swift */,
 			);
 			path = HomeMeal;
@@ -530,6 +545,7 @@
 				158A86C122DBB9EB002D3C6C /* NotificationParser.swift in Sources */,
 				158A869B22D5ADBB002D3C6C /* Extension-Date.swift in Sources */,
 				15F7D75E22DCEBEE001DF7B1 /* SplashVC.swift in Sources */,
+				153AFAE022FB7F10008AA86A /* Meal.swift in Sources */,
 				15CD9D4B22E393A30031F4F2 /* Extension-UIViewController.swift in Sources */,
 				15CD9D4122DD30B30031F4F2 /* Extension-UIButton.swift in Sources */,
 				158A869922D5ADBB002D3C6C /* Protocols.swift in Sources */,
@@ -537,7 +553,9 @@
 				15EED37C22F75130002D937B /* KitchenLocationPickerVC.swift in Sources */,
 				15CD9D3D22DD10050031F4F2 /* PaddingTextField.swift in Sources */,
 				158A86BA22DB9C79002D3C6C /* DeepLinkNavigator.swift in Sources */,
+				153AFADA22F8DB90008AA86A /* ChefTabBarController.swift in Sources */,
 				1513FA6422E3C00000DAADC4 /* Chef.swift in Sources */,
+				153AFADE22FB27DE008AA86A /* SocialAccount.swift in Sources */,
 				1513FA6C22E41D9600DAADC4 /* AlertService.swift in Sources */,
 				158A869622D5ADBB002D3C6C /* Extension-Array.swift in Sources */,
 				158A86BF22DBB3BF002D3C6C /* DeepLinkParser.swift in Sources */,
@@ -546,6 +564,7 @@
 				158A869122D5ADBB002D3C6C /* Extension-UIView.swift in Sources */,
 				158A869D22D5ADBB002D3C6C /* Extension-UIWindow.swift in Sources */,
 				158A86A722D5B4E0002D3C6C /* ErrorTableViewCell.swift in Sources */,
+				153AFAD822F8DB80008AA86A /* CustomerTabBarController.swift in Sources */,
 				1532330A22CBD3F9006FA824 /* TestViewController.swift in Sources */,
 				15F7D75C22DC8C72001DF7B1 /* NetworkManager.swift in Sources */,
 				158A869222D5ADBB002D3C6C /* Extension-String.swift in Sources */,
@@ -555,6 +574,7 @@
 				158A869A22D5ADBB002D3C6C /* ChooseEmailActionSheetPresenter.swift in Sources */,
 				15CD9D3F22DD24BC0031F4F2 /* ImageButton.swift in Sources */,
 				15EED37E22F7517B002D937B /* LocationSearchTVC.swift in Sources */,
+				153AFAE222FB7F9D008AA86A /* Ingredient.swift in Sources */,
 				158A869422D5ADBB002D3C6C /* DeviceAndAppInfo.swift in Sources */,
 				158A869322D5ADBB002D3C6C /* AppStoreReviewHelper.swift in Sources */,
 				15CD9D4322E324080031F4F2 /* Extension-UIColor.swift in Sources */,

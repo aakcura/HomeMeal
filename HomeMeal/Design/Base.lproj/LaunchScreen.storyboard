@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applogo" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-tL-7Il">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home-meal-icon" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-tL-7Il">
                                 <rect key="frame" x="107" y="378" width="200" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="7JP-Tp-nJD"/>
@@ -26,7 +26,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.85098039219999999" green="0.34509803919999998" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.34509803919999998" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="L0M-tL-7Il" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="7Qg-4H-NMu"/>
                             <constraint firstItem="L0M-tL-7Il" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="fYd-1m-4q0"/>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="applogo" width="320" height="240"/>
+        <image name="home-meal-icon" width="1024" height="1024"/>
     </resources>
 </document>

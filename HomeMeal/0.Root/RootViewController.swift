@@ -63,18 +63,21 @@ class RootViewController: UIViewController {
     }
     
     func switchToMainScreen(by accountType:AccountType) {
-        let mainViewController = MainVC()
-        let mainScreen =  MainNavigationController(rootViewController: mainViewController) //UINavigationController(rootViewController: mainViewController)
-        animateFadeTransition(to: mainScreen) { [weak self] in
-            self?.handleDeepLink()
-        }
-        
+        AppDelegate.shared.currentUserAccountType = accountType
         if accountType == .customer {
-            print("go to customer main page")
+            let customerTabBarController = CustomerTabBarController()
+            let customerMainScreen =  MainNavigationController(rootViewController: customerTabBarController) //UINavigationController(rootViewController: mainViewController)
+            animateFadeTransition(to: customerMainScreen) { [weak self] in
+                self?.handleDeepLink()
+            }
         }
         
         if accountType == .chef {
-            print("go to customer main page")
+            let chefTabBarController = ChefTabBarController()
+            let chefMainScreen =  MainNavigationController(rootViewController: chefTabBarController) //UINavigationController(rootViewController: mainViewController)
+            animateFadeTransition(to: chefMainScreen) { [weak self] in
+                self?.handleDeepLink()
+            }
         }
         
         /* if accountType == .admin {

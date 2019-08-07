@@ -28,7 +28,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required to determine profile photo</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Required to list dishes near you. The location information you share is processed instantly and is not uploaded to our servers.</string>
+	<string>Required to list meals near you. The location information you share is processed instantly and is not uploaded to our servers.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>

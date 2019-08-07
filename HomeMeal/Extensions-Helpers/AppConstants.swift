@@ -38,8 +38,8 @@ class UserDefaultsKeys{
     static let userProfileType = "userProfileType"
     static let userSessionId = "userSessionId"
     static let appShareMessage = "appShareMessage"
-    static let appVersionNumber = "appVersionNumber"
-    static let leastNeededAppVersionNumber = "leastNeededAppVersionNumber"
+    static let currentAppVersionNumber = "currentAppVersionNumber"
+    static let requiredMinimumAppVersionNumber = "requiredMinimumAppVersionNumber"
     static let firebaseNotificationToken = "firebaseNotificationToken"
     static let didWalkthroughScreenShownBefore = "didWalkthroughScreenShownBefore"
 }
@@ -56,11 +56,11 @@ class DeviceOSTypes{
 }
 
 struct AppVersionInfo {
-    var leastNeededVersion:String
-    var version:String
+    var requiredMinimumVersion:String
+    var currentVersion:String
     init(values:[String:Any]) {
-        self.leastNeededVersion = values["leastNeededVersion"] as! String
-        self.version = values["version"] as! String
+        self.requiredMinimumVersion = values["requiredMinimumVersion"] as! String
+        self.currentVersion = values["currentVersion"] as! String
     }
 }
 
@@ -135,6 +135,19 @@ enum SessionStatus: Int{
     case active = 1
 }
 
+enum MealStatus: Int{
+    case canNotBeOrdered = 0
+    case canBeOrdered = 1
+}
+
+enum OrderStatus: Int {
+    case received = 1
+    case rejected = 2
+    case canceled = 3
+    case preparing = 4
+    case prepared = 5
+}
+
 
 enum MyValidationErrors: String, ValidationError {
     case emptyText = "Empty text"
@@ -169,3 +182,5 @@ struct DefaultTextValidationRule: ValidationRule {
         }
     }
 }
+
+

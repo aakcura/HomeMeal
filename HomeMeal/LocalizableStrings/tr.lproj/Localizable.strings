@@ -27,12 +27,12 @@
 "PinterestTFPlaceHolder" = "pinterest kullanıcı adınızı yazın";
 
 "AllergiesStackTitle" = "Alerjilerim:";
-"FavoriteDishesStackTitle" = "benim en sevdiğim yemek";
+"FavoriteMealsStackTitle" = "benim en sevdiğim yemek";
 
 "BiographyPlaceHolder" = "Kendin hakkında bir şeyler yaz...";
 
 "AllergyTFPlaceHolder" = "alerjini yaz";
-"FavoriteDishTFPlaceHolder" = "Favorini yaz";
+"FavoriteMealTFPlaceHolder" = "Favorini yaz";
 
 //GENERAL
 "NoInternetConnectionError" = "İnternet Bağlantısı Yok";
@@ -96,7 +96,13 @@
 "KitchenAddressDescriptionPlaceHolder" = "Mutfağınızın kolayca bulunabilmesi için lütfen adres açıklaması giriniz.";
 "Confirm Location" = "Konumu Onayla";
 "Type address" = "Adres yazın";
-"MyBestDishesStackTitle" = "En iyi yaptığım yemek";
-"BestDishTFPlaceHolder" = "en iyi yemeğini yaz";
+"MyBestMealsStackTitle" = "En iyi yaptığım yemek";
+"BestMealTFPlaceHolder" = "en iyi yemeğini yaz";
 "Pick Your Kitchen Location" = "Mutfağının Konumunu Seç";
 "See Your Kitchen Location" = "Mutfağının Konumunu Gör";
+"Kitchen location must be selected." = "Mutfağınızın konumunu seçmelisiniz.";
+"Address description cannot be left blank." = "Adres açıklaması boş bırakılamaz.";
+"Kitchen location and address description cannot be left blank." = "Mutfak konumu ve adres açıklaması boş bırakılamaz.";
+"AppUpdateNeededMessage" = "HomeMeal'ı kullanmaya devam etmek için App Store'dan güncellemeniz gerekmektedir.";
+"New Version Released" = "Yeni Sürüm Yayınlandı";
+"AvailableUpdateMessage" = "HomeMeal ile aranızdaki bağı biliyoruz, bu yüzden her gün daha iyi bir deneyim sunmak için çalışıyoruz. HomeMeal'ın daha güncel bir sürümü App Store'da. Yenilikleri görmek için hemen indirebilirsiniz :)";

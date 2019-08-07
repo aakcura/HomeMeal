@@ -19,31 +19,38 @@ class KitchenLocationPickerVC: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var lblInformationTitle: UILabel!
-    @IBOutlet weak var lblInformationText: UILabel!
     @IBOutlet weak var stackKitchenAddressDescription: UIStackView!
     @IBOutlet weak var lblKitchenAddressDescriptionStackTitle: UILabel!
     @IBOutlet weak var tvKitchenAddressDescription: UITextView!
+    @IBOutlet weak var btnInfo: UIButton!
     @IBOutlet weak var btnConfirmLocation: UIButton!
     
     var chosenLatitude = Double()
     var chosenLongitude = Double()
     var resultSearchController:UISearchController? = nil
-    var selectedPin:MKPlacemark? = nil {
-        didSet{
-            if let selectedPin = selectedPin {
-                dropPinZoomIn(placemark: selectedPin)
-            }
-        }
-    }
-    var addressDescription: String? = nil
+    var selectedPin:MKPlacemark?
+    var addressDescriptionText: String? = nil
     var kitchenInformation: KitchenInformation?
+    
+    var kitchenInformationDelegate: KitchenInformationDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIProperties()
     }
-   
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let kitchenInformation = kitchenInformation{
+            let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: kitchenInformation.latitude!, longitude: kitchenInformation.longitude!))
+            mapView.removeAnnotations(mapView.annotations)
+            mapView.addAnnotation(placemark)
+            selectedPin = placemark
+            addressDescriptionText = kitchenInformation.addressDescription!
+            tvKitchenAddressDescription.textColor = UIColor.black
+            tvKitchenAddressDescription.text = addressDescriptionText
+        }
+    }
+    
     private func setupUIProperties(){
         mapView.delegate = self
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.chooseLocation(gestureRecognizer:)))
@@ -66,10 +73,11 @@ class KitchenLocationPickerVC: UIViewController {
         locationSearchTVC.mapView = mapView
         locationSearchTVC.handleMapSearchDelegate = self
         // END NAV SEARCH BAR SETTINGS
-        
-        lblInformationTitle.text = "Information".getLocalizedString()
-        lblInformationText.text = "KitchenLocationPickerInformationText".getLocalizedString()
-        lblKitchenAddressDescriptionStackTitle.text = "Kitchen Address Description".getLocalizedString()
+
+        //lblKitchenAddressDescriptionStackTitle.text = "Kitchen Address Description".getLocalizedString()
+        let kitchenAddressDescriptionStackTitle = NSMutableAttributedString.init(string: "Kitchen Address Description".getLocalizedString())
+        kitchenAddressDescriptionStackTitle.underline()
+        lblKitchenAddressDescriptionStackTitle.attributedText = kitchenAddressDescriptionStackTitle
         tvKitchenAddressDescription.text = "KitchenAddressDescriptionPlaceHolder".getLocalizedString()
         tvKitchenAddressDescription.textColor = AppColors.textViewPlaceHolderColor
         tvKitchenAddressDescription.delegate = self
@@ -81,9 +89,32 @@ class KitchenLocationPickerVC: UIViewController {
     }
     
     @IBAction func confirmLocationTapped(_ sender: Any) {
-        print("confirm location tapped")
+        if let selectedPin = selectedPin, let addressDescription = addressDescriptionText, addressDescription != "" , addressDescription.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            let chefKitchenInformation = KitchenInformation()
+            chefKitchenInformation.latitude = selectedPin.coordinate.latitude
+            chefKitchenInformation.longitude = selectedPin.coordinate.longitude
+            chefKitchenInformation.addressDescription = addressDescription
+            self.kitchenInformationDelegate?.confirmKitchenInformation(chefKitchenInformation)
+            self.navigationController?.popViewController(animated: true)
+        }else{
+            var errorText = ""
+            if selectedPin == nil && addressDescriptionText == nil {
+                errorText = "Kitchen location and address description cannot be left blank.".getLocalizedString()
+            }else if selectedPin == nil {
+                errorText = "Kitchen location must be selected.".getLocalizedString()
+            }else{
+                errorText = "Address description cannot be left blank.".getLocalizedString()
+            }
+            
+            AlertService.showAlert(in: self, message: errorText, title: "Error".getLocalizedString(), style: .alert)
+        }
     }
-
+    
+    @IBAction func infoTapped(_ sender: Any) {
+        DispatchQueue.main.async { [weak self] in
+            AlertService.showAlert(in: self, message: "KitchenLocationPickerInformationText".getLocalizedString(), title: "Information".getLocalizedString(), style: .alert)
+        }
+    }
 }
 
 // MAP VIEW DELEGATE
@@ -143,6 +174,19 @@ extension KitchenLocationPickerVC: UITextViewDelegate {
         guard let stringRange = Range(range, in: currentText) else{ return false }
         let changedText = currentText.replacingCharacters(in: stringRange, with: text)
         return changedText.count <= AppConstants.kitchenAddressDescriptionCharacterCountLimit
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.tag == tvKitchenAddressDescription.tag {
+            let addressDescription = tvKitchenAddressDescription.text == "KitchenAddressDescriptionPlaceHolder".getLocalizedString() ? nil : tvKitchenAddressDescription.text.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\t", with: " ").replacingOccurrences(of: "\n", with: " ")
+            if let addressDescription = addressDescription{
+                tvKitchenAddressDescription.backgroundColor = nil
+                addressDescriptionText = addressDescription
+            }else{
+                tvKitchenAddressDescription.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
+                addressDescriptionText = nil
+            }
+        }
     }
 }
 

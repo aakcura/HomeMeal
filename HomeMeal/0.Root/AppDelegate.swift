@@ -14,8 +14,9 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let gcmMessageIDKey = "gcm.message_id"
+    var currentUserAccountType:AccountType?
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -118,15 +119,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // Custom MEthods
 extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate{
     
+    static var storyboard: UIStoryboard {
+        return UIStoryboard.init(name: "Main", bundle: nil)
+    }
+    
     static var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     var rootViewController: RootViewController {
         return window!.rootViewController as! RootViewController
-    }
-    
-    static var storyboard: UIStoryboard {
-        return UIStoryboard.init(name: "Main", bundle: nil)
     }
     
     /// Firebase setup.

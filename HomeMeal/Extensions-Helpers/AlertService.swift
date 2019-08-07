@@ -9,14 +9,25 @@ import Foundation
 import UIKit
 
 class AlertService{
+    
+    static func getAlert(message: String, title: String = "", style: UIAlertController.Style = .alert, blockUI: Bool = false) -> UIAlertController{
+        let alert = UIAlertController(title: title, message: message, preferredStyle: style)
+        if !blockUI{
+            let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+            alert.addAction(closeButton)
+        }
+        return alert
+    }
    
-    static func showAlert(in vc:UIViewController?, message: String, title: String = "", style: UIAlertController.Style = .alert) {
+    static func showAlert(in vc:UIViewController?, message: String, title: String = "", style: UIAlertController.Style = .alert, blockUI: Bool = false) {
         guard let vc = vc else {
             return
         }
         let alert = UIAlertController(title: title, message: message, preferredStyle: style)
-        let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
-        alert.addAction(closeButton)
+        if !blockUI{
+            let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+            alert.addAction(closeButton)
+        }
         vc.present(alert, animated: true, completion: nil)
     }
     

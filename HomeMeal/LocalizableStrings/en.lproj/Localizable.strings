@@ -26,16 +26,12 @@
 "InstagramTFPlaceHolder" = "type your instagram username";
 "PinterestTFPlaceHolder" = "type your pinterest username";
 
-"LinkedinBaseURL" = "https://www.linkedin.com/in/";
-"TwitterBaseURL" = "https://twitter.com/";
-"InstagramBaseURL" = "https://www.instagram.com/";
-"PinterestBaseURL" = "https://pinterest.com/";
 
 "AllergiesStackTitle" = "I'm allergic to";
-"FavoriteDishesStackTitle" = "is my favorite dish";
+"FavoriteMealsStackTitle" = "is my favorite meal";
 
 "AllergyTFPlaceHolder" = "type your allergy";
-"FavoriteDishTFPlaceHolder" = "Type your favorite";
+"FavoriteMealTFPlaceHolder" = "Type your favorite";
 
 "BiographyPlaceHolder" = "Type something about yourself...";
 
@@ -101,7 +97,13 @@
 "KitchenAddressDescriptionPlaceHolder" = "Please enter the address description so that your kitchen can be easily found.";
 "Confirm Location" = "Confirm Location";
 "Type address" = "Type address";
-"MyBestDishesStackTitle" = "My best dish is";
-"BestDishTFPlaceHolder" = "type your best dish";
+"MyBestMealsStackTitle" = "My best meal is";
+"BestMealTFPlaceHolder" = "type your best meal";
 "Pick Your Kitchen Location" = "Pick Your Kitchen Location";
 "See Your Kitchen Location" = "See Your Kitchen Location";
+"Kitchen location must be selected." = "Kitchen location must be selected.";
+"Address description cannot be left blank." = "Address description cannot be left blank";
+"Kitchen location and address description cannot be left blank." = "Kitchen location and address description cannot be left blank.";
+"AppUpdateNeededMessage" = "To continue using the HomeMeal you need the update it from App Store.";
+"New Version Released" = "New Version Released";
+"AvailableUpdateMessage" = "We know the connection between you and HomeMeal, so we're working to provide a better experience every day. A more current version of HomeMeal is in the App Store. You can download now to see what's new :)";

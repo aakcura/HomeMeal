@@ -12,6 +12,10 @@ import FlagPhoneNumber
 import CoreLocation
 import MapKit
 
+protocol KitchenInformationDelegate{
+    func confirmKitchenInformation(_ kitchenInformation:KitchenInformation)
+}
+
 class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -29,13 +33,13 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     @IBOutlet weak var lblTwitter: UILabel!
     @IBOutlet weak var lblInstagram: UILabel!
     @IBOutlet weak var lblPinterest: UILabel!
-    @IBOutlet weak var lblMyBestDishesStackTitle: UILabel!
+    @IBOutlet weak var lblMyBestMealsStackTitle: UILabel!
     
     @IBOutlet weak var stackUserInfo: UIStackView!
     @IBOutlet weak var stackPassword: UIStackView!
     @IBOutlet weak var stackBiography: UIStackView!
     @IBOutlet weak var stackSocialMediaAccounts: UIStackView!
-    @IBOutlet weak var stackMyBestDishes: UIStackView!
+    @IBOutlet weak var stackMyBestMeals: UIStackView!
     
     @IBOutlet weak var tfName: UITextField!
     @IBOutlet weak var tfEmail: UITextField!
@@ -46,19 +50,19 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     @IBOutlet weak var tfTwitter: UITextField!
     @IBOutlet weak var tfInstagram: UITextField!
     @IBOutlet weak var tfPinterest: UITextField!
-    @IBOutlet weak var tfBestDish: UITextField!
+    @IBOutlet weak var tfBestMeal: UITextField!
     
     @IBOutlet weak var tvBiography: UITextView!
     @IBOutlet weak var lblBiographyCharacterCount: UILabel!
     @IBOutlet weak var tvTermsAndDataPolicy: UITextView!
     
-    @IBOutlet weak var tableMyBestDishes: UITableView!
+    @IBOutlet weak var tableBestMeals: UITableView!
     
-    @IBOutlet weak var btnAddBestDish: UIButton!
+    @IBOutlet weak var btnAddBestMeal: UIButton!
     @IBOutlet weak var btnPickKitchenLocation: UIButton!
     @IBOutlet weak var btnSignUp: UIButton!
     
-    var bestDishes: [String] = []
+    var bestMeals: [String] = []
     
     var chefKitchenInformation: KitchenInformation?  {
         didSet{
@@ -71,8 +75,8 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
             }
         }
     }
-    let btnPickKitchenLocationTitle = AppIcons.faSearchLocation + "Pick Your Kitchen Location".getLocalizedString()
-    let btnPickKitchenLocationSelectedTitle = AppIcons.faMapMarkedAlt + "See Your Kitchen Location".getLocalizedString()
+    let btnPickKitchenLocationTitle = AppIcons.faSearchLocation + " " + "Pick Your Kitchen Location".getLocalizedString()
+    let btnPickKitchenLocationSelectedTitle = AppIcons.faMapMarkedAlt + " " + "See Your Kitchen Location".getLocalizedString()
     
     var biographyText: String? = nil
     var phoneNumber = ""
@@ -137,12 +141,12 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
         tfInstagram.placeholder = "InstagramTFPlaceHolder".getLocalizedString()
         tfPinterest.placeholder = "PinterestTFPlaceHolder".getLocalizedString()
         
-        // Best Dishes Stack
-        lblMyBestDishesStackTitle.text = "MyBestDishesStackTitle".getLocalizedString()
-        tfBestDish.placeholder = "BestDishTFPlaceHolder".getLocalizedString()
-        tableMyBestDishes.delegate = self
-        tableMyBestDishes.dataSource = self
-        tableMyBestDishes.tableFooterView = UIView(frame: .zero)
+        // Best Meals Stack
+        lblMyBestMealsStackTitle.text = "MyBestMealsStackTitle".getLocalizedString()
+        tfBestMeal.placeholder = "BestMealTFPlaceHolder".getLocalizedString()
+        tableBestMeals.delegate = self
+        tableBestMeals.dataSource = self
+        tableBestMeals.tableFooterView = UIView(frame: .zero)
         
         // Pick Kitchen Location
         btnPickKitchenLocation.translatesAutoresizingMaskIntoConstraints = false
@@ -168,11 +172,11 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
     }
     
     
-    private func insertNewBestDish(){
-        if let bestDish = tfBestDish.text, !bestDish.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            bestDishes.append(bestDish)
-            tableMyBestDishes.reloadData()
-            tfBestDish.text = ""
+    private func insertNewBestMeal(){
+        if let bestMeal = tfBestMeal.text, !bestMeal.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            bestMeals.append(bestMeal)
+            tableBestMeals.reloadData()
+            tfBestMeal.text = ""
             view.endEditing(true)
         }
     }
@@ -195,16 +199,18 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
         view.endEditing(true)
     }
     
-    @IBAction func addBestDishTapped(_ sender: Any) {
-        insertNewBestDish()
+    @IBAction func addBestMealTapped(_ sender: Any) {
+        insertNewBestMeal()
     }
     
     
     @IBAction func pickKitchenLocationTapped(_ sender: Any) {
         let kitchenLocationPickerVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "KitchenLocationPickerVC") as! KitchenLocationPickerVC
+        kitchenLocationPickerVC.kitchenInformationDelegate = self
+        if chefKitchenInformation != nil {
+            kitchenLocationPickerVC.kitchenInformation = chefKitchenInformation
+        }
         self.navigationController?.pushViewController(kitchenLocationPickerVC, animated: true)
-        // TEST
-        kitchenLocationPickerVC.selectedPin = MKPlacemark.init(coordinate: .init(latitude: 44.62, longitude: 44.5))
     }
     
     @IBAction func signUpTapped(_ sender: Any) {
@@ -251,7 +257,7 @@ extension ChefSignUpVC{
         let profileImage = profileImageView.image == AppIcons.addPhoto ? nil : profileImageView.image
         
         var values = [
-            "bestDishes": bestDishes,
+            "bestMeals": bestMeals,
             "biography": biography,
             "email": email,
             "kitchenInformation" : chefKitchenInformation.getDictionary(),
@@ -338,6 +344,13 @@ extension ChefSignUpVC{
     }
 }
 
+// KITCHEN INFORMATION
+extension ChefSignUpVC: KitchenInformationDelegate{
+    func confirmKitchenInformation(_ kitchenInformation: KitchenInformation) {
+        self.chefKitchenInformation = kitchenInformation
+    }
+}
+
 // TEXT FIELD
 extension ChefSignUpVC: UITextFieldDelegate{
     
@@ -414,7 +427,7 @@ extension ChefSignUpVC: UITextFieldDelegate{
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
         switch textField.tag {
-        case tfName.tag,tfEmail.tag,tfLinkedin.tag,tfTwitter.tag,tfInstagram.tag,tfPinterest.tag,tfBestDish.tag:
+        case tfName.tag,tfEmail.tag,tfLinkedin.tag,tfTwitter.tag,tfInstagram.tag,tfPinterest.tag,tfBestMeal.tag:
             return updatedText.count <= AppConstants.usernameAndEmailCharacterCountLimit
         case tfPassword.tag,tfPasswordConfirm.tag:
             return updatedText.count <= AppConstants.passwordMaxLength
@@ -477,34 +490,34 @@ extension ChefSignUpVC: UITextViewDelegate {
 extension ChefSignUpVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if bestDishes.isEmpty {
+        if bestMeals.isEmpty {
             return 1
         }else{
-            return bestDishes.count
+            return bestMeals.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if bestDishes.isEmpty {
-            let emptyFavoriteDishCell = UITableViewCell()
-            emptyFavoriteDishCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
-            emptyFavoriteDishCell.backgroundColor = .white
-            emptyFavoriteDishCell.textLabel?.numberOfLines = 0
-            emptyFavoriteDishCell.textLabel?.textAlignment = .center
-            emptyFavoriteDishCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
-            return emptyFavoriteDishCell
+        if bestMeals.isEmpty {
+            let emptyFavoriteMealCell = UITableViewCell()
+            emptyFavoriteMealCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+            emptyFavoriteMealCell.backgroundColor = .white
+            emptyFavoriteMealCell.textLabel?.numberOfLines = 0
+            emptyFavoriteMealCell.textLabel?.textAlignment = .center
+            emptyFavoriteMealCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
+            return emptyFavoriteMealCell
         }else{
             let cell = UITableViewCell()
             cell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
             cell.backgroundColor = AppColors.appGoldColor
-            let myBestDish = bestDishes[indexPath.row]
-            cell.textLabel?.text = myBestDish
+            let myBestMeal = bestMeals[indexPath.row]
+            cell.textLabel?.text = myBestMeal
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if bestDishes.isEmpty{
+        if bestMeals.isEmpty{
             return tableView.frame.height
         }else{
             return 30
@@ -522,7 +535,7 @@ extension ChefSignUpVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        bestDishes.remove(at: indexPath.row)
+        bestMeals.remove(at: indexPath.row)
         tableView.reloadData()
     }
 }

@@ -5,4 +5,4 @@
   Copyright © 2019 Arin Akcura. All rights reserved.
 */
 "NSPhotoLibraryUsageDescription" = "In order to select your profile photo to be displayed on your HomeMeal profile, you should grant access to the photos. No photos are uploaded to our servers except for the photo that you have chose and approved for your profile photo.";
-"NSLocationWhenInUseUsageDescription" = "We require your location data to list nearby dishes that can be ordered. The location information you share with the application is processed instantly and is not uploaded to our servers in any way. Please note that if this request is declined most of the apps functionality will be disabled.";
+"NSLocationWhenInUseUsageDescription" = "We require your location data to list nearby meals that can be ordered. The location information you share with the application is processed instantly and is not uploaded to our servers in any way. Please note that if this request is declined most of the apps functionality will be disabled.";
