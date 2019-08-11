@@ -6,12 +6,24 @@
 //
 
 import UIKit
+import Firebase
 
 class ChefTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIProperties()
+        getCurrentUser()
+    }
+    
+    private func getCurrentUser(){
+        guard let currentUserId = AppConstants.currentUserId else {return}
+        Database.database().reference().child("chefs").child(currentUserId).observe(.value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject]{
+                let currentChef = Chef(dictionary: dictionary)
+                AppDelegate.shared.currentUserAsChef = currentChef
+            }
+        }
     }
     
     private func setupUIProperties(){
@@ -20,6 +32,18 @@ class ChefTabBarController: UITabBarController {
     }
     
     private func setupTabBarViewControllers(){
+        
+        let mainVC = MainVC()
+        let mainVCWithNav = UINavigationController(rootViewController: mainVC)
+        mainVC.tabBarItem.title = "Home"
+        mainVC.tabBarItem.image = AppIcons.angleDown
+        
+        let vc = AppDelegate.storyboard.instantiateViewController(withIdentifier: "MealPreparationVC")
+        vc.tabBarItem.title = "Test"
+        vc.tabBarItem.image = AppIcons.angleUp
+        
+        viewControllers = [mainVCWithNav,vc]
+        
         //        let instantVCNavigationController = UINavigationController(rootViewController: InstantVC())
         //        instantVCNavigationController.tabBarItem.title = "Chat".getLocalizedString()
         //        instantVCNavigationController.tabBarItem.image = AppIcons.chats

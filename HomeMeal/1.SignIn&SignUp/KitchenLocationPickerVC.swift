@@ -41,11 +41,11 @@ class KitchenLocationPickerVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         if let kitchenInformation = kitchenInformation{
-            let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: kitchenInformation.latitude!, longitude: kitchenInformation.longitude!))
+            let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: kitchenInformation.latitude, longitude: kitchenInformation.longitude))
             mapView.removeAnnotations(mapView.annotations)
             mapView.addAnnotation(placemark)
             selectedPin = placemark
-            addressDescriptionText = kitchenInformation.addressDescription!
+            addressDescriptionText = kitchenInformation.addressDescription
             tvKitchenAddressDescription.textColor = UIColor.black
             tvKitchenAddressDescription.text = addressDescriptionText
         }
@@ -90,10 +90,8 @@ class KitchenLocationPickerVC: UIViewController {
     
     @IBAction func confirmLocationTapped(_ sender: Any) {
         if let selectedPin = selectedPin, let addressDescription = addressDescriptionText, addressDescription != "" , addressDescription.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
-            let chefKitchenInformation = KitchenInformation()
-            chefKitchenInformation.latitude = selectedPin.coordinate.latitude
-            chefKitchenInformation.longitude = selectedPin.coordinate.longitude
-            chefKitchenInformation.addressDescription = addressDescription
+            let dictionary = ["latitude":selectedPin.coordinate.latitude, "longitude":selectedPin.coordinate.longitude, "addressDescription":addressDescription] as [String:AnyObject]
+            let chefKitchenInformation = KitchenInformation(dictionary: dictionary)
             self.kitchenInformationDelegate?.confirmKitchenInformation(chefKitchenInformation)
             self.navigationController?.popViewController(animated: true)
         }else{

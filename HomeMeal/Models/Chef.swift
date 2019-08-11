@@ -16,6 +16,7 @@ class Chef {
     var name: String
     var phoneNumber: String
     var profileImageUrl: String?
+    var rating: Double
     var socialAccounts: [SocialAccount]?
     var userId: String
     
@@ -31,6 +32,7 @@ class Chef {
         self.name = dictionary["name"] as! String
         self.phoneNumber = dictionary["phoneNumber"] as! String
         self.profileImageUrl = dictionary["profileImageUrl"] as? String
+        self.rating = dictionary["rating"] as? Double ?? 0.0
         if let socialAccountsDictionary = dictionary["socialAccounts"] as? [String:String]{
             var socialAccountList = [SocialAccount]()
             for item in socialAccountsDictionary {
@@ -65,6 +67,4 @@ class Chef {
             return false
         }
     }
-    
-    // TO DO: Write getDictionary() method
 }

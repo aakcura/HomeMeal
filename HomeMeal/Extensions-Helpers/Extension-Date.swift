@@ -7,6 +7,34 @@
 
 import Foundation
 
+struct DetailedTime {
+    var fullDayName: String?
+    var dayNameWithThreeCharacter: String?
+    var dayNumber:String?
+    var fullMonthName: String?
+    var monthNameWithThreeCharacter:String?
+    var monthNumber:String?
+    var year: String?
+    var hour: String?
+    var minute: String?
+    var second: String?
+    var dateAndTimeFullString: String?
+    
+    init(dateString: String, parseChar: Character = "-") {
+        let array = dateString.split(separator: parseChar)
+        fullDayName = "\(array[0])"
+        dayNameWithThreeCharacter = "\(array[1])"
+        dayNumber = "\(array[2])"
+        fullMonthName = "\(array[3])"
+        monthNameWithThreeCharacter = "\(array[4])"
+        monthNumber = "\(array[5])"
+        year = "\(array[6])"
+        hour = "\(array[7])"
+        minute = "\(array[8])"
+        second = "\(array[9])"
+    }
+}
+
 extension Date{
     
     static func dateFromCustomString(_ customString: String, givenFormat: String = "dd.MM.yyyy") -> Date {
@@ -32,44 +60,6 @@ extension Date{
         let dateString = dateFormatter.string(from: self)
         return dateString
     }
-    
-    struct DetailedTime {
-        var fullDayName: String?
-        var dayNameWithThreeCharacter: String?
-        var dayNumber:String?
-        var fullMonthName: String?
-        var monthNameWithThreeCharacter:String?
-        var monthNumber:String?
-        var year: String?
-        var hour: String?
-        var minute: String?
-        var second: String?
-        var dateAndTimeFullString: String?
-        
-        init(dateString: String, parseChar: Character = "-") {
-            let array = dateString.split(separator: parseChar)
-            fullDayName = "\(array[0])"
-            dayNameWithThreeCharacter = "\(array[1])"
-            dayNumber = "\(array[2])"
-            fullMonthName = "\(array[3])"
-            monthNameWithThreeCharacter = "\(array[4])"
-            monthNumber = "\(array[5])"
-            year = "\(array[6])"
-            hour = "\(array[7])"
-            minute = "\(array[8])"
-            second = "\(array[9])"
-        }
-    }
-    
-    static func detailedTimeFromTimeInterval(timeInterval: TimeInterval, dateStyle: DateFormatter.Style = .long, timeStyle:DateFormatter.Style = .medium ) -> DetailedTime? {
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let formattingStyle = "EEEE-E-dd-MMMM-MMM-MM-yyyy-HH-mm-ss"
-        let str = stringFromDate(date: date, dateFormattingStyle: formattingStyle)
-        var obj = DetailedTime(dateString: str)
-        let dateAndTimeFullString = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .medium)
-        obj.dateAndTimeFullString = dateAndTimeFullString
-        return obj
-    }
 }
 
 extension TimeInterval {
@@ -84,4 +74,15 @@ extension TimeInterval {
             return String(format: "%d \("Day".getLocalizedString()) %02d:%02d:%02d", dayCount, hourCount, minuteCount, secondCount)
         }
     }
+    
+    static func detailedTimeFromTimeInterval(timeInterval: TimeInterval, dateStyle: DateFormatter.Style = .long, timeStyle:DateFormatter.Style = .medium ) -> DetailedTime? {
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let formattingStyle = "EEEE-E-dd-MMMM-MMM-MM-yyyy-HH-mm-ss"
+        let str = Date.stringFromDate(date: date, dateFormattingStyle: formattingStyle)
+        var obj = DetailedTime(dateString: str)
+        let dateAndTimeFullString = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .medium)
+        obj.dateAndTimeFullString = dateAndTimeFullString
+        return obj
+    }
+
 }

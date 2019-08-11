@@ -39,6 +39,4 @@ class SocialAccount{
         let  baseURL = SocialAccountsBaseUrl.getBaseUrl(by: accountType)
         self.url = baseURL.appendingPathComponent(userName.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")
     }
-    
-    // TO DO: Write getDictionary() method    
 }

@@ -6,12 +6,23 @@
 //
 
 import UIKit
+import Firebase
 
 class CustomerTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIProperties()
+        getCurrentUser()
+    }
+    private func getCurrentUser(){
+        guard let currentUserId = AppConstants.currentUserId else {return}
+        Database.database().reference().child("customers").child(currentUserId).observe(.value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject]{
+                let currentCustomer = Customer(dictionary: dictionary)
+                AppDelegate.shared.currentUserAsCustomer = currentCustomer
+            }
+        }
     }
     
     private func setupUIProperties(){

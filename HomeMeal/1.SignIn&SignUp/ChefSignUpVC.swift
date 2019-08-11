@@ -75,8 +75,8 @@ class ChefSignUpVC: UIViewController, ActivityIndicatorDisplayProtocol {
             }
         }
     }
-    let btnPickKitchenLocationTitle = AppIcons.faSearchLocation + " " + "Pick Your Kitchen Location".getLocalizedString()
-    let btnPickKitchenLocationSelectedTitle = AppIcons.faMapMarkedAlt + " " + "See Your Kitchen Location".getLocalizedString()
+    let btnPickKitchenLocationTitle = AppIcons.faSearchLocationSolid + " " + "Pick Your Kitchen Location".getLocalizedString()
+    let btnPickKitchenLocationSelectedTitle = AppIcons.faMapMarkedAltSolid + " " + "See Your Kitchen Location".getLocalizedString()
     
     var biographyText: String? = nil
     var phoneNumber = ""

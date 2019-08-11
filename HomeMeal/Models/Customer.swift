@@ -71,6 +71,4 @@ class Customer {
             return false
         }
     }
-    
-    // TO DO: Write getDictionary() method
 }

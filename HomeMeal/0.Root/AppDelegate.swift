@@ -14,10 +14,13 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let gcmMessageIDKey = "gcm.message_id"
-    var currentUserAccountType:AccountType?
     var window: UIWindow?
     
+    var currentUserAccountType:AccountType?
+    var currentUserAsChef: Chef?
+    var currentUserAsCustomer: Customer?
 
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -113,7 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Unable to register for remote notifications: \(error.localizedDescription)")
     }
     
-
 }
 
 // Custom MEthods
@@ -128,6 +130,11 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate{
     }
     var rootViewController: RootViewController {
         return window!.rootViewController as! RootViewController
+    }
+    
+    func deleteCurrentUsers(){
+        self.currentUserAsChef = nil
+        self.currentUserAsCustomer = nil
     }
     
     /// Firebase setup.

@@ -24,7 +24,7 @@ class TestViewController: UIViewController {
         
         //lblSecond.font = FontAwesomeFonts.regular
         
-        let alertMessageText = NSMutableAttributedString(string: AppIcons.faAddressCard)
+        let alertMessageText = NSMutableAttributedString(string: AppIcons.faAddressCardRegular)
         alertMessageText.addCustomAttributes(fontType: .regularFontAwesome, fontSize: 24.0, color: .black)
         let x = NSMutableAttributedString(string: "User Address:")
         x.addCustomAttributes(fontType: .boldSystem,fontSize: 18.0, color: .black, range: nil)

@@ -25,6 +25,4 @@ class AccountInfo{
             self.creationDate = Date(timeIntervalSince1970: creationTimeInterval)
         }
     }
-    
-    // TO DO: Write getDictionary() method
 }

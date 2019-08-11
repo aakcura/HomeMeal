@@ -85,12 +85,12 @@ class RootViewController: UIViewController {
         } */
        
     }
-    
-    
+
     func switchToLogout() {
         let loginViewController = AppDelegate.storyboard.instantiateViewController(withIdentifier: "LoginVC")
         let logoutScreen = UINavigationController(rootViewController: loginViewController)
         animateDismissTransition(to: logoutScreen)
+        AppDelegate.shared.deleteCurrentUsers()
     }
     
     private func animateFadeTransition(to new: UIViewController, completion: (() -> Void)? = nil) {

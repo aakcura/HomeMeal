@@ -154,7 +154,8 @@ enum MyValidationErrors: String, ValidationError {
     case emailInvalid = "Email address is invalid"
     case passwordInvalid = "Password should between 6-32 and not null. Cannot contain whitespace"
     case nameInvalid = "Name boş olamaz"
-    var message: String { return self.rawValue }
+    case priceInvalid = "Price should be not null numeric value"
+    var message: String { return self.rawValue.getLocalizedString() }
 }
 
 struct PasswordValidationRule: ValidationRule {
@@ -176,6 +177,19 @@ struct DefaultTextValidationRule: ValidationRule {
     func validate(input: String?) -> Bool {
         guard let input = input else {return false}
         if input != "" && !input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
+struct PriceValidationRule: ValidationRule {
+    typealias InputType = String
+    var error: ValidationError
+    func validate(input: String?) -> Bool {
+        guard let input = input else {return false}
+        if input != "", let _ = Double.init(input){
             return true
         }else{
             return false

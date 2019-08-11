@@ -107,3 +107,27 @@
 "AppUpdateNeededMessage" = "To continue using the HomeMeal you need the update it from App Store.";
 "New Version Released" = "New Version Released";
 "AvailableUpdateMessage" = "We know the connection between you and HomeMeal, so we're working to provide a better experience every day. A more current version of HomeMeal is in the App Store. You can download now to see what's new :)";
+
+// Meal Preparation VC
+"Meal Name" =  "Meal Name";
+"MealNamePlaceholder" = "type meal name";
+"MealDescriptionPlaceHolder" = "You should write meal description and it should be max 256 character.";
+"Ingredients" = "Ingredients";
+"Brand" = "Brand";
+"IngredientNamePlaceholder" = "type ingredient's name";
+"IngredientBrandPlaceholder" = "type ingredient's brand";
+"No Ingredients" = "No Ingredients";
+"Price" = "Price";
+"Start Time" = "Start Time";
+"End Time" = "End Time";
+"Preparation Time" = "Preparation Time";
+"Meal Status" = "Meal Status";
+"Can be ordered" =  "Can be ordered";
+"Can't be ordered" =  "Can't be ordered";
+"Prepare Meal" = "Prepare Meal";
+"Update Meal" = "Update Meal";
+
+"Orders" = "Orders";
+"My Orders" = "My Orders";
+"Menu" = "Menu";
+"Profile" = "Profile";

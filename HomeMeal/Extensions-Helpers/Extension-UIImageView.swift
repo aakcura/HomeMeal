@@ -11,14 +11,14 @@ import SDWebImage
 let imageCache = NSCache<AnyObject, AnyObject>()
 extension UIImageView {
     
-    func loadImageUsingCacheWithUrlString(_ urlString: String, defaultImage: UIImage = AppIcons.userGray) {
+    func loadImageUsingCacheWithUrlString(_ urlString: String, defaultImage: UIImage = AppIcons.addPhoto) {
         self.image = nil
         if urlString.isEmpty{
             self.image = defaultImage
         }else{
             self.sd_setImage(with: URL(string: urlString)) { (image, error, cacheType, url) in
                 if error != nil {
-                    self.image = AppIcons.userGray
+                    self.image = AppIcons.addPhoto
                 }
             }
         }

@@ -22,5 +22,7 @@ class Ingredient{
         self.brand = dictionary["brand"] as! String
     }
     
-    // TO DO: Write getDictionary() method
+    func getDictionary() -> [String:AnyObject]{
+        return ["name":self.name, "brand":self.brand] as [String:AnyObject]
+    }
 }
