@@ -106,3 +106,7 @@
 "AppUpdateNeededMessage" = "HomeMeal'ı kullanmaya devam etmek için App Store'dan güncellemeniz gerekmektedir.";
 "New Version Released" = "Yeni Sürüm Yayınlandı";
 "AvailableUpdateMessage" = "HomeMeal ile aranızdaki bağı biliyoruz, bu yüzden her gün daha iyi bir deneyim sunmak için çalışıyoruz. HomeMeal'ın daha güncel bir sürümü App Store'da. Yenilikleri görmek için hemen indirebilirsiniz :)";
+
+
+"hour" = "saat";
+"min" = "dk.";

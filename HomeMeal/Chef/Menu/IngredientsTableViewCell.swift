@@ -2,7 +2,6 @@
 //  IngredientsTableViewCell.swift
 //  HomeMeal
 //
-//  Created by Batuhan Abay on 11.08.2019.
 //  Copyright © 2019 Arin Akcura. All rights reserved.
 //
 
@@ -14,19 +13,19 @@ class IngredientsTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = UIColor.black
-        label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = .lightGray
         return label
     }()
     
     let brandLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         label.textColor = UIColor.black
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = .lightGray
         return label
     }()
     
@@ -47,10 +46,9 @@ class IngredientsTableViewCell: UITableViewCell {
     }
     
     private func setupLayoutFeatures(){
-        nameLabel.anchor(top: topAnchor, leading: leadingAnchor, trailing: nil, bottom: seperatorLine.topAnchor)
-        nameLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5).isActive = true
-        seperatorLine.anchor(top: nameLabel.topAnchor, leading: nameLabel.trailingAnchor, trailing: nil, bottom: nameLabel.bottomAnchor, padding: .zero, size: .init(width: 2, height: 0))
-        brandLabel.anchor(top: nameLabel.topAnchor, leading: seperatorLine.trailingAnchor, trailing: trailingAnchor, bottom: nameLabel.bottomAnchor, padding: .zero, size: .zero)
+        seperatorLine.anchor(top: topAnchor, leading: nil, trailing: nil, bottom: bottomAnchor, centerX: centerXAnchor, centerY: nil, padding: .init(top: 2, left: 0, bottom: 2, right: 0), size: .init(width: 1, height: 0))
+        nameLabel.anchor(top: seperatorLine.topAnchor, leading: leadingAnchor, trailing: seperatorLine.leadingAnchor, bottom: seperatorLine.bottomAnchor, padding: .zero, size: .zero)
+        brandLabel.anchor(top: seperatorLine.topAnchor, leading: seperatorLine.trailingAnchor, trailing: trailingAnchor, bottom: seperatorLine.bottomAnchor, padding: .zero, size: .zero)
         
     }
     

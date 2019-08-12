@@ -63,6 +63,25 @@ extension Date{
 }
 
 extension TimeInterval {
+    
+    func getDetailedTime(dateStyle: DateFormatter.Style = .long, timeStyle:DateFormatter.Style = .medium ) -> DetailedTime? {
+        let date = Date(timeIntervalSince1970: self)
+        let formattingStyle = "EEEE-E-dd-MMMM-MMM-MM-yyyy-HH-mm-ss"
+        let str = Date.stringFromDate(date: date, dateFormattingStyle: formattingStyle)
+        var obj = DetailedTime(dateString: str)
+        let dateAndTimeFullString = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .medium)
+        obj.dateAndTimeFullString = dateAndTimeFullString
+        return obj
+    }
+    
+    func getDayHourMinuteAndSecondAsInt() -> (Int,Int,Int,Int){
+        let dayCount = Int(self / 86400)
+        let hourCount = Int((self.truncatingRemainder(dividingBy: 86400)) / 3600)
+        let minuteCount = Int((self.truncatingRemainder(dividingBy: 3600)) / 60)
+        let secondCount = Int(self.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60))
+        return (dayCount,hourCount,minuteCount,secondCount)
+    }
+    
     func convertTimeIntervalAsCountTimeString() -> String{
         let dayCount = Int(self / 86400)
         let hourCount = Int((self.truncatingRemainder(dividingBy: 86400)) / 3600)
@@ -84,5 +103,4 @@ extension TimeInterval {
         obj.dateAndTimeFullString = dateAndTimeFullString
         return obj
     }
-
 }

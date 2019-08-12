@@ -17,6 +17,10 @@
 		1532330D22CBD3F9006FA824 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532330B22CBD3F9006FA824 /* Main.storyboard */; };
 		1532330F22CBD3FB006FA824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1532330E22CBD3FB006FA824 /* Assets.xcassets */; };
 		1532331222CBD3FB006FA824 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1532331022CBD3FB006FA824 /* LaunchScreen.storyboard */; };
+		15335D7D230162EE00E7FD05 /* ConnectionLostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335D7C230162EE00E7FD05 /* ConnectionLostVC.swift */; };
+		15335D7F230192CF00E7FD05 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335D7E230192CF00E7FD05 /* Test.swift */; };
+		15335D812301992900E7FD05 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335D802301992900E7FD05 /* MenuTableViewCell.swift */; };
+		15335D852301F5E100E7FD05 /* ChefOrdersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335D842301F5E100E7FD05 /* ChefOrdersVC.swift */; };
 		153AFAD822F8DB80008AA86A /* CustomerTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */; };
 		153AFADA22F8DB90008AA86A /* ChefTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */; };
 		153AFADE22FB27DE008AA86A /* SocialAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFADD22FB27DE008AA86A /* SocialAccount.swift */; };
@@ -95,6 +99,10 @@
 		1532331122CBD3FB006FA824 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1532331922CBD4FC006FA824 /* HomeMeal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomeMeal.entitlements; sourceTree = "<group>"; };
 		1532331C22CBD66D006FA824 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15335D7C230162EE00E7FD05 /* ConnectionLostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLostVC.swift; sourceTree = "<group>"; };
+		15335D7E230192CF00E7FD05 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		15335D802301992900E7FD05 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		15335D842301F5E100E7FD05 /* ChefOrdersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefOrdersVC.swift; sourceTree = "<group>"; };
 		153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerTabBarController.swift; sourceTree = "<group>"; };
 		153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefTabBarController.swift; sourceTree = "<group>"; };
 		153AFADD22FB27DE008AA86A /* SocialAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAccount.swift; sourceTree = "<group>"; };
@@ -197,6 +205,7 @@
 				15F7D75522DC8691001DF7B1 /* RootViewController.swift */,
 				15CD9D3622DCF5A30031F4F2 /* MainNavigationController.swift */,
 				15EED37F22F767BD002D937B /* BaseVC.swift */,
+				15335D7C230162EE00E7FD05 /* ConnectionLostVC.swift */,
 			);
 			path = 0.Root;
 			sourceTree = "<group>";
@@ -227,10 +236,11 @@
 		1513FA6222E3BFBD00DAADC4 /* Chef */ = {
 			isa = PBXGroup;
 			children = (
+				15335D7E230192CF00E7FD05 /* Test.swift */,
 				153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */,
-				153AFAE322FCB5B3008AA86A /* MealPreparationVC.swift */,
-				153AFAE723007503008AA86A /* MenuVC.swift */,
-				153AFAE923007A89008AA86A /* IngredientsTableViewCell.swift */,
+				15335D862301F8D200E7FD05 /* Profile */,
+				15335D822301E96E00E7FD05 /* Menu */,
+				15335D832301F59B00E7FD05 /* Orders */,
 			);
 			path = Chef;
 			sourceTree = "<group>";
@@ -268,10 +278,36 @@
 				1513FA6022E3BF4D00DAADC4 /* 1.SignIn&SignUp */,
 				1513FA6222E3BFBD00DAADC4 /* Chef */,
 				1513FA6122E3BF8F00DAADC4 /* Customer */,
-				15F7D75922DC8783001DF7B1 /* MainVC.swift */,
 				15CD9D3822DCF6F80031F4F2 /* ActivityVC.swift */,
 			);
 			path = HomeMeal;
+			sourceTree = "<group>";
+		};
+		15335D822301E96E00E7FD05 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				153AFAE723007503008AA86A /* MenuVC.swift */,
+				153AFAE923007A89008AA86A /* IngredientsTableViewCell.swift */,
+				153AFAE322FCB5B3008AA86A /* MealPreparationVC.swift */,
+				15335D802301992900E7FD05 /* MenuTableViewCell.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		15335D832301F59B00E7FD05 /* Orders */ = {
+			isa = PBXGroup;
+			children = (
+				15335D842301F5E100E7FD05 /* ChefOrdersVC.swift */,
+			);
+			path = Orders;
+			sourceTree = "<group>";
+		};
+		15335D862301F8D200E7FD05 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				15F7D75922DC8783001DF7B1 /* MainVC.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		158A866C22D3088A002D3C6C /* LocalizableStrings */ = {
@@ -558,12 +594,14 @@
 				158A869722D5ADBB002D3C6C /* AppConstants.swift in Sources */,
 				158A869822D5ADBB002D3C6C /* Extension-UIImageView.swift in Sources */,
 				158A86C122DBB9EB002D3C6C /* NotificationParser.swift in Sources */,
+				15335D7D230162EE00E7FD05 /* ConnectionLostVC.swift in Sources */,
 				158A869B22D5ADBB002D3C6C /* Extension-Date.swift in Sources */,
 				15F7D75E22DCEBEE001DF7B1 /* SplashVC.swift in Sources */,
 				153AFAE823007503008AA86A /* MenuVC.swift in Sources */,
 				153AFAE022FB7F10008AA86A /* Meal.swift in Sources */,
 				15CD9D4B22E393A30031F4F2 /* Extension-UIViewController.swift in Sources */,
 				15CD9D4122DD30B30031F4F2 /* Extension-UIButton.swift in Sources */,
+				15335D812301992900E7FD05 /* MenuTableViewCell.swift in Sources */,
 				158A869922D5ADBB002D3C6C /* Protocols.swift in Sources */,
 				158A86AA22D5B4E0002D3C6C /* AppIcons.swift in Sources */,
 				15EED37C22F75130002D937B /* KitchenLocationPickerVC.swift in Sources */,
@@ -580,8 +618,10 @@
 				158A869122D5ADBB002D3C6C /* Extension-UIView.swift in Sources */,
 				158A869D22D5ADBB002D3C6C /* Extension-UIWindow.swift in Sources */,
 				158A86A722D5B4E0002D3C6C /* ErrorTableViewCell.swift in Sources */,
+				15335D7F230192CF00E7FD05 /* Test.swift in Sources */,
 				153AFAD822F8DB80008AA86A /* CustomerTabBarController.swift in Sources */,
 				1532330A22CBD3F9006FA824 /* TestViewController.swift in Sources */,
+				15335D852301F5E100E7FD05 /* ChefOrdersVC.swift in Sources */,
 				15F7D75C22DC8C72001DF7B1 /* NetworkManager.swift in Sources */,
 				158A869222D5ADBB002D3C6C /* Extension-String.swift in Sources */,
 				15CD9D3922DCF6F80031F4F2 /* ActivityVC.swift in Sources */,

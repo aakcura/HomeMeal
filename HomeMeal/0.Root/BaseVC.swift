@@ -15,8 +15,41 @@ class BaseVC: UIViewController {
         return searchbar
     }()
     
+    let activityIndicator : UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicatorView.color = AppColors.appOrangeColor
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.hidesWhenStopped = true
+        return activityIndicatorView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+}
+
+extension BaseVC: ActivityIndicatorDisplayProtocol{
+    
+    func addActivityIndicatorToView(){
+        if !view.subviews.contains(activityIndicator) {
+            view.addSubview(activityIndicator)
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        }
+    }
+    
+    func showActivityIndicatorView(isUserInteractionEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+            self?.view.isUserInteractionEnabled = isUserInteractionEnabled
+        }
+    }
+    
+    func hideActivityIndicatorView(isUserInteractionEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.stopAnimating()
+            self?.view.isUserInteractionEnabled = isUserInteractionEnabled
+        }
     }
 }
 

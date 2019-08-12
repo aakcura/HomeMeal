@@ -13,6 +13,7 @@ class AppConstants{
     static let usernameAndEmailCharacterCountLimit = 64
     static let passwordMinLength = 6
     static let passwordMaxLength = 32
+    static let mealDescriptionCharacterCountLimit = 256
     static let biographyCharacterCountLimit = 512
     static let kitchenAddressDescriptionCharacterCountLimit = 512
     

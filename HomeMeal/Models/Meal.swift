@@ -18,6 +18,7 @@ class Meal {
     var mealName: String
     var mealStatus: MealStatus
     var preparationTime: TimeInterval
+    var detailedPreparationTime: (Int,Int)
     var price: Double
     var currencySymbol: String
     var startTime: TimeInterval
@@ -28,7 +29,7 @@ class Meal {
         self.chefName = dictionary["chefName"] as! String
         self.description = dictionary["description"] as! String
         self.endTime = dictionary["endTime"] as! TimeInterval
-        self.detailedEndTime = TimeInterval.detailedTimeFromTimeInterval(timeInterval: self.endTime)
+        self.detailedEndTime = self.endTime.getDetailedTime()
         if let ingredientsArray = dictionary["ingredients"] as? [AnyObject]{
             var ingredients = [Ingredient]()
             for item in ingredientsArray{
@@ -45,11 +46,13 @@ class Meal {
         self.mealName = dictionary["mealName"] as! String
         self.mealStatus = MealStatus(rawValue: dictionary["mealStatus"] as! Int) ?? MealStatus.canNotBeOrdered
         self.preparationTime = dictionary["preparationTime"] as! TimeInterval
+        let (_, hour, minute, _) = self.preparationTime.getDayHourMinuteAndSecondAsInt()
+        self.detailedPreparationTime = (hour,minute)
         
         self.price = dictionary["price"] as! Double
         self.currencySymbol = dictionary["currencySymbol"] as! String
         self.startTime = dictionary["startTime"] as! TimeInterval
-        self.detailedEndTime = TimeInterval.detailedTimeFromTimeInterval(timeInterval: self.startTime)
+        self.detailedStartTime = self.startTime.getDetailedTime()
     }
     
     func getDictionary() -> [String:AnyObject]{

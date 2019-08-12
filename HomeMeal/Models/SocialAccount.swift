@@ -2,7 +2,6 @@
 //  SocialAccounts.swift
 //  HomeMeal
 //
-//  Created by Batuhan Abay on 7.08.2019.
 //  Copyright © 2019 Arin Akcura. All rights reserved.
 //
 

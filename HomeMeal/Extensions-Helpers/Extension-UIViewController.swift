@@ -9,6 +9,16 @@ import Foundation
 import UIKit
 
 extension UIViewController{
+    
+    func addNetworkStatusListener(){
+        NetworkManager.sharedInstance.reachability.whenUnreachable = { reach in
+            DispatchQueue.main.async {
+                let connectionLostVC = ConnectionLostVC()
+                self.present(connectionLostVC, animated: true, completion: nil)
+            }
+        }
+    }
+
     func removeNavBarBackButtonText(){
         let backBarButtton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backBarButtton

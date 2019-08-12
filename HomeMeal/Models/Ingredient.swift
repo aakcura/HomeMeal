@@ -2,7 +2,6 @@
 //  Ingredient.swift
 //  HomeMeal
 //
-//  Created by Batuhan Abay on 8.08.2019.
 //  Copyright © 2019 Arin Akcura. All rights reserved.
 //
 

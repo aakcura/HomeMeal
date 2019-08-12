@@ -13,7 +13,7 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = AppColors.appWhiteColor
-        title = "Main Screen"
+        title = "Profile".getLocalizedString()
         let signOutButton = UIBarButtonItem.init(image: AppIcons.signOutIcon, style: .plain, target: self, action: #selector(signOut))
         self.navigationItem.rightBarButtonItems = [signOutButton]
     }

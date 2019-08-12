@@ -16,6 +16,16 @@ class ChefTabBarController: UITabBarController {
         getCurrentUser()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.hideNavBar(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.hideNavBar(true, animated: animated)
+    }
+    
     private func getCurrentUser(){
         guard let currentUserId = AppConstants.currentUserId else {return}
         Database.database().reference().child("chefs").child(currentUserId).observe(.value) { (snapshot) in
@@ -32,40 +42,23 @@ class ChefTabBarController: UITabBarController {
     }
     
     private func setupTabBarViewControllers(){
+       
+        let ordersVC = ChefOrdersVC()
+        let ordersVCNavController = UINavigationController(rootViewController: ordersVC)
+        ordersVC.tabBarItem.title = "Orders".getLocalizedString()
+        ordersVC.tabBarItem.image = AppIcons.ordersIcon
+        
+        let menuVC = MenuVC()
+        let menuVCNavController = UINavigationController(rootViewController: menuVC)
+        menuVC.tabBarItem.title = "Menu".getLocalizedString()
+        menuVC.tabBarItem.image = AppIcons.cutleryIcon
         
         let mainVC = MainVC()
         let mainVCWithNav = UINavigationController(rootViewController: mainVC)
-        mainVC.tabBarItem.title = "Home"
-        mainVC.tabBarItem.image = AppIcons.angleDown
+        mainVC.tabBarItem.title = "Profile".getLocalizedString()
+        mainVC.tabBarItem.image = AppIcons.profileIcon
         
-        let vc = AppDelegate.storyboard.instantiateViewController(withIdentifier: "MealPreparationVC")
-        vc.tabBarItem.title = "Test"
-        vc.tabBarItem.image = AppIcons.angleUp
-        
-        viewControllers = [mainVCWithNav,vc]
-        
-        //        let instantVCNavigationController = UINavigationController(rootViewController: InstantVC())
-        //        instantVCNavigationController.tabBarItem.title = "Chat".getLocalizedString()
-        //        instantVCNavigationController.tabBarItem.image = AppIcons.chats
-        //
-        //        let mapBoxController = MapBoxVC()
-        //        mapBoxController.tabBarItem.title = "Map".getLocalizedString()
-        //        mapBoxController.tabBarItem.image = AppIcons.map
-        //
-        //        let newMessageVCNavigationController = UINavigationController(rootViewController: NewMessageVC())
-        //        newMessageVCNavigationController.tabBarItem.title = "New Message".getLocalizedString()
-        //        newMessageVCNavigationController.tabBarItem.image = AppIcons.newMessage
-        //
-        //        let friendsVCNavigationController = UINavigationController(rootViewController: FriendsVC())
-        //        friendsVCNavigationController.tabBarItem.title = "Friends".getLocalizedString()
-        //        friendsVCNavigationController.tabBarItem.image = AppIcons.friends
-        //
-        //        let profileController = sb.instantiateViewController(withIdentifier: "ProfileController") as! ProfileController
-        //        let profileVCNavigationController = UINavigationController(rootViewController: profileController)
-        //        profileVCNavigationController.tabBarItem.title = "Profile".getLocalizedString()
-        //        profileVCNavigationController.tabBarItem.image = AppIcons.profile
-        //
-        //        viewControllers = [instantVCNavigationController, mapBoxController, newMessageVCNavigationController, friendsVCNavigationController, profileVCNavigationController]
+        viewControllers = [ordersVCNavController, menuVCNavController, mainVCWithNav]
     }
 
 }
