@@ -1,5 +1,5 @@
 //
-//  MenuTableViewCell.swift
+//  ChefOrdersTableViewCell.swift
 //  HomeMeal
 //
 //  Copyright © 2019 Arin Akcura. All rights reserved.
@@ -7,20 +7,31 @@
 
 import UIKit
 
-class MenuTableViewCell: UITableViewCell {
-    var meal : Meal!{
+class ChefOrdersTableViewCell: UITableViewCell {
+    
+    var order : Order!{
         didSet{
             configureCell()
         }
     }
     
-    let activeMealBackgroundColor = UIColor.white
-    let passiveMealBackgroundColor = UIColor.init(white: 0.9, alpha: 1)
+    let activeOrderBackgroundColor = UIColor.white
+    let passiveOrderBackgroundColor = UIColor.white //UIColor.init(white: 0.9, alpha: 1)
     
     let rootView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
+    }()
+    
+    let lblCustomerName: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        return label
     }()
     
     let lblMealName: UILabel = {
@@ -37,14 +48,6 @@ class MenuTableViewCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .black
         return view
-    }()
-    
-    let tvMealDescription: UITextView = {
-       let textView = UITextView()
-        textView.isEditable = false
-        textView.backgroundColor = .clear
-        textView.font = UIFont.boldSystemFont(ofSize: 14)
-        return textView
     }()
     
     let priceAndPreparationContainerView: UIView = {
@@ -68,7 +71,7 @@ class MenuTableViewCell: UITableViewCell {
         view.backgroundColor = .black
         return view
     }()
-   
+    
     let lblPreparationTime: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -85,29 +88,21 @@ class MenuTableViewCell: UITableViewCell {
         return view
     }()
     
-    let seperatorLine : UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
-    }()
-    
-    let lblStartTime: UILabel = {
+    let lblOrderStatus: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 14)
-        //label.textAlignment = .center
         return label
     }()
     
-    let lblEndTime: UILabel = {
+    let lblOrderTime: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 14)
-        //label.textAlignment = .center
         return label
     }()
     
@@ -115,17 +110,16 @@ class MenuTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none //satıra tıklandığında background rengini verir
         addSubview(rootView)
+        rootView.addSubview(lblCustomerName)
         rootView.addSubview(lblMealName)
         rootView.addSubview(upSeperatorLine)
-        rootView.addSubview(tvMealDescription)
-        rootView.addSubview(bottomSeperatorLine)
         rootView.addSubview(priceAndPreparationContainerView)
         priceAndPreparationContainerView.addSubview(lblPrice)
         priceAndPreparationContainerView.addSubview(verticalSeperatorLine)
         priceAndPreparationContainerView.addSubview(lblPreparationTime)
-        rootView.addSubview(seperatorLine)
-        rootView.addSubview(lblStartTime)
-        rootView.addSubview(lblEndTime)
+        rootView.addSubview(bottomSeperatorLine)
+        rootView.addSubview(lblOrderStatus)
+        rootView.addSubview(lblOrderTime)
         setupCellLayout()
     }
     
@@ -143,39 +137,36 @@ class MenuTableViewCell: UITableViewCell {
         let rootViewTopAnchor = rootView.topAnchor
         let rootViewBottomAnchor = rootView.bottomAnchor
         
-        lblMealName.anchor(top: rootViewTopAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 30))
-        upSeperatorLine.anchor(top: lblMealName.bottomAnchor, leading: rootView.leadingAnchor, trailing: rootView.trailingAnchor, bottom: nil, padding: .init(top: 2, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 1))
+        lblCustomerName.anchor(top: rootViewTopAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 10, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 30))
+        lblCustomerName.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        lblCustomerName.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
         
-        tvMealDescription.anchor(top: upSeperatorLine.bottomAnchor, leading: rootView.leadingAnchor, trailing: rootView.trailingAnchor, bottom: nil, padding: .init(top: 2, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 60))
-        bottomSeperatorLine.anchor(top: tvMealDescription.bottomAnchor, leading: upSeperatorLine.leadingAnchor, trailing: upSeperatorLine.trailingAnchor, bottom: nil, padding: .init(top: 5, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 1))
+        lblMealName.anchor(top: lblCustomerName.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 30))
         
-        priceAndPreparationContainerView.anchor(top: bottomSeperatorLine.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 2, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 30))
+        upSeperatorLine.anchor(top: lblMealName.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 1))
+        
+        priceAndPreparationContainerView.anchor(top: upSeperatorLine.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 2, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 30))
         verticalSeperatorLine.anchor(top: priceAndPreparationContainerView.topAnchor, leading: nil, trailing: nil, bottom: priceAndPreparationContainerView.bottomAnchor, centerX: priceAndPreparationContainerView.centerXAnchor, centerY: nil, padding: .init(top: 2, left: 0, bottom: 2, right: 0), size: .init(width: 1, height: 0))
         lblPrice.anchor(top: priceAndPreparationContainerView.topAnchor, leading: priceAndPreparationContainerView.leadingAnchor, trailing: verticalSeperatorLine.leadingAnchor, bottom: priceAndPreparationContainerView.bottomAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .zero)
         lblPreparationTime.anchor(top: priceAndPreparationContainerView.topAnchor, leading: verticalSeperatorLine.trailingAnchor, trailing: priceAndPreparationContainerView.trailingAnchor, bottom: priceAndPreparationContainerView.bottomAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .zero)
-        seperatorLine.anchor(top: priceAndPreparationContainerView.bottomAnchor, leading: upSeperatorLine.leadingAnchor, trailing: upSeperatorLine.trailingAnchor, bottom: nil, padding: .init(top: 2, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 1))
+        bottomSeperatorLine.anchor(top: priceAndPreparationContainerView.bottomAnchor, leading: upSeperatorLine.leadingAnchor, trailing: upSeperatorLine.trailingAnchor, bottom: nil, padding: .init(top: 2, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 1))
         
-        lblStartTime.anchor(top: seperatorLine.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
-        lblEndTime.anchor(top: lblStartTime.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
+        lblOrderStatus.anchor(top: bottomSeperatorLine.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
+        lblOrderTime.anchor(top: lblOrderStatus.bottomAnchor, leading: rootViewLeadingAnchor, trailing: rootViewTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
     }
     
     func configureCell(){
-        switch meal.mealStatus {
-        case .canBeOrdered:
-            rootView.backgroundColor = activeMealBackgroundColor
-            break
-        case .canNotBeOrdered:
-            rootView.backgroundColor = passiveMealBackgroundColor
-            break
-        }
+        rootView.backgroundColor = passiveOrderBackgroundColor
         
-        lblMealName.text = meal.mealName
-        tvMealDescription.text = meal.description
-        let priceText = "Price".getLocalizedString() + " \(meal.price) " + meal.currencySymbol
+        lblCustomerName.text = order.orderDetails.customerName
+        
+        lblMealName.text = order.mealDetails.mealName
+        
+        let priceText = "Price".getLocalizedString() + " \(order.mealDetails.price) " + order.mealDetails.currencySymbol
         lblPrice.text = priceText
         let hourText = "hour".getLocalizedString()
         let minuteText = "min".getLocalizedString()
-        let (hour,minute) = meal.detailedPreparationTime
+        let (hour,minute) = order.mealDetails.detailedPreparationTime
         var preparationTimeString = ""
         if hour == 0 {
             preparationTimeString = " \(minute) " + minuteText
@@ -186,27 +177,50 @@ class MenuTableViewCell: UITableViewCell {
         let clockIcon = NSMutableAttributedString(string: AppIcons.faClockRegular)
         clockIcon.addCustomAttributes(fontType: .regularFontAwesome, fontSize: 17, color: .black, range: nil, underlineStyle: nil)
         clockIcon.append(preparationTimeText)
-        //preparationTimeText.append(clockIcon)
         lblPreparationTime.attributedText = clockIcon
         
-        let startTimeText = "Start Time".getLocalizedString() + ": "
-        let attributedStartTimeText = NSMutableAttributedString(string: startTimeText)
-        attributedStartTimeText.addCustomAttributes(fontType: .boldSystem, fontSize: 14, color: .black, range: nil, underlineStyle: nil)
-        if let startDateAndTimeString = meal.detailedStartTime?.dateAndTimeFullString{
-            let attributedStartDateAndTimeString = NSMutableAttributedString(string: startDateAndTimeString)
-            attributedStartTimeText.append(attributedStartDateAndTimeString)
-        }
-        
-        let endTimeText = "End Time".getLocalizedString() + ": "
-        let attributedEndTimeText = NSMutableAttributedString(string: endTimeText)
-        attributedEndTimeText.addCustomAttributes(fontType: .boldSystem, fontSize: 14, color: .black, range: nil, underlineStyle: nil)
-        if let endDateAndTimeString = meal.detailedEndTime?.dateAndTimeFullString{
-            let attributedEndDateAndTimeString = NSMutableAttributedString(string: endDateAndTimeString)
-            attributedEndTimeText.append(attributedEndDateAndTimeString)
-        }
-        
-        lblStartTime.attributedText = attributedStartTimeText
-        lblEndTime.attributedText = attributedEndTimeText
+        self.setOrderStatusText()
+        self.setOrderTimeText()
     }
-
+    
+    private func setOrderStatusText(){
+        let orderStatus = order.orderDetails.orderStatus
+        let currentOrderStatusText = "Current Order Status".getLocalizedString() + ": "
+        let attributedCurrentOrderStatusText = NSMutableAttributedString(string: currentOrderStatusText)
+        attributedCurrentOrderStatusText.addCustomAttributes(fontType: .boldSystem, fontSize: 14, color: .black, range: nil, underlineStyle: nil)
+        var orderStatusString = ""
+        switch orderStatus {
+        case .received:
+            orderStatusString = OrderStatusText.received.text
+            break
+        case .canceled:
+            orderStatusString = OrderStatusText.canceled.text
+            break
+        case .rejected:
+            orderStatusString = OrderStatusText.rejected.text
+            break
+        case .preparing:
+            orderStatusString = OrderStatusText.preparing.text
+            break
+        case .prepared:
+            orderStatusString = OrderStatusText.prepared.text
+            break
+        }
+        let orderStatusText = NSMutableAttributedString(string: orderStatusString)
+        attributedCurrentOrderStatusText.append(orderStatusText)
+        lblOrderStatus.attributedText = attributedCurrentOrderStatusText
+    }
+    
+    private func setOrderTimeText(){
+        let orderTimeText = "Order Time".getLocalizedString() + ": "
+        let attributedOrderTimeText = NSMutableAttributedString(string: orderTimeText)
+        attributedOrderTimeText.addCustomAttributes(fontType: .boldSystem, fontSize: 14, color: .black, range: nil, underlineStyle: nil)
+        if let orderDateAndTimeString = order.orderDetails.detailedOrderTime?.dateAndTimeFullString{
+            let attributedOrderDateAndTimeString = NSMutableAttributedString(string: orderDateAndTimeString)
+            attributedOrderTimeText.append(attributedOrderDateAndTimeString)
+        }
+        
+        self.lblOrderTime.attributedText = attributedOrderTimeText
+    }
+    
 }

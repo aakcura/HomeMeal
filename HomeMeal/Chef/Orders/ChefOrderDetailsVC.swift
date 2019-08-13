@@ -10,10 +10,6 @@ import Firebase
 
 class ChefOrderDetailsVC: BaseVC {
 
-    @IBOutlet weak var errorView: UIView!
-    @IBOutlet weak var errorActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var errorLabel: UILabel!
-
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var btnClose: UIButton!
@@ -46,6 +42,7 @@ class ChefOrderDetailsVC: BaseVC {
     var ingredients: [Ingredient]?
     let ingredientsTableCellId = "ingredientsTableCellId"
     var selectedOrderStatus: OrderStatus?
+    var informationVC: InformationVC?
     
     var orderId: String?{
         didSet{
@@ -57,6 +54,7 @@ class ChefOrderDetailsVC: BaseVC {
                         self.order = nil
                     }
                 }
+                
             }else{
                 self.order = nil
             }
@@ -78,7 +76,7 @@ class ChefOrderDetailsVC: BaseVC {
                 self.configurePage()
             }else{
                 let errorMessage = "Order bulunamadı".getLocalizedString()
-                self.changeErrorView(withMessage: errorMessage, shouldAnimating: false)
+                self.changeInformationView(withMessage: errorMessage, shouldAnimating: false)
             }
         }
     }
@@ -105,6 +103,8 @@ class ChefOrderDetailsVC: BaseVC {
     }
     
     private func setupUIProperties(){
+        self.informationVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "InformationVC") as! InformationVC
+        
         btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
         btnClose.setTitle("X", for: .normal)
         
@@ -134,7 +134,7 @@ class ChefOrderDetailsVC: BaseVC {
         btnUpdateOrderStatus.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnUpdateOrderStatus.setTitle("Update Order Status".getLocalizedString(), for: .normal)
         
-        self.showErrorView(withMessage: "Sipariş getirilirken lütfen bekleyiniz".getLocalizedString(), asLoadingPage: true)
+        self.showInformationView(withMessage: "Sipariş getirilirken lütfen bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
     }
     
     var tapped = 0
@@ -192,56 +192,37 @@ class ChefOrderDetailsVC: BaseVC {
 // PAGE CONFIGURATION OPERATIONS
 extension ChefOrderDetailsVC {
     
-    private func showErrorView(withMessage:String, asLoadingPage:Bool){
+    private func showInformationView(withMessage:String, showAsLoadingPage:Bool){
+        guard let informationVC = self.informationVC else {return}
         DispatchQueue.main.async {
-            if asLoadingPage {
-                self.view.sendSubviewToBack(self.scrollView)
-                self.view.sendSubviewToBack(self.btnClose)
-                self.view.bringSubviewToFront(self.errorView)
-                self.errorActivityIndicator.startAnimating()
-                self.errorLabel.text = withMessage
-                self.errorView.isHidden = false
+            self.addChild(informationVC)
+            informationVC.didMove(toParent: self)
+            informationVC.view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(informationVC.view)
+            informationVC.view.fillSuperView()
+            if showAsLoadingPage {
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
             }else{
-                self.view.sendSubviewToBack(self.scrollView)
-                self.view.bringSubviewToFront(self.errorView)
-                self.view.bringSubviewToFront(self.btnClose)
-                self.errorActivityIndicator.stopAnimating()
-                self.errorLabel.text = withMessage
-                self.errorView.isHidden = false
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
             }
         }
     }
     
-    private func changeErrorView(withMessage:String, shouldAnimating:Bool){
+    private func changeInformationView(withMessage:String, shouldAnimating:Bool){
+        guard let informationVC = self.informationVC else {return}
         DispatchQueue.main.async {
-            self.errorLabel.text = withMessage
             if shouldAnimating {
-                self.errorActivityIndicator.startAnimating()
-                self.view.sendSubviewToBack(self.btnClose)
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
             }else{
-                self.errorActivityIndicator.stopAnimating()
-                self.view.bringSubviewToFront(self.btnClose)
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
             }
         }
     }
     
-    private func hideErrorView(asLoadingPage:Bool){
+    private func hideInformationView(){
+        guard let informationVC = self.informationVC else {return}
         DispatchQueue.main.async {
-            if asLoadingPage {
-                self.view.sendSubviewToBack(self.errorView)
-                self.errorView.isHidden = true
-                self.errorLabel.text = nil
-                self.errorActivityIndicator.stopAnimating()
-                self.view.bringSubviewToFront(self.scrollView)
-                self.view.bringSubviewToFront(self.btnClose)
-            }else{
-                self.view.sendSubviewToBack(self.errorView)
-                self.errorView.isHidden = true
-                self.errorLabel.text = nil
-                self.errorActivityIndicator.stopAnimating()
-                self.view.bringSubviewToFront(self.scrollView)
-                self.view.bringSubviewToFront(self.btnClose)
-            }
+           informationVC.view.removeFromSuperview()
         }
     }
     
@@ -305,7 +286,7 @@ extension ChefOrderDetailsVC {
             
             self.lblOrderTime.attributedText = attributedOrderTimeText
             
-            self.hideErrorView(asLoadingPage: true)
+            self.hideInformationView()
         }
     }
     
@@ -330,7 +311,8 @@ extension ChefOrderDetailsVC {
                 self.orderStatusSegmentedControl.setEnabled(false, forSegmentAt: 1)
                 break
             case .prepared:
-                self.orderStatusSegmentedControl.setEnabled(false, forSegmentAt: 2)
+                self.orderStatusSegmentedControl.isEnabled = false
+                self.btnUpdateOrderStatus.isEnabled = false
                 break
             }
         }

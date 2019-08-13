@@ -38,6 +38,7 @@ class ChefTabBarController: UITabBarController {
     
     private func setupUIProperties(){
         self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = AppColors.navBarBackgroundColor
         setupTabBarViewControllers()
     }
     

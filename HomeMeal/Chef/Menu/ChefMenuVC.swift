@@ -20,7 +20,7 @@ class ChefMenuVC: BaseVC {
     let noActiveMealsErrorMessage = "NoActiveMeals".getLocalizedString()
     let noPassiveMealsErrorMessage = "NoPassiveMeals".getLocalizedString()
     let menuTableCellHeight: CGFloat = {
-       return CGFloat.init(250.0)
+       return CGFloat.init(222.0)
     }()
     let emptyMenuTableCellHeight: CGFloat = {
        return CGFloat.init(50.0)
@@ -241,6 +241,7 @@ extension ChefMenuVC: UITableViewDelegate, UITableViewDataSource{
     
     private func getEmptyMenuErrorCell(with message:String) -> UITableViewCell{
         let activeMenuEmptyCell = UITableViewCell()
+        activeMenuEmptyCell.textLabel?.textAlignment = .center
         activeMenuEmptyCell.textLabel?.text = message
         return activeMenuEmptyCell
     }
