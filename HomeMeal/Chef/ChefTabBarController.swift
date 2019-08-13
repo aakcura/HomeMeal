@@ -48,7 +48,7 @@ class ChefTabBarController: UITabBarController {
         ordersVC.tabBarItem.title = "Orders".getLocalizedString()
         ordersVC.tabBarItem.image = AppIcons.ordersIcon
         
-        let menuVC = MenuVC()
+        let menuVC = ChefMenuVC()
         let menuVCNavController = UINavigationController(rootViewController: menuVC)
         menuVC.tabBarItem.title = "Menu".getLocalizedString()
         menuVC.tabBarItem.image = AppIcons.cutleryIcon

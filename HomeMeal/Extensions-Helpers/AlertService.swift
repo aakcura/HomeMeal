@@ -18,6 +18,20 @@ class AlertService{
         }
         return alert
     }
+    
+    static func showNoInternetConnectionErrorAlert(in vc:UIViewController?, style: UIAlertController.Style = .alert, blockUI: Bool = false) {
+        guard let vc = vc else {
+            return
+        }
+        let title = "NoInternetConnectionError".getLocalizedString()
+        let message = "NoInternetConnectionErrorMessage".getLocalizedString()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: style)
+        if !blockUI{
+            let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+            alert.addAction(closeButton)
+        }
+        vc.present(alert, animated: true, completion: nil)
+    }
    
     static func showAlert(in vc:UIViewController?, message: String, title: String = "", style: UIAlertController.Style = .alert, blockUI: Bool = false) {
         guard let vc = vc else {

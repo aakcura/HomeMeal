@@ -31,6 +31,13 @@ class ChefOrdersVC: BaseVC {
     
     @objc func showPastOrders(){
         // show past orders
+        // TEST
+        let chefOrderDetailsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefOrderDetailsVC") as! ChefOrderDetailsVC
+        chefOrderDetailsVC.orderId = "orderIdTest"
+        //chefOrderDetailsVC.orderId = "order999"
+        //chefOrderDetailsVC.orderId = "orderNotExists"
+        
+        self.present(chefOrderDetailsVC, animated: true, completion: nil)
     }
     
 }

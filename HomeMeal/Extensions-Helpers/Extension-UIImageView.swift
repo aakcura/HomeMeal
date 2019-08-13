@@ -18,7 +18,7 @@ extension UIImageView {
         }else{
             self.sd_setImage(with: URL(string: urlString)) { (image, error, cacheType, url) in
                 if error != nil {
-                    self.image = AppIcons.addPhoto
+                    self.image = defaultImage
                 }
             }
         }

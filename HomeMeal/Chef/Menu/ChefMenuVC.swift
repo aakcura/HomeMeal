@@ -8,13 +8,8 @@
 import UIKit
 import Firebase
 
-class MenuVC: BaseVC {
+class ChefMenuVC: BaseVC {
 
-    enum MenuType{
-        case active
-        case passive
-    }
-    
     let dbRef = Database.database().reference()
     
     var timer: Timer?
@@ -120,7 +115,7 @@ class MenuVC: BaseVC {
 }
 
 // TABLE VIEW
-extension MenuVC: UITableViewDelegate, UITableViewDataSource{
+extension ChefMenuVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let currentCell = tableView.cellForRow(at: indexPath) as? MenuTableViewCell{
@@ -252,7 +247,7 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource{
 }
 
 // FIREBASE OPERATIONS
-extension MenuVC {
+extension ChefMenuVC {
     private func observeChefMenu(){
         guard let uid = AppConstants.currentUserId else{
             return

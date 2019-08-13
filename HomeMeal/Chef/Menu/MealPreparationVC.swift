@@ -266,7 +266,7 @@ class MealPreparationVC: UIViewController {
                 }
             }else{
                 DispatchQueue.main.async { [weak self] in
-                    AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .alert)
+                    AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)
                 }
             }
         }else{

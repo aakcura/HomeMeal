@@ -36,12 +36,13 @@ class AppConstants{
 
 class UserDefaultsKeys{
     static let appOpenedCount = "appOpenedCount"
-    static let userProfileType = "userProfileType"
     static let userSessionId = "userSessionId"
     static let appShareMessage = "appShareMessage"
     static let currentAppVersionNumber = "currentAppVersionNumber"
     static let requiredMinimumAppVersionNumber = "requiredMinimumAppVersionNumber"
     static let firebaseNotificationToken = "firebaseNotificationToken"
+    
+    static let userProfileType = "userProfileType"
     static let didWalkthroughScreenShownBefore = "didWalkthroughScreenShownBefore"
 }
 
@@ -149,6 +150,17 @@ enum OrderStatus: Int {
     case prepared = 5
 }
 
+enum OrderStatusText: String {
+    case Reject = "Reject"
+    case Preparing = "Preparing"
+    case Prepared = "Prepared"
+    case received = "received"
+    case rejected = "rejected"
+    case canceled = "canceled"
+    case preparing = "preparing"
+    case prepared = "prepared"
+    var text:String {return self.rawValue.getLocalizedString()}
+}
 
 enum MyValidationErrors: String, ValidationError {
     case emptyText = "Empty text"
@@ -158,6 +170,12 @@ enum MyValidationErrors: String, ValidationError {
     case priceInvalid = "Price should be not null numeric value"
     var message: String { return self.rawValue.getLocalizedString() }
 }
+
+enum MenuType{
+    case active
+    case passive
+}
+
 
 struct PasswordValidationRule: ValidationRule {
     typealias InputType = String

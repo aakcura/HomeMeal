@@ -159,7 +159,7 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
                     }
                 }
             }else{
-                AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .actionSheet)
+                AlertService.showNoInternetConnectionErrorAlert(in: self, style: .actionSheet, blockUI: false)
             }
         }else{
             AlertService.showAlert(in: self, message: "Geçersiz mail adresi".getLocalizedString(), title: "", style: .alert)
@@ -171,7 +171,7 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
             if NetworkManager.isConnectedNetwork() {
                 signIn()
             } else{
-                AlertService.showAlert(in: self, message: "NoInternetConnectionErrorMessage".getLocalizedString(), title: "NoInternetConnectionError".getLocalizedString(), style: .alert)
+                AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)
             }
         }else{
             AlertService.showAlert(in: self, message: "Geçersiz mail veya parola !", title: "", style: .alert)
