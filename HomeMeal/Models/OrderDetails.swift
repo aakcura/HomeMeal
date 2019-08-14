@@ -16,6 +16,7 @@ class OrderDetails {
     var orderId: String
     var orderStatus: OrderStatus
     var orderTime: TimeInterval
+    var commentId: String?
     
     var detailedOrderTime: DetailedTime?
     var chefRating: Double?
@@ -40,6 +41,7 @@ class OrderDetails {
         // ORDER PROPERTIES
         self.orderId = dictionary["orderId"] as! String
         self.orderStatus = OrderStatus(rawValue: (dictionary["orderStatus"] as! Int)) ?? OrderStatus.rejected
+        self.commentId = dictionary["commentId"] as? String
         self.orderTime = dictionary["orderTime"] as! TimeInterval
         self.detailedOrderTime = self.orderTime.getDetailedTime()
     }

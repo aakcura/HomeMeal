@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         setupFirebase()
         setupNavBarTheme()
+        setupTabBarTheme()
         setupIQKeyboardManager()
         
         // Register for remote notifications. This shows a permission dialog on first run, to
@@ -153,6 +154,13 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate{
         let textAttributes = [NSAttributedString.Key.foregroundColor:AppColors.navBarTitleColor]
         navigationBarAppearance.titleTextAttributes = textAttributes // navbar title textinin attributelarını belirtir
         navigationBarAppearance.isTranslucent = false
+    }
+    
+    /// Sets application tab bar theme.
+    func setupTabBarTheme(){
+        let tabBarAppearance = UITabBar.appearance()
+        tabBarAppearance.isTranslucent = false
+        tabBarAppearance.tintColor = AppColors.tabBarTintColor
     }
     
     /// IQKeyboardManager bağlantı ayarları

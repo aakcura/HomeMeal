@@ -1,15 +1,14 @@
 //
-//  ChefOrdersVC.swift
+//  CustomerOrdersVC.swift
 //  HomeMeal
 //
 //  Copyright © 2019 Arin Akcura. All rights reserved.
 //
 
-
 import UIKit
 import Firebase
 
-class ChefOrdersVC: BaseVC {
+class CustomerOrdersVC: BaseVC {
     
     let dbRef = Database.database().reference()
     
@@ -17,7 +16,7 @@ class ChefOrdersVC: BaseVC {
     var orders = [Order]()
     var groupedOrders = [OrderStatus:[Order]]()
     var selectedOrderType: OrderStatus = .received
-    let ordersTableCellId = "chefOrdersTableViewCellId"
+    let ordersTableCellId = "customerOrdersTableViewCellId"
     let noOrdersErrorMessage = "No Orders Error Message".getLocalizedString()
     let ordersTableCellHeight: CGFloat = {
         return CGFloat.init(200.0)
@@ -31,6 +30,7 @@ class ChefOrdersVC: BaseVC {
         let segmented = UISegmentedControl()
         segmented.insertSegment(withTitle: OrderStatusText.received.text, at: 0, animated: true)
         segmented.insertSegment(withTitle: OrderStatusText.preparing.text, at: 1, animated: true)
+        segmented.insertSegment(withTitle: OrderStatusText.prepared.text, at: 2, animated: true)
         segmented.selectedSegmentIndex = 0
         segmented.tintColor = AppColors.navBarBackgroundColor
         segmented.backgroundColor = UIColor.white
@@ -52,7 +52,7 @@ class ChefOrdersVC: BaseVC {
         super.viewDidLoad()
         self.removeNavBarBackButtonText()
         setupUIProperties()
-        observeChefOrders()
+        observeCustomerOrders()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,14 +68,14 @@ class ChefOrdersVC: BaseVC {
     }
     
     private func customizeNavBar(){
-        setNavBarTitle("Incoming Orders".getLocalizedString())
+        setNavBarTitle("My Orders".getLocalizedString())
         let btnShowPastOrders = UIBarButtonItem(image: AppIcons.listWhiteIcon, style: .plain, target: self, action: #selector(showPastOrders))
         self.navigationItem.rightBarButtonItems = [btnShowPastOrders]
     }
     
     @objc func showPastOrders(){
-        let chefPastOrdersVC = ChefPastOrdersVC()
-        self.navigationController?.pushViewController(chefPastOrdersVC, animated: true)
+        let customerPastOrdersVC = CustomerPastOrdersVC()
+        self.navigationController?.pushViewController(customerPastOrdersVC, animated: true)
         //self.present(chefPastOrdersVC, animated: true, completion: nil)
     }
     
@@ -88,7 +88,7 @@ class ChefOrdersVC: BaseVC {
     private func setupTableView(){
         self.view.addSubview(ordersTable)
         ordersTable.anchor(top: self.segmentedControl.bottomAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, trailing: self.view.safeAreaLayoutGuide.trailingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, padding: UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10))
-        ordersTable.register(ChefOrdersTableViewCell.self, forCellReuseIdentifier: ordersTableCellId)
+        ordersTable.register(CustomerOrdersTableViewCell.self, forCellReuseIdentifier: ordersTableCellId)
         ordersTable.separatorStyle = .none
         ordersTable.dataSource = self
         ordersTable.delegate = self
@@ -102,6 +102,9 @@ class ChefOrdersVC: BaseVC {
         case 1:
             self.selectedOrderType = .preparing
             break
+        case 2:
+            self.selectedOrderType = .prepared
+            break
         default:
             break
         }
@@ -112,15 +115,15 @@ class ChefOrdersVC: BaseVC {
 }
 
 // TABLE VIEW
-extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
+extension CustomerOrdersVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let currentCell = tableView.cellForRow(at: indexPath) as? ChefOrdersTableViewCell{
+        if let currentCell = tableView.cellForRow(at: indexPath) as? CustomerOrdersTableViewCell{
             if let selectedOrder = currentCell.order {
                 DispatchQueue.main.async {
-                    let chefOrderDetailVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefOrderDetailsVC") as! ChefOrderDetailsVC
-                    chefOrderDetailVC.order = selectedOrder
-                    self.present(chefOrderDetailVC, animated: true, completion: nil)
+                    let customerOrderDetailVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerOrderDetailsVC") as! CustomerOrderDetailsVC
+                    customerOrderDetailVC.order = selectedOrder
+                    self.present(customerOrderDetailVC, animated: true, completion: nil)
                 }
             }
         }
@@ -129,8 +132,8 @@ extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch selectedOrderType {
         case .received:
-            if let receivedOrders = groupedOrders[.received]{
-                if receivedOrders.isEmpty {
+            if let orders = groupedOrders[.received]{
+                if orders.isEmpty {
                     return emptyOrdersTableCellHeight
                 }else{
                     return ordersTableCellHeight
@@ -139,8 +142,18 @@ extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
                 return emptyOrdersTableCellHeight
             }
         case .preparing:
-            if let prepairingOrders = groupedOrders[.preparing]{
-                if prepairingOrders.isEmpty {
+            if let orders = groupedOrders[.preparing]{
+                if orders.isEmpty {
+                    return emptyOrdersTableCellHeight
+                }else{
+                    return ordersTableCellHeight
+                }
+            }else{
+                return emptyOrdersTableCellHeight
+            }
+        case .prepared:
+            if let orders = groupedOrders[.prepared]{
+                if orders.isEmpty {
                     return emptyOrdersTableCellHeight
                 }else{
                     return ordersTableCellHeight
@@ -156,21 +169,31 @@ extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch selectedOrderType {
         case .received:
-            if let receivedOrders = groupedOrders[.received]{
-                if receivedOrders.isEmpty {
+            if let orders = groupedOrders[.received]{
+                if orders.isEmpty {
                     return 1
                 }else{
-                    return receivedOrders.count
+                    return orders.count
                 }
             }else{
                 return 1
             }
         case .preparing:
-            if let prepairingOrders = groupedOrders[.preparing]{
-                if prepairingOrders.isEmpty {
+            if let orders = groupedOrders[.preparing]{
+                if orders.isEmpty {
                     return 1
                 }else{
-                    return prepairingOrders.count
+                    return orders.count
+                }
+            }else{
+                return 1
+            }
+        case .prepared:
+            if let orders = groupedOrders[.prepared]{
+                if orders.isEmpty {
+                    return 1
+                }else{
+                    return orders.count
                 }
             }else{
                 return 1
@@ -183,24 +206,36 @@ extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch selectedOrderType {
         case .received:
-            if let receivedOrders = groupedOrders[.received]{
-                if receivedOrders.isEmpty {
+            if let orders = groupedOrders[.received]{
+                if orders.isEmpty {
                     return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
                 }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! ChefOrdersTableViewCell
-                    cell.order = receivedOrders[indexPath.row]
+                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
+                    cell.order = orders[indexPath.row]
                     return cell
                 }
             }else{
                 return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
             }
         case .preparing:
-            if let prepairingOrders = groupedOrders[.preparing]{
-                if prepairingOrders.isEmpty {
+            if let orders = groupedOrders[.preparing]{
+                if orders.isEmpty {
                     return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
                 }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! ChefOrdersTableViewCell
-                    cell.order = prepairingOrders[indexPath.row]
+                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
+                    cell.order = orders[indexPath.row]
+                    return cell
+                }
+            }else{
+                return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
+            }
+        case .prepared:
+            if let orders = groupedOrders[.prepared]{
+                if orders.isEmpty {
+                    return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
+                }else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
+                    cell.order = orders[indexPath.row]
                     return cell
                 }
             }else{
@@ -250,21 +285,21 @@ extension ChefOrdersVC: UITableViewDelegate, UITableViewDataSource{
 }
 
 // FIREBASE OPERATIONS
-extension ChefOrdersVC {
-    private func observeChefOrders(){
+extension CustomerOrdersVC {
+    private func observeCustomerOrders(){
         guard let uid = AppConstants.currentUserId else{
             return
         }
-        let chefOrdersPath = "chefIncomingOrders/\(uid)"
+        let customerOrdersPath = "customerOrders/\(uid)"
         
         showActivityIndicatorView(isUserInteractionEnabled: false)
         
-        // ORDER ADDED TO CHEF INCOMING ORDERS
-        dbRef.child(chefOrdersPath).observe(.childAdded) { (snapshot) in
+        // ORDER ADDED TO CUSTOMER ORDERS
+        dbRef.child(customerOrdersPath).observe(.childAdded) { (snapshot) in
             let orderId = snapshot.key
-            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.rejected
+            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.canceled
             switch orderStatus {
-            case .received, .preparing:
+            case .received, .preparing, .prepared:
                 self.getOrderBy(orderId: orderId)
                 return
             default:
@@ -272,12 +307,12 @@ extension ChefOrdersVC {
             }
         }
         
-        // ORDER UPDATED IN CHEF INCOMING ORDERS
-        dbRef.child(chefOrdersPath).observe(.childChanged) { (snapshot) in
+        // ORDER UPDATED IN CUSTOMER ORDERS
+        dbRef.child(customerOrdersPath).observe(.childChanged) { (snapshot) in
             let orderId = snapshot.key
-            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.rejected
+            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.canceled
             switch orderStatus {
-            case .received, .preparing:
+            case .received, .preparing, .prepared:
                 self.getOrderBy(orderId: orderId)
                 return
             default:

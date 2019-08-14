@@ -30,6 +30,10 @@ class AppColors{
     static let appOrangeColor = UIColor.colorFromHex("#F28B30")
     static let appOrangeRedColor = UIColor.colorFromHex("#F25835")
     
+    // TAB BAR COLORS
+    // NAVIGATION BAR COLORS
+    static let tabBarTintColor = UIColor.colorFromHex("#F25835")
+    
     // NAVIGATION BAR COLORS
     static let navBarBackgroundColor = UIColor.colorFromHex("#F25835")
     static let navBarTintColor = UIColor.white

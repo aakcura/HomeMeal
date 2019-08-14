@@ -30,6 +30,7 @@ class AppIcons {
     static let plusBlackIcon = UIImage(named: "plusBlack")!
     static let plusWhiteIcon = UIImage(named: "plusWhite")!
 
+    static let pencilWhiteIcon = UIImage(named: "pencilWhite")!
     
     
     // Font Awesome Brand Icons

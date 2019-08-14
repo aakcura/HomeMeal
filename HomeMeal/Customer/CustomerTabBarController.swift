@@ -37,17 +37,27 @@ class CustomerTabBarController: UITabBarController {
     }
     
     private func setupUIProperties(){
-        self.tabBar.isTranslucent = false
         setupTabBarViewControllers()
     }
     
     private func setupTabBarViewControllers(){
+        
+        let customerOrdersVC = CustomerOrdersVC()
+        let ordersVCNavController = UINavigationController(rootViewController: customerOrdersVC)
+        customerOrdersVC.tabBarItem.title = "My Orders".getLocalizedString()
+        customerOrdersVC.tabBarItem.image = AppIcons.ordersIcon
+        
+        let customerMealListVC = CustomerMealListVC()
+        let customerMealListVCNavController = UINavigationController(rootViewController: customerMealListVC)
+        customerMealListVC.tabBarItem.title = "Meal List".getLocalizedString()
+        customerMealListVC.tabBarItem.image = AppIcons.cutleryIcon
+        
         let mainVC = MainVC()
         let mainVCWithNav = UINavigationController(rootViewController: mainVC)
         mainVC.tabBarItem.title = "Profile".getLocalizedString()
         mainVC.tabBarItem.image = AppIcons.profileIcon
         
-        viewControllers = [mainVCWithNav]
+        viewControllers = [ordersVCNavController,customerMealListVCNavController,mainVCWithNav]
     }
 
 }

@@ -1,4 +1,5 @@
 PODS:
+  - Cosmos (19.0.3)
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - Fabric (1.10.2)
@@ -102,6 +103,7 @@ PODS:
   - Validator (3.2.1)
 
 DEPENDENCIES:
+  - Cosmos
   - Crashlytics
   - Fabric
   - Firebase/Auth
@@ -116,6 +118,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Cosmos
     - Crashlytics
     - Fabric
     - Firebase
@@ -140,6 +143,7 @@ SPEC REPOS:
     - Validator
 
 SPEC CHECKSUMS:
+  Cosmos: a6fb17284281fa12cf4c85c2efecd440a215ec44
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 9445469655a98e9010737f4bc4720e5bda465873
@@ -163,6 +167,6 @@ SPEC CHECKSUMS:
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   Validator: 80a6f567220c962dfd2d9928ae98a8c1d164f6f4
 
-PODFILE CHECKSUM: 40e40ae589f7d2f04803e0ea8d4b3c48789f21ce
+PODFILE CHECKSUM: bbc3b0b9ddad019c373ce3f50024c112d434c7ee
 
 COCOAPODS: 1.5.3

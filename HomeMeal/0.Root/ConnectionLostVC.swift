@@ -31,7 +31,7 @@ class ConnectionLostVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = AppColors.appOrangeColor
+        self.view.backgroundColor = AppColors.appOrangeRedColor
         setupLayoutConstraints()
     }
     
