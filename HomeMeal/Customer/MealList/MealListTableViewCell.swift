@@ -7,18 +7,161 @@
 //
 
 import UIKit
+import Cosmos
 
 class MealListTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    var meal : Meal!{
+        didSet{
+            //configureCell()
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    let rootView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let profileSectionView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    let lblCustomerName: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    let ratingView: CosmosView = {
+        let cosmos = CosmosView()
+        cosmos.settings.updateOnTouch = false
+        cosmos.settings.fillMode = .precise
+        cosmos.settings.starSize = 25.0
+        cosmos.settings.totalStars = 5
+        cosmos.settings.filledColor = AppColors.appOrangeColor
+        cosmos.rating = 0.0
+        return cosmos
+    }()
+    
+    
+    let mealDetailsSectionView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    let lblMealName: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    let lblPrice: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textAlignment = .center//.left
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    let verticalSeperatorLine : UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+    
+    let lblPreparationTime: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textAlignment = .center//.right
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    let lblStartTime: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont.systemFont(ofSize: 14)
+        return label
+    }()
+    
+    let lblEndTime: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont.systemFont(ofSize: 14)
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none //satıra tıklandığında background rengini verir
+        addSubview(rootView)
+        rootView.addSubview(profileSectionView)
+        profileSectionView.addSubview(lblCustomerName)
+        profileSectionView.addSubview(ratingView)
+        rootView.addSubview(mealDetailsSectionView)
+        mealDetailsSectionView.addSubview(lblMealName)
+        mealDetailsSectionView.addSubview(lblPrice)
+        mealDetailsSectionView.addSubview(verticalSeperatorLine)
+        mealDetailsSectionView.addSubview(lblPreparationTime)
+        rootView.addSubview(lblStartTime)
+        rootView.addSubview(lblEndTime)
+        setupCellLayout()
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCellLayout(){
+        
+        // TOTAL ROW HEIGHT = 306.0
+        
+        rootView.anchor(top: topAnchor, leading: leadingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 7, left: 5, bottom: 7, right: 5), size: .zero)
+        rootView.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        rootView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        
+        profileSectionView.anchor(top: rootView.topAnchor, leading: rootView.leadingAnchor, trailing: rootView.trailingAnchor, bottom: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 0, height: 0))
+        profileSectionView.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        profileSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        
+        let profileSectionLeadingAnchor = profileSectionView.leadingAnchor
+        let profileSectionTrailingAnchor = profileSectionView.trailingAnchor
+        
+        lblCustomerName.anchor(top: profileSectionView.topAnchor, leading: profileSectionLeadingAnchor, trailing: profileSectionTrailingAnchor, bottom: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 0, height: 30))
+        ratingView.anchor(top: lblCustomerName.bottomAnchor, leading: profileSectionLeadingAnchor, trailing: profileSectionTrailingAnchor, bottom: profileSectionView.bottomAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10), size: .init(width: 0, height: 30))
+        
+        mealDetailsSectionView.anchor(top: profileSectionView.bottomAnchor, leading: profileSectionLeadingAnchor, trailing: profileSectionTrailingAnchor, bottom: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 0, height: 0))
+        lblMealName.anchor(top: mealDetailsSectionView.topAnchor, leading: mealDetailsSectionView.leadingAnchor, trailing: mealDetailsSectionView.trailingAnchor, bottom: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 0, height: 30))
+        verticalSeperatorLine.anchor(top: lblMealName.bottomAnchor, leading: nil, trailing: nil, bottom: mealDetailsSectionView.bottomAnchor, centerX: mealDetailsSectionView.centerXAnchor, centerY: nil, padding: .init(top: 10, left: 0, bottom: 10, right: 0), size: .init(width: 1, height: 26))
+        lblPrice.anchor(top: nil, leading: mealDetailsSectionView.leadingAnchor, trailing: verticalSeperatorLine.leadingAnchor, bottom: nil, centerX: nil, centerY: verticalSeperatorLine.centerYAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 5), size: .init(width: 0, height: 30))
+        lblPreparationTime.anchor(top: nil, leading: verticalSeperatorLine.trailingAnchor, trailing: mealDetailsSectionView.trailingAnchor, bottom: nil, centerX: nil, centerY: verticalSeperatorLine.centerYAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 10), size: .init(width: 0, height: 30))
+        mealDetailsSectionView.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        mealDetailsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        
+        lblStartTime.anchor(top: mealDetailsSectionView.bottomAnchor, leading: profileSectionLeadingAnchor, trailing: profileSectionTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 25))
+        lblEndTime.anchor(top: lblStartTime.bottomAnchor, leading: profileSectionLeadingAnchor, trailing: profileSectionTrailingAnchor, bottom: nil, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
+    }
+    
 
 }

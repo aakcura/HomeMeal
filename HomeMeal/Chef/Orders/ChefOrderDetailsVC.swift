@@ -18,14 +18,18 @@ class ChefOrderDetailsVC: BaseVC {
     @IBOutlet weak var profileSectionView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var lblCustomerName: UILabel!
+    @IBOutlet weak var btnGoCustomerProfile: UIButton!
     
     // MEAL DETAILS SECTION
+     @IBOutlet weak var mealDetailsSectionView: UIView!
     @IBOutlet weak var lblMealName: UILabel!
     @IBOutlet weak var verticalSeparatorLine: UIView!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblPreparationTime: UILabel!
+    @IBOutlet weak var mealDescriptionSectionView: UIView!
     @IBOutlet weak var lblMealDescriptionTitle: UILabel!
     @IBOutlet weak var tvMealDescription: UITextView!
+    @IBOutlet weak var mealIngredientsSectionView: UIView!
     @IBOutlet weak var lblIngredientsTitle: UILabel!
     @IBOutlet weak var tableIngredients: UITableView!
     
@@ -113,10 +117,16 @@ class ChefOrderDetailsVC: BaseVC {
         
         profileImageView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
         
-        lblMealName.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
-        lblMealName.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        mealDetailsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        mealDetailsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
         
-       lblMealDescriptionTitle.text = "Description".getLocalizedString()
+        mealDescriptionSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        mealDescriptionSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        
+        mealIngredientsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        mealIngredientsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        
+        lblMealDescriptionTitle.text = "Description".getLocalizedString()
         lblIngredientsTitle.text = "Ingredients".getLocalizedString()
         tableIngredients.register(IngredientsTableViewCell.self, forCellReuseIdentifier: self.ingredientsTableCellId)
         
@@ -140,6 +150,11 @@ class ChefOrderDetailsVC: BaseVC {
     var tapped = 0
     @IBAction func closeTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func goCustomerProfileTapped(_ sender: Any) {
+        // TODO: go customer profile
+        print("go customer profile")
     }
     
     @IBAction func updateOrderStatusTapped(_ sender: Any) {

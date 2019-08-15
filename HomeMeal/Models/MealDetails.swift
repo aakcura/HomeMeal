@@ -38,6 +38,17 @@ class MealDetails {
         self.price = dictionary["price"] as! Double
     }
     
+    init(meal:Meal) {
+        self.currencySymbol = meal.currencySymbol
+        self.description = meal.description
+        self.ingredients = meal.ingredients
+        self.mealName = meal.mealName
+        self.preparationTime = meal.preparationTime
+        let (_, hour, minute, _) = self.preparationTime.getDayHourMinuteAndSecondAsInt()
+        self.detailedPreparationTime = (hour,minute)
+        self.price = meal.price
+    }
+    
     func getDictionary() -> [String:AnyObject]{
         var dictionary = [
             "currencySymbol": self.currencySymbol,

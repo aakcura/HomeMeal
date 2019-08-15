@@ -18,6 +18,12 @@ class Order {
         self.orderDetails = OrderDetails(dictionary: orderDetailsDictionary)
     }
     
+    /// Use this initializer for create new order
+    init(newOrderId:String, meal:Meal, chef:Chef, customer:Customer) {
+        self.mealDetails = MealDetails(meal: meal)
+        self.orderDetails = OrderDetails(newOrderId: newOrderId, chef: chef, customer: customer)
+    }
+    
     func getDictionary() -> [String:AnyObject]{
         let dictionary = [
             "mealDetails": self.mealDetails.getDictionary(),

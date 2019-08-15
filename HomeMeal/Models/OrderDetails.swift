@@ -46,6 +46,18 @@ class OrderDetails {
         self.detailedOrderTime = self.orderTime.getDetailedTime()
     }
     
+    /// Use this initializer for create new order's detail
+    init(newOrderId:String, chef:Chef, customer: Customer) {
+        self.chefId = chef.userId
+        self.chefName = chef.name
+        self.kitchenInformation = chef.kitchenInformation
+        self.customerId = customer.userId
+        self.customerName = customer.name
+        self.orderId = newOrderId
+        self.orderStatus = .received
+        self.orderTime = Date().timeIntervalSince1970
+    }
+    
     func getDictionary() -> [String:AnyObject]{
         let chefDetails = [
             "chefId": self.chefId,
