@@ -290,7 +290,7 @@ extension MealPreparationVC{
             // TODO: Error handling
             self.hideActivityIndicatorView(isUserInteractionEnabled: true)
             DispatchQueue.main.async {
-                AlertService.showAlert(in: self, message: "Yemek oluşturulamadı", title: "", style: .alert)
+                AlertService.showAlert(in: self, message: "Yemek oluşturulamadı".getLocalizedString(), title: "", style: .alert)
             }
             return
         }

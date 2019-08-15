@@ -35,6 +35,7 @@
 		15335DA32303DACE00E7FD05 /* CustomerOrdersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335DA22303DACE00E7FD05 /* CustomerOrdersTableViewCell.swift */; };
 		15335DA52303DB4800E7FD05 /* CustomerOrderDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335DA42303DB4800E7FD05 /* CustomerOrderDetailsVC.swift */; };
 		15335DA723043B5100E7FD05 /* CommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335DA623043B5100E7FD05 /* CommentVC.swift */; };
+		15335DA92305E2FA00E7FD05 /* MealDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15335DA82305E2FA00E7FD05 /* MealDetailVC.swift */; };
 		153AFAD822F8DB80008AA86A /* CustomerTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */; };
 		153AFADA22F8DB90008AA86A /* ChefTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */; };
 		153AFADE22FB27DE008AA86A /* SocialAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AFADD22FB27DE008AA86A /* SocialAccount.swift */; };
@@ -131,6 +132,7 @@
 		15335DA22303DACE00E7FD05 /* CustomerOrdersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrdersTableViewCell.swift; sourceTree = "<group>"; };
 		15335DA42303DB4800E7FD05 /* CustomerOrderDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrderDetailsVC.swift; sourceTree = "<group>"; };
 		15335DA623043B5100E7FD05 /* CommentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentVC.swift; sourceTree = "<group>"; };
+		15335DA82305E2FA00E7FD05 /* MealDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailVC.swift; sourceTree = "<group>"; };
 		153AFAD722F8DB80008AA86A /* CustomerTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerTabBarController.swift; sourceTree = "<group>"; };
 		153AFAD922F8DB90008AA86A /* ChefTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefTabBarController.swift; sourceTree = "<group>"; };
 		153AFADD22FB27DE008AA86A /* SocialAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAccount.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				15335D9E2303D1CA00E7FD05 /* CustomerMealListVC.swift */,
+				15335DA82305E2FA00E7FD05 /* MealDetailVC.swift */,
 			);
 			path = MealList;
 			sourceTree = "<group>";
@@ -688,6 +691,7 @@
 				158A86BF22DBB3BF002D3C6C /* DeepLinkParser.swift in Sources */,
 				15F7D75822DC8775001DF7B1 /* LoginVC.swift in Sources */,
 				15F7D75A22DC8783001DF7B1 /* MainVC.swift in Sources */,
+				15335DA92305E2FA00E7FD05 /* MealDetailVC.swift in Sources */,
 				15335DA32303DACE00E7FD05 /* CustomerOrdersTableViewCell.swift in Sources */,
 				158A869122D5ADBB002D3C6C /* Extension-UIView.swift in Sources */,
 				158A869D22D5ADBB002D3C6C /* Extension-UIWindow.swift in Sources */,

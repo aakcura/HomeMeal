@@ -8,6 +8,8 @@
 import UIKit
 import Firebase
 import Cosmos
+//import CoreLocation
+import MapKit
 
 class CustomerOrderDetailsVC: BaseVC {
     
@@ -38,6 +40,12 @@ class CustomerOrderDetailsVC: BaseVC {
     @IBOutlet weak var lblOrderDetailsSectionTitle: UILabel!
     @IBOutlet weak var lblCurrentOrderStatus: UILabel!
     @IBOutlet weak var lblOrderTime: UILabel!
+    
+    // KITCHEN INFORMATION SECTION
+    @IBOutlet weak var kitchenInformationSectionView: UIView!
+    @IBOutlet weak var lblKitchenInformationSectionTitle: UILabel!
+    @IBOutlet weak var tvKitchenAddressDescription: UITextView!
+    @IBOutlet weak var btnKitchenLocation: UIButton!
     
     @IBOutlet weak var btnCancelOrder: UIButton!
     
@@ -91,8 +99,6 @@ class CustomerOrderDetailsVC: BaseVC {
         }
     }
     
-    var commentId: String?
-    
     var chef: Chef? {
         didSet{
             if let chef = self.chef{
@@ -100,6 +106,8 @@ class CustomerOrderDetailsVC: BaseVC {
             }
         }
     }
+    
+    var kitchenLocation: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +150,11 @@ class CustomerOrderDetailsVC: BaseVC {
         orderDetailsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
         lblOrderDetailsSectionTitle.text = "Order Details".getLocalizedString()
         
+        kitchenInformationSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        kitchenInformationSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblKitchenInformationSectionTitle.text = "Chef's Kitchen Information".getLocalizedString()
+        
+        
         btnCancelOrder.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnCancelOrder.setTitle("Cancel Order".getLocalizedString(), for: .normal)
         
@@ -161,6 +174,22 @@ class CustomerOrderDetailsVC: BaseVC {
         // TODO: Go chef profile
         print("GO CHEF PROFİLE")
     }
+    
+    @IBAction func kitchenLocationTapped(_ sender: Any) {
+        guard let kitchenLocation = self.kitchenLocation else { return }
+        
+        let regionDistance:CLLocationDistance = 10000
+        let regionSpan = MKCoordinateRegion(center: kitchenLocation, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: kitchenLocation, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = "Chef's Kitchen Location".getLocalizedString()
+        mapItem.openInMaps(launchOptions: options)
+    }
+    
     
     @IBAction func cancelOrderTapped(_ sender: Any) {
         if NetworkManager.isConnectedNetwork() {
@@ -286,8 +315,11 @@ extension CustomerOrderDetailsVC {
                 let attributedOrderDateAndTimeString = NSMutableAttributedString(string: orderDateAndTimeString)
                 attributedOrderTimeText.append(attributedOrderDateAndTimeString)
             }
-            
             self.lblOrderTime.attributedText = attributedOrderTimeText
+            
+            
+            self.tvKitchenAddressDescription.text = order.orderDetails.kitchenInformation.addressDescription
+            self.kitchenLocation = CLLocationCoordinate2D.init(latitude: order.orderDetails.kitchenInformation.latitude, longitude: order.orderDetails.kitchenInformation.longitude)
             
             self.hideInformationView()
         }
@@ -309,7 +341,7 @@ extension CustomerOrderDetailsVC {
             }
         }
     }
-    
+
     private func configureCommentButton(){
         guard let currentOrderStatus = self.currentOrderStatus else {return}
         DispatchQueue.main.async {
@@ -452,18 +484,25 @@ extension CustomerOrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-// COMMENT VC Presentation
-extension CustomerOrderDetailsVC: CommentVCPresentationDelegate{
+// COMMENT VC DELEGATES
+extension CustomerOrderDetailsVC: CommentVCPresentationDelegate, CommentVCDataTransferDelegate{
+
     func closeCommentPopup() {
         self.dismiss(animated: true, completion: nil)
     }
     
     func showCommentPopup(for order:Order){
         let commentVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CommentVC") as! CommentVC
-        commentVC.delegate = self
+        commentVC.presentationDelegate = self
+        commentVC.dataTransferDelegate = self
         commentVC.modalPresentationStyle = .overCurrentContext
         commentVC.modalTransitionStyle = .crossDissolve
         self.present(commentVC, animated: true, completion: nil)
         commentVC.order = order
+    }
+    
+    func newCommentAddedWith(commentId: String) {
+        guard let order = self.order else { return }
+        order.orderDetails.commentId = commentId
     }
 }

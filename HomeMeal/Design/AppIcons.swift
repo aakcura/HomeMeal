@@ -32,6 +32,8 @@ class AppIcons {
 
     static let pencilWhiteIcon = UIImage(named: "pencilWhite")!
     
+    static let mapIcon = UIImage(named: "map-icon")!
+    
     
     // Font Awesome Brand Icons
     static let faLinkedinBrand = "";

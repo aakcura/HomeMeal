@@ -285,8 +285,6 @@ extension ChefPastOrdersVC {
         }
         let chefOrdersPath = "chefIncomingOrders/\(uid)"
         
-        showActivityIndicatorView(isUserInteractionEnabled: false)
-        
         // ORDER ADDED TO CHEF INCOMING ORDERS
         dbRef.child(chefOrdersPath).observe(.childAdded) { (snapshot) in
             let orderId = snapshot.key
@@ -329,15 +327,12 @@ extension ChefPastOrdersVC {
     }
     
     private func updateOrderInOrders(_ updatedOrder:Order, index: Int){
-        if let index = orders.firstIndex(where: { (order) -> Bool in
-            return order.orderDetails.orderId == updatedOrder.orderDetails.orderId
-        }){
-            orders[index] = updatedOrder
-            attemptReloadOfTableView()
-        }
+        orders[index] = updatedOrder
+        attemptReloadOfTableView()
     }
     
     private func getOrderBy(orderId: String){
+        showActivityIndicatorView(isUserInteractionEnabled: false)
         dbRef.child("orders/\(orderId)").observe(.value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let index = self.orders.firstIndex(where: { (order) -> Bool in

@@ -14,6 +14,11 @@ protocol CommentVCPresentationDelegate{
     func closeCommentPopup()
 }
 
+protocol CommentVCDataTransferDelegate{
+    /// Send newly added comment ıd
+    func newCommentAddedWith(commentId:String)
+}
+
 class CommentVC: UIViewController {
     
     enum CommentStatus {
@@ -28,7 +33,6 @@ class CommentVC: UIViewController {
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var ratingView: CosmosView!
     
-    @IBOutlet weak var lblCommentTitle: UILabel!
     @IBOutlet weak var tvComment: UITextView!
     @IBOutlet weak var btnAddComment: UIButton!
     
@@ -57,7 +61,8 @@ class CommentVC: UIViewController {
         }
     }
     
-    var delegate: CommentVCPresentationDelegate?
+    var presentationDelegate: CommentVCPresentationDelegate?
+    var dataTransferDelegate: CommentVCDataTransferDelegate?
     var rating: Double?
     
     override func viewDidLoad() {
@@ -66,22 +71,22 @@ class CommentVC: UIViewController {
     }
     
     private func setupUIProperties(){
-        //popupView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.backgroundColor = UIColor(white: 0.5, alpha: 0.7)
         popupView.setCornerRadius(radiusValue: 10.0, makeRoundCorner: false)
-        
-        //btnClose.translatesAutoresizingMaskIntoConstraints = false
         btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
         ratingView.settings.fillMode = .precise
-        lblCommentTitle.text = "Comment".getLocalizedString()
+        tvComment.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnAddComment.setTitle("Add Comment".getLocalizedString(), for: .normal)
+        btnAddComment.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
     }
     
     private func setupRatingView(for commentStatus:CommentStatus){
         if commentStatus == .newComment {
             ratingView.settings.updateOnTouch = true
             ratingView.didTouchCosmos = { rating in
-                self.ratingView.text = "\(rating)"
-                self.rating  = rating
+                let roundedRating = round(rating * 10) / 10
+                self.ratingView.text = "\(roundedRating)"
+                self.rating  = roundedRating
             }
         }
         if commentStatus == .existingComment {
@@ -100,17 +105,63 @@ class CommentVC: UIViewController {
         self.tvComment.text = comment.commentText ?? "Yorum bulunmamaktadır".getLocalizedString()
         self.tvComment.isEditable = false
         self.btnAddComment.isEnabled = false
+        self.btnAddComment.isHidden = true
     }
     
     @IBAction func closeTapped(_ sender: Any) {
-        if self.delegate != nil {
-            self.delegate?.closeCommentPopup()
+        if self.presentationDelegate != nil {
+            self.presentationDelegate?.closeCommentPopup()
         }else{
             self.dismiss(animated: true, completion: nil)
         }
     }
     
     @IBAction func addCommentTapped(_ sender: Any) {
+        if NetworkManager.isConnectedNetwork(){
+            guard let order = self.order else {
+                return
+            }
+            
+            let commentsDbRef = Database.database().reference().child("comments")
+            guard let newCommentId = commentsDbRef.childByAutoId().key else{
+                DispatchQueue.main.async {
+                    AlertService.showAlert(in: self, message: "Comment Oluşturulamadı".getLocalizedString(), title: "", style: .alert)
+                }
+                return
+            }
+            
+            var dictionary = [
+                "chefId": order.orderDetails.chefId,
+                "chefName": order.orderDetails.chefName,
+                "commentId": newCommentId,
+                "commentTime": Date().timeIntervalSince1970,
+                "customerId": order.orderDetails.customerId,
+                "customerName": order.orderDetails.customerName,
+                "orderId": order.orderDetails.orderId,
+                "rating": self.rating ?? 0.0
+                ] as [String:AnyObject]
+            
+            if !tvComment.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
+                dictionary["commentText"] = tvComment.text as AnyObject
+            }
+            
+            self.addComment(newCommentId: newCommentId, values: dictionary) { (error) in
+                if let error = error {
+                    AlertService.showAlert(in: self, message: error.localizedDescription)
+                }else{
+                    let alert = UIAlertController(title: nil, message: "Yorumunuz eklendi".getLocalizedString(), preferredStyle: .alert)
+                    let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: { (action) in
+                        self.dataTransferDelegate?.newCommentAddedWith(commentId: newCommentId)
+                        self.closeTapped(true)
+                    })
+                    
+                    alert.addAction(closeButton)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }else{
+            AlertService.showNoInternetConnectionErrorAlert(in: self)
+        }
     }
 
 }
@@ -118,8 +169,11 @@ class CommentVC: UIViewController {
 // FIREBASE OPERATIONS
 extension CommentVC {
     
-    private func addComment(values: [String:AnyObject], completion: @escaping (Error?) -> Void){
-        // TODO: ADD comment to database
+    private func addComment(newCommentId:String, values: [String:AnyObject], completion: @escaping (Error?) -> Void){
+        let dbPath = "comments/\(newCommentId)"
+        Database.database().reference().child(dbPath).setValue(values) { (error, dbRef) in
+            completion(error)
+        }
     }
     
     private func getComment(by commentId:String, completion: @escaping (Comment?) -> Void){

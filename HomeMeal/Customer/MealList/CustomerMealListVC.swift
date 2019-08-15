@@ -16,6 +16,12 @@ class CustomerMealListVC: UIViewController {
     
     private func setupUIProperties(){
         self.view.backgroundColor = .white
+        customizeNavBar()
     }
+    
+    private func customizeNavBar(){
+        setNavBarTitle("My Orders".getLocalizedString())
+    }
+    
     
 }
