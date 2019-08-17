@@ -33,7 +33,13 @@ class AppIcons {
     static let pencilWhiteIcon = UIImage(named: "pencilWhite")!
     
     static let mapIcon = UIImage(named: "map-icon")!
+    static let settingsIcon = UIImage(named: "settings")!
     
+    static let arrowRightIcon = UIImage(named: "arrowRight")!
+    static let arrowLeftIcon = UIImage(named: "arrowLeft")!
+    
+    static let filterIcon = UIImage(named: "filter")!
+    static let locationArrowIcon = UIImage(named: "locationArrow")!
     
     // Font Awesome Brand Icons
     static let faLinkedinBrand = "";
@@ -48,8 +54,6 @@ class AppIcons {
     static let faClockSolid = "";
     static let faCalendarSolid = "";
     
-    
-
     // Font Awesome Regular Icons
     static let faAddressCardRegular = " ";
     static let faClockRegular = "";

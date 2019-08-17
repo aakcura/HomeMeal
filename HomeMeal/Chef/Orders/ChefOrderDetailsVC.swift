@@ -38,6 +38,7 @@ class ChefOrderDetailsVC: BaseVC {
     @IBOutlet weak var lblOrderDetailsSectionTitle: UILabel!
     @IBOutlet weak var lblCurrentOrderStatus: UILabel!
     @IBOutlet weak var lblOrderTime: UILabel!
+    @IBOutlet weak var btnComplaint: UIButton!
     @IBOutlet weak var lblSelectNewOrderStatusTitle: UILabel!
     @IBOutlet weak var orderStatusSegmentedControl: UISegmentedControl!
     @IBOutlet weak var btnUpdateOrderStatus: UIButton!
@@ -157,6 +158,51 @@ class ChefOrderDetailsVC: BaseVC {
         print("go customer profile")
     }
     
+    @IBAction func complaintTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Are you sure you want to complain".getLocalizedString(), message: "".getLocalizedString(), preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes".getLocalizedString(), style: .destructive) { (action) in
+            let complaintAlert = UIAlertController(title: "Complaint".getLocalizedString(), message: "Can you state your complaint".getLocalizedString(), preferredStyle: .alert)
+            complaintAlert.addTextField(configurationHandler: { (complainTextField:UITextField) in
+                complainTextField.placeholder = "Enter your complaint message".getLocalizedString()
+                complainTextField.textColor = UIColor.black
+                complainTextField.delegate = self
+            })
+            let complainAction = UIAlertAction(title: "Complain".getLocalizedString(), style: .destructive) { (action) in
+                if let complaintMessage = complaintAlert.textFields![0].text {
+                    if !complaintMessage.isEmpty && !complaintMessage.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+                        let values = [
+                            "complainantUserAccountTypePath": "chefs",
+                            "complainantUserId": AppDelegate.shared.currentUserAsChef!.userId,
+                            "complaintText": complaintMessage,
+                            "orderId": self.order?.orderDetails.orderId ?? nil,
+                            "suspiciousUserAccountTypePath": "customers",
+                            "suspiciousUserId": self.customer!.userId
+                            ] as [String:AnyObject]
+                        self.addNewComplaint(with: values, completion: { (error) in
+                            if let error = error {
+                                AlertService.showAlert(in: self, message: error.localizedDescription)
+                            }else{
+                                AlertService.showAlert(in: self, message: "We are dealing with your complaint".getLocalizedString(), title: "Your Complaint Was Received".getLocalizedString(), style: .alert)
+                            }
+                        })
+                    }else{
+                        AlertService.showAlert(in: self, message: "ComplaintMessageNotEntered".getLocalizedString(), title: "", style: .actionSheet)
+                    }
+                }else{
+                    AlertService.showAlert(in: self, message: "ComplaintMessageNotEntered".getLocalizedString(), title: "", style: .actionSheet)
+                }
+            }
+            let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+            complaintAlert.addAction(closeAction)
+            complaintAlert.addAction(complainAction)
+            self.present(complaintAlert, animated: true, completion: nil)
+        }
+        let noAction = UIAlertAction(title: "No".getLocalizedString(), style: .cancel, handler: nil)
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func updateOrderStatusTapped(_ sender: Any) {
         if NetworkManager.isConnectedNetwork() {
             if let order = self.order {
@@ -202,6 +248,30 @@ class ChefOrderDetailsVC: BaseVC {
         }
     }
     
+}
+
+// COMPLAINT MESSAGE SECTION
+extension ChefOrderDetailsVC: UITextFieldDelegate {
+    
+    func addNewComplaint(with values: [String:AnyObject],  completion: @escaping (Error?) -> Void){
+        let dbRef = Database.database().reference().child("complaints")
+        guard let newComplaintId = dbRef.childByAutoId().key else{
+            DispatchQueue.main.async {
+                AlertService.showAlert(in: self, message: "Complaint Oluşturulamadı".getLocalizedString(), title: "", style: .alert)
+            }
+            return
+        }
+        dbRef.child(newComplaintId).setValue(values) { (error, dbRef) in
+            completion(error)
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        return updatedText.count <= AppConstants.complaintMessageCharacterCountLimit
+    }
 }
 
 // PAGE CONFIGURATION OPERATIONS

@@ -79,6 +79,9 @@
 		158A86BD22DBA163002D3C6C /* ShortcutParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A86BC22DBA163002D3C6C /* ShortcutParser.swift */; };
 		158A86BF22DBB3BF002D3C6C /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A86BE22DBB3BF002D3C6C /* DeepLinkParser.swift */; };
 		158A86C122DBB9EB002D3C6C /* NotificationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A86C022DBB9EB002D3C6C /* NotificationParser.swift */; };
+		15A588EE2306A6E90064ACF4 /* ChefProfileEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A588ED2306A6E90064ACF4 /* ChefProfileEditVC.swift */; };
+		15A588F02306A7380064ACF4 /* ChefProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A588EF2306A7380064ACF4 /* ChefProfileVC.swift */; };
+		15A588F22306A9190064ACF4 /* CustomerProfileEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A588F12306A9190064ACF4 /* CustomerProfileEditVC.swift */; };
 		15CD9D3722DCF5A30031F4F2 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D3622DCF5A30031F4F2 /* MainNavigationController.swift */; };
 		15CD9D3922DCF6F80031F4F2 /* ActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D3822DCF6F80031F4F2 /* ActivityVC.swift */; };
 		15CD9D3C22DD10050031F4F2 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD9D3A22DD10050031F4F2 /* PaddingLabel.swift */; };
@@ -181,6 +184,9 @@
 		158A86BC22DBA163002D3C6C /* ShortcutParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutParser.swift; sourceTree = "<group>"; };
 		158A86BE22DBB3BF002D3C6C /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		158A86C022DBB9EB002D3C6C /* NotificationParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationParser.swift; sourceTree = "<group>"; };
+		15A588ED2306A6E90064ACF4 /* ChefProfileEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefProfileEditVC.swift; sourceTree = "<group>"; };
+		15A588EF2306A7380064ACF4 /* ChefProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChefProfileVC.swift; sourceTree = "<group>"; };
+		15A588F12306A9190064ACF4 /* CustomerProfileEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileEditVC.swift; sourceTree = "<group>"; };
 		15CD9D3622DCF5A30031F4F2 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		15CD9D3822DCF6F80031F4F2 /* ActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVC.swift; sourceTree = "<group>"; };
 		15CD9D3A22DD10050031F4F2 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -348,6 +354,8 @@
 		15335D862301F8D200E7FD05 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				15A588EF2306A7380064ACF4 /* ChefProfileVC.swift */,
+				15A588ED2306A6E90064ACF4 /* ChefProfileEditVC.swift */,
 				15F7D75922DC8783001DF7B1 /* MainVC.swift */,
 			);
 			path = Profile;
@@ -378,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				15335D9A2303D17100E7FD05 /* CustomerProfileVC.swift */,
+				15A588F12306A9190064ACF4 /* CustomerProfileEditVC.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -659,6 +668,7 @@
 				15CD9D4722E3828B0031F4F2 /* ChefSignUpVC.swift in Sources */,
 				1513FA6A22E3C94200DAADC4 /* AccountInfo.swift in Sources */,
 				153AFAE422FCB5B3008AA86A /* MealPreparationVC.swift in Sources */,
+				15A588EE2306A6E90064ACF4 /* ChefProfileEditVC.swift in Sources */,
 				158A869E22D5ADBB002D3C6C /* Extension-UITableView.swift in Sources */,
 				158A86BD22DBA163002D3C6C /* ShortcutParser.swift in Sources */,
 				15CD9D3722DCF5A30031F4F2 /* MainNavigationController.swift in Sources */,
@@ -675,6 +685,7 @@
 				158A869B22D5ADBB002D3C6C /* Extension-Date.swift in Sources */,
 				15F7D75E22DCEBEE001DF7B1 /* SplashVC.swift in Sources */,
 				153AFAE823007503008AA86A /* ChefMenuVC.swift in Sources */,
+				15A588F22306A9190064ACF4 /* CustomerProfileEditVC.swift in Sources */,
 				153AFAE022FB7F10008AA86A /* Meal.swift in Sources */,
 				15335DA52303DB4800E7FD05 /* CustomerOrderDetailsVC.swift in Sources */,
 				15CD9D4B22E393A30031F4F2 /* Extension-UIViewController.swift in Sources */,
@@ -721,6 +732,7 @@
 				158A869322D5ADBB002D3C6C /* AppStoreReviewHelper.swift in Sources */,
 				15335D8C2302868F00E7FD05 /* OrderDetails.swift in Sources */,
 				15CD9D4322E324080031F4F2 /* Extension-UIColor.swift in Sources */,
+				15A588F02306A7380064ACF4 /* ChefProfileVC.swift in Sources */,
 				158A869C22D5ADBB002D3C6C /* Extension-Gif+Image.swift in Sources */,
 				158A86AB22D5B4E0002D3C6C /* ErrorCollectionViewCell.swift in Sources */,
 				15335D96230326E000E7FD05 /* ChefOrdersTableViewCell.swift in Sources */,

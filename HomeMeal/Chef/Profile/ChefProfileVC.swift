@@ -1,5 +1,5 @@
 //
-//  CustomerProfileVC.swift
+//  ChefProfileVC.swift
 //  HomeMeal
 //
 //  Copyright © 2019 Arin Akcura. All rights reserved.
@@ -8,8 +8,8 @@
 import UIKit
 import Firebase
 
-class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
-
+class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
+    
     func showActivityScreen(){
         let activityScreen = ActivityVC()
         self.navigationController?.pushViewController(activityScreen, animated: true)
@@ -23,7 +23,7 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         }
     }
     
-    var user: Customer? {
+    var user: Chef? {
         didSet{
             // configureUI
             print(user)
@@ -42,7 +42,7 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let currentUser = AppDelegate.shared.currentUserAsCustomer else {
+        guard let currentUser = AppDelegate.shared.currentUserAsChef else {
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "Error".getLocalizedString(), message: "Profil bilgileriniz bulunamadı lütfen tekrar giriş yapınız".getLocalizedString(), preferredStyle: .alert)
                 let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .destructive) { (action) in
@@ -115,7 +115,7 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         alert.addAction(closeAction)
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     @objc private func signOut(){
         // store the user session (example only, not for the production)
         if NetworkManager.isConnectedNetwork(){
@@ -153,12 +153,12 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     }
 }
 
-extension CustomerProfileVC {
+extension ChefProfileVC {
     private func getUserByUserId(_ userId:String){
         if NetworkManager.isConnectedNetwork(){
-            Database.database().reference().child("customers/\(userId)").observe(.value) { (snapshot) in
+            Database.database().reference().child("chefs/\(userId)").observe(.value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject]{
-                    let user = Customer(dictionary: dictionary)
+                    let user = Chef(dictionary: dictionary)
                     self.user = user
                 }
             }
@@ -170,11 +170,11 @@ extension CustomerProfileVC {
     }
     
     // NOT IN USE
-    private func getUserByUserId(_ userId:String, completion: @escaping (Customer?) -> Void){
+    private func getUserByUserId(_ userId:String, completion: @escaping (Chef?) -> Void){
         if NetworkManager.isConnectedNetwork(){
-            Database.database().reference().child("customers/\(userId)").observe(.value) { (snapshot) in
+            Database.database().reference().child("chefs/\(userId)").observe(.value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject]{
-                    let user = Customer(dictionary: dictionary)
+                    let user = Chef(dictionary: dictionary)
                     completion(user)
                 }else{
                     completion(nil)
@@ -189,7 +189,7 @@ extension CustomerProfileVC {
 }
 
 // SETTINGS SECTION
-extension CustomerProfileVC {
+extension ChefProfileVC {
     @objc func contactUsViaMail() {
         guard let emailActionSheet = chooseEmailActionSheet else{
             return
@@ -240,10 +240,9 @@ extension CustomerProfileVC {
     
     private func goToProfileSettings(){
         guard let user = self.user else { return }
-        let profileSettingsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerProfileEditVC") as! CustomerProfileEditVC
-        profileSettingsVC.customer = user
-        self.present(profileSettingsVC, animated: true, completion: nil)
-        //let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
-        //self.present(profileSettingsNavigationController, animated: true, completion: nil)
+        let profileSettingsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefProfileEditVC") as! ChefProfileEditVC
+        profileSettingsVC.chef = user
+        let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
+        self.present(profileSettingsNavigationController, animated: true, completion: nil)
     }
 }

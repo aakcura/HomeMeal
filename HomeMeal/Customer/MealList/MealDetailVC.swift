@@ -78,12 +78,16 @@ class MealDetailVC: UIViewController {
             if let meal = self.meal {
                 let chefId = meal.chefId
                 let chefName = meal.chefName
-                if self.chef == nil {
-                    self.getChef(by: chefId) { (chef) in
-                        if let chef = chef {
-                            self.chef = chef
-                        }else{
-                            self.configureProfileSectionWith(chefName, self.defaultProfileImage)
+                if let chef = meal.chef {
+                    self.chef = chef
+                }else{
+                    if self.chef == nil {
+                        self.getChef(by: chefId) { (chef) in
+                            if let chef = chef {
+                                self.chef = chef
+                            }else{
+                                self.configureProfileSectionWith(chefName, self.defaultProfileImage)
+                            }
                         }
                     }
                 }

@@ -8,42 +8,54 @@
 import UIKit
 import Firebase
 import Cosmos
+import MapKit
+import CoreLocation
 
 class CustomerMealListVC: BaseVC {
+
+    enum MealListSearchType: Int {
+        case searchByChefName = 0
+        case searchByMealName = 1
+        case searchByPrice = 2
+        case searchByRating = 3
+    }
+    
+    var isLocationSortActive: Bool?{
+        didSet{
+            if self.isLocationSortActive! {
+                checkAuthorizationStatusForUserLocation()
+            }else{
+                self.locationManager.stopUpdatingLocation()
+                self.attemptReloadOfTableView()
+                self.navigationItem.rightBarButtonItem?.tintColor = .white
+            }
+        }
+    }
+    var locationManager: CLLocationManager!
+
+    var userLocation = CLLocation()
+    
     
     let dbRef = Database.database().reference()
     
+    var selectedSearchType: MealListSearchType = .searchByChefName
+    
     var timer: Timer?
-    var orders = [Order]()
-    var groupedOrders = [OrderStatus:[Order]]()
-    var selectedOrderType: OrderStatus = .received
-    let ordersTableCellId = "customerMealListTableViewCellId"
-    let noOrdersErrorMessage = "No Meals Error Message".getLocalizedString()
-    let ordersTableCellHeight: CGFloat = {
-        return CGFloat.init(200.0)
+    var searchedMeals = [Meal]()
+    var allMeals = [Meal]()
+    var chefs = [String:Chef]()
+    let mealListTableCellId = "mealListTableViewCellId"
+    let noMealsErrorMessage = "No Meals Error Message".getLocalizedString()
+    let mealsTableCellHeight: CGFloat = {
+        return CGFloat.init(260.0)
     }()
-    let emptyOrdersTableCellHeight: CGFloat = {
+    let emptyMealsTableCellHeight: CGFloat = {
         return CGFloat.init(50.0)
     }()
     
+    let searchController = UISearchController(searchResultsController: nil)
     
-    let segmentedControl : UISegmentedControl = {
-        let segmented = UISegmentedControl()
-        segmented.insertSegment(withTitle: OrderStatusText.received.text, at: 0, animated: true)
-        segmented.insertSegment(withTitle: OrderStatusText.preparing.text, at: 1, animated: true)
-        segmented.insertSegment(withTitle: OrderStatusText.prepared.text, at: 2, animated: true)
-        segmented.selectedSegmentIndex = 0
-        segmented.tintColor = AppColors.navBarBackgroundColor
-        segmented.backgroundColor = UIColor.white
-        let titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
-            NSAttributedString.Key.foregroundColor: UIColor.white
-        ]
-        segmented.setTitleTextAttributes(titleTextAttributes, for: .selected)
-        return segmented
-    }()
-    
-    let ordersTable : UITableView = {
+    let mealsTable : UITableView = {
         let table = UITableView()
         table.backgroundColor = UIColor.white
         return table
@@ -53,7 +65,8 @@ class CustomerMealListVC: BaseVC {
         super.viewDidLoad()
         self.removeNavBarBackButtonText()
         setupUIProperties()
-        observeCustomerOrders()
+        setupLocationManager()
+        observeOrderableMealList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,54 +76,343 @@ class CustomerMealListVC: BaseVC {
     private func setupUIProperties(){
         view.backgroundColor = .white
         customizeNavBar()
-        setupSegmentedControl()
+        configureSearchController()
         setupTableView()
         addActivityIndicatorToView()
     }
     
     private func customizeNavBar(){
-        setNavBarTitle("My Orders".getLocalizedString())
-        let btnShowPastOrders = UIBarButtonItem(image: AppIcons.listWhiteIcon, style: .plain, target: self, action: #selector(showPastOrders))
-        self.navigationItem.rightBarButtonItems = [btnShowPastOrders]
+        setNavBarTitle("Meal List".getLocalizedString())
+        let btnLocationFilter = UIBarButtonItem(image: AppIcons.locationArrowIcon, style: .plain, target: self, action: #selector(locationFilterTapped))
+        self.navigationItem.rightBarButtonItem = btnLocationFilter
     }
     
-    @objc func showPastOrders(){
-        let customerPastOrdersVC = CustomerPastOrdersVC()
-        self.navigationController?.pushViewController(customerPastOrdersVC, animated: true)
-        //self.present(chefPastOrdersVC, animated: true, completion: nil)
+    private func configureSearchController(){
+        searchController.searchBar.barTintColor = AppColors.navBarBackgroundColor
+        searchController.searchBar.tintColor = .white
+        searchController.searchBar.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.scopeButtonTitles = ["Chef".getLocalizedString(), "Meal".getLocalizedString(), "Price".getLocalizedString(), "Rating".getLocalizedString()]
+        definesPresentationContext = true
+        mealsTable.tableHeaderView = searchController.searchBar
     }
     
-    private func setupSegmentedControl(){
-        self.view.addSubview(segmentedControl)
-        segmentedControl.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.leadingAnchor, trailing: self.view.trailingAnchor, bottom: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 0, height: 30))
-        segmentedControl.addTarget(self, action: #selector(self.segmentedControlValueChanged(_:)), for: .valueChanged)
+    @objc private func locationFilterTapped(){
+        let alert = UIAlertController(title: nil, message: "Yemek listeniz siz en yakın konumdaki yemeklere göre listelenecektir devam etmek istermisiniz".getLocalizedString(), preferredStyle: .alert)
+        let cancelButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+        alert.addAction(cancelButton)
+        
+        if let isLocationSortActive = self.isLocationSortActive {
+            if isLocationSortActive {
+                let deactivateLocationSort = UIAlertAction(title: "Deactivate".getLocalizedString(), style: .default, handler: { (action) in
+                    self.isLocationSortActive = false
+                })
+                alert.addAction(deactivateLocationSort)
+            }else{
+                let activateLocationSort = UIAlertAction(title: "Activate".getLocalizedString(), style: .default, handler: { (action) in
+                    self.isLocationSortActive = true
+                })
+                alert.addAction(activateLocationSort)
+            }
+        }else{
+            let activateLocationSort = UIAlertAction(title: "Activate".getLocalizedString(), style: .default, handler: { (action) in
+                self.isLocationSortActive = true
+            })
+            alert.addAction(activateLocationSort)
+        }
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
-    
+
     private func setupTableView(){
-        self.view.addSubview(ordersTable)
-        ordersTable.anchor(top: self.segmentedControl.bottomAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, trailing: self.view.safeAreaLayoutGuide.trailingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, padding: UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10))
-        ordersTable.register(CustomerOrdersTableViewCell.self, forCellReuseIdentifier: ordersTableCellId)
-        ordersTable.separatorStyle = .none
-        ordersTable.dataSource = self
-        ordersTable.delegate = self
+        self.view.addSubview(mealsTable)
+        mealsTable.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, trailing: self.view.safeAreaLayoutGuide.trailingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, padding: UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0))
+        mealsTable.register(MealListTableViewCell.self, forCellReuseIdentifier: mealListTableCellId)
+        mealsTable.separatorStyle = .none
+        mealsTable.dataSource = self
+        mealsTable.delegate = self
+    }
+}
+
+// LOCATION MANAGER SECTION
+extension CustomerMealListVC: CLLocationManagerDelegate{
+    
+    private func setupLocationManager(){
+        self.locationManager = CLLocationManager()
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        if self.locationManager.delegate == nil {
+            self.locationManager.delegate = self
+        }
     }
     
-    @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            self.selectedOrderType = .received
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        self.checkAuthorizationStatusForUserLocation()
+    }
+    
+    func checkAuthorizationStatusForUserLocation(){
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
             break
-        case 1:
-            self.selectedOrderType = .preparing
+        case .denied,.restricted:
+            self.handleLocationAccessDenied()
             break
-        case 2:
-            self.selectedOrderType = .prepared
+        case .authorizedWhenInUse:
+            self.handleLocationAccessGranted()
             break
         default:
             break
         }
-        DispatchQueue.main.async { [weak self] in
-            self?.ordersTable.reloadData()
+    }
+    
+
+    func handleLocationAccessDenied(){
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Location Permission".getLocalizedString(), message: "No location permission".getLocalizedString(), preferredStyle: .alert)
+            let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+            let openSettingsButton = UIAlertAction(title: "Open Settings".getLocalizedString(), style: .default, handler: { (action) in
+                UIApplication.shared.open(URL.init(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+            })
+            alert.addAction(closeButton)
+            alert.addAction(openSettingsButton)
+            self.present(alert, animated: true, completion: nil)
+        }
+        self.isLocationSortActive = false
+    }
+    
+    func handleLocationAccessGranted(){
+        if self.isLocationSortActive == nil {
+            self.isLocationSortActive = true
+            return
+        }
+        locationManager.startUpdatingLocation()
+        navigationItem.rightBarButtonItem?.tintColor = .blue
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let updatedUserLocation = locations[0]
+        if !userLocation.coordinate.latitude.isEqual(to: updatedUserLocation.coordinate.latitude) && !userLocation.coordinate.longitude.isEqual(to: updatedUserLocation.coordinate.longitude){
+            userLocation = updatedUserLocation
+            let authorizationStatus = CLLocationManager.authorizationStatus()
+            if authorizationStatus == .authorizedWhenInUse {
+                sortMealsByUserLocation(userLocation)
+            }
+        }
+    }
+    
+    private func sortMealsByUserLocation(_ userLocation: CLLocation){
+        self.searchedMeals.sort { (meal2, meal1) -> Bool in
+            if let meal2KitchenLocation = meal2.chef?.kitchenInformation.getKitchenLocation(), let meal1KitchenLocation = meal1.chef?.kitchenInformation.getKitchenLocation() {
+                let distanceBetweenUserAndMeal2KitchenLocation = userLocation.distance(from: meal2KitchenLocation)
+                let distanceBetweenUserAndMeal1KitchenLocation = userLocation.distance(from: meal1KitchenLocation)
+                
+                if distanceBetweenUserAndMeal2KitchenLocation < distanceBetweenUserAndMeal1KitchenLocation {
+                    return true
+                }else{
+                    return false
+                }
+            }else{
+                return false
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
+        }
+    }
+    
+}
+
+// SEARC BAR SECTION
+extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
+    func updateSearchResults(for searchController: UISearchController) {
+        filterSearchController(searchController.searchBar)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        self.selectedSearchType = MealListSearchType(rawValue: selectedScope) ?? MealListSearchType.searchByMealName
+        var placeholderText = ""
+        switch self.selectedSearchType {
+        case .searchByPrice:
+            placeholderText = "searchByPricePlaceholderText".getLocalizedString()
+            break
+        case .searchByRating:
+            placeholderText = "searchByRatingPlaceholderText".getLocalizedString()
+            break
+        default:
+            placeholderText = "Search".getLocalizedString()
+            break
+        }
+        searchBar.placeholder = placeholderText
+        filterSearchController(searchBar)
+    }
+    
+    func filterSearchController(_ searchBar: UISearchBar){
+        let searchText = searchBar.text ?? ""
+        switch self.selectedSearchType {
+        case .searchByChefName:
+            self.searchedMeals = allMeals.filter { meal in
+                let isMatchingSearchText =    meal.chefName.localizedLowercase.contains(searchText.localizedLowercase) || searchText.localizedLowercase.count == 0
+                return isMatchingSearchText
+            }
+            
+            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                self.sortMealsByUserLocation(self.userLocation)
+                break
+            }else{
+                self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
+                    return meal2.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
+                })
+                break
+            }
+        case .searchByMealName:
+            self.searchedMeals = allMeals.filter { meal in
+                let isMatchingSearchText =    meal.mealName.localizedLowercase.contains(searchText.localizedLowercase) || searchText.localizedLowercase.count == 0
+                return isMatchingSearchText
+            }
+            
+            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                self.sortMealsByUserLocation(self.userLocation)
+                break
+            }else{
+                self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
+                    return meal2.mealName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.mealName    .trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
+                })
+                break
+            }
+        case .searchByPrice:
+            var priceText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
+            if !priceText.isEmpty && priceText.count == 2, let firstPrice = Double(priceText[0]), let secondPrice = Double(priceText[1]){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = (firstPrice <= meal.price && meal.price <= secondPrice) || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return meal2.price < meal1.price
+                    }
+                    break
+                }
+            }
+            
+            let priceGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
+            if let price = Double(priceGreaterThanText){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = meal.price > price || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return meal2.price < meal1.price
+                    }
+                    break
+                }
+            }
+            
+            let priceLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
+            if let price = Double(priceLessThanText){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = meal.price < price || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return meal2.price < meal1.price
+                    }
+                    break
+                }
+            }
+            
+            self.searchedMeals = allMeals
+            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                self.sortMealsByUserLocation(self.userLocation)
+                break
+            }else{
+                self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                    return meal2.price < meal1.price
+                }
+                break
+            }
+        case .searchByRating:
+            var ratingText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
+            if !ratingText.isEmpty && ratingText.count == 2, let firstRating = Double(ratingText[0]), let secondRating = Double(ratingText[1]){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = (firstRating <= (meal.chef?.rating)! && (meal.chef?.rating)! <= secondRating) || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
+                    }
+                    break
+                }
+            }
+            
+            let ratingGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
+            if let rating = Double(ratingGreaterThanText){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = (meal.chef?.rating)! > rating || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
+                    }
+                    break
+                }
+            }
+            
+            let ratingLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
+            if let rating = Double(ratingLessThanText){
+                self.searchedMeals = allMeals.filter({ (meal) -> Bool in
+                    let isMatchingSearchText = (meal.chef?.rating)! < rating || searchText.localizedLowercase.count == 0
+                    return isMatchingSearchText
+                })
+                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                    self.sortMealsByUserLocation(self.userLocation)
+                    break
+                }else{
+                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
+                    }
+                    break
+                }
+            }
+            
+            self.searchedMeals = allMeals
+            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
+                self.sortMealsByUserLocation(self.userLocation)
+                break
+            }else{
+                self.searchedMeals.sort { (meal2, meal1) -> Bool in
+                    return (meal2.chef?.rating)! > (meal1.chef?.rating)!
+                }
+                break
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
         }
     }
 }
@@ -119,131 +421,40 @@ class CustomerMealListVC: BaseVC {
 extension CustomerMealListVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let currentCell = tableView.cellForRow(at: indexPath) as? CustomerOrdersTableViewCell{
-            if let selectedOrder = currentCell.order {
+        if let currentCell = tableView.cellForRow(at: indexPath) as? MealListTableViewCell{
+            if let selectedMeal = currentCell.meal {
                 DispatchQueue.main.async {
-                    let customerOrderDetailVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerOrderDetailsVC") as! CustomerOrderDetailsVC
-                    customerOrderDetailVC.order = selectedOrder
-                    self.present(customerOrderDetailVC, animated: true, completion: nil)
+                    let mealDetailVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "MealDetailVC") as! MealDetailVC
+                    mealDetailVC.meal = selectedMeal
+                    self.present(mealDetailVC, animated: true, completion: nil)
                 }
             }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch selectedOrderType {
-        case .received:
-            if let orders = groupedOrders[.received]{
-                if orders.isEmpty {
-                    return emptyOrdersTableCellHeight
-                }else{
-                    return ordersTableCellHeight
-                }
-            }else{
-                return emptyOrdersTableCellHeight
-            }
-        case .preparing:
-            if let orders = groupedOrders[.preparing]{
-                if orders.isEmpty {
-                    return emptyOrdersTableCellHeight
-                }else{
-                    return ordersTableCellHeight
-                }
-            }else{
-                return emptyOrdersTableCellHeight
-            }
-        case .prepared:
-            if let orders = groupedOrders[.prepared]{
-                if orders.isEmpty {
-                    return emptyOrdersTableCellHeight
-                }else{
-                    return ordersTableCellHeight
-                }
-            }else{
-                return emptyOrdersTableCellHeight
-            }
-        default:
-            return emptyOrdersTableCellHeight
+        if searchedMeals.isEmpty {
+            return emptyMealsTableCellHeight
+        }else{
+            return mealsTableCellHeight
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch selectedOrderType {
-        case .received:
-            if let orders = groupedOrders[.received]{
-                if orders.isEmpty {
-                    return 1
-                }else{
-                    return orders.count
-                }
-            }else{
-                return 1
-            }
-        case .preparing:
-            if let orders = groupedOrders[.preparing]{
-                if orders.isEmpty {
-                    return 1
-                }else{
-                    return orders.count
-                }
-            }else{
-                return 1
-            }
-        case .prepared:
-            if let orders = groupedOrders[.prepared]{
-                if orders.isEmpty {
-                    return 1
-                }else{
-                    return orders.count
-                }
-            }else{
-                return 1
-            }
-        default:
+        if searchedMeals.isEmpty {
             return 1
+        }else{
+            return searchedMeals.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch selectedOrderType {
-        case .received:
-            if let orders = groupedOrders[.received]{
-                if orders.isEmpty {
-                    return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-                }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
-                    cell.order = orders[indexPath.row]
-                    return cell
-                }
-            }else{
-                return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-            }
-        case .preparing:
-            if let orders = groupedOrders[.preparing]{
-                if orders.isEmpty {
-                    return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-                }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
-                    cell.order = orders[indexPath.row]
-                    return cell
-                }
-            }else{
-                return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-            }
-        case .prepared:
-            if let orders = groupedOrders[.prepared]{
-                if orders.isEmpty {
-                    return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-                }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: self.ordersTableCellId, for: indexPath) as! CustomerOrdersTableViewCell
-                    cell.order = orders[indexPath.row]
-                    return cell
-                }
-            }else{
-                return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
-            }
-        default:
-            return getEmptyOrdersErrorCell(with: noOrdersErrorMessage)
+        if searchedMeals.isEmpty {
+            return getEmptyOrdersErrorCell(with: noMealsErrorMessage)
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.mealListTableCellId, for: indexPath) as! MealListTableViewCell
+            cell.meal = searchedMeals[indexPath.row]
+            return cell
         }
     }
     
@@ -256,25 +467,19 @@ extension CustomerMealListVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     @objc func handleReloadTable() {
-        self.groupAndOrderOrders()
+        self.sortMeals()
         DispatchQueue.main.async(execute: {
-            self.ordersTable.reloadData()
+            self.mealsTable.reloadData()
             if self.activityIndicator.isAnimating{
                 self.hideActivityIndicatorView(isUserInteractionEnabled: true)
             }
         })
     }
     
-    private func groupAndOrderOrders(){
-        self.groupedOrders.removeAll()
-        self.groupedOrders = Dictionary(grouping: orders) { (order) -> OrderStatus in
-            return order.orderDetails.orderStatus
-        }
-        groupedOrders.keys.forEach { (key) in
-            groupedOrders[key]?.sort(by: { (order2, order1) -> Bool in
-                return order2.orderDetails.orderTime > order1.orderDetails.orderTime
-            })
-        }
+    private func sortMeals(){
+        self.searchedMeals = allMeals.sorted(by: { (meal2, meal1) -> Bool in
+            return meal2.startTime < meal1.startTime
+        })
     }
     
     private func getEmptyOrdersErrorCell(with message:String) -> UITableViewCell{
@@ -287,85 +492,75 @@ extension CustomerMealListVC: UITableViewDelegate, UITableViewDataSource{
 
 // FIREBASE OPERATIONS
 extension CustomerMealListVC {
-    private func observeCustomerOrders(){
-        guard let uid = AppConstants.currentUserId else{
-            return
-        }
-        let customerOrdersPath = "customerOrders/\(uid)"
-        
-        // ORDER ADDED TO CUSTOMER ORDERS
-        dbRef.child(customerOrdersPath).observe(.childAdded) { (snapshot) in
-            let orderId = snapshot.key
-            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.canceled
-            switch orderStatus {
-            case .received, .preparing, .prepared:
-                self.getOrderBy(orderId: orderId)
-                return
-            default:
-                return
-            }
+    private func observeOrderableMealList(){
+        let orderableMealsPath = "orderableMeals"
+        dbRef.child(orderableMealsPath).observe(.childAdded) { (snapshot) in
+            let mealId = snapshot.key
+            self.getMealBy(mealId: mealId)
         }
         
-        // ORDER UPDATED IN CUSTOMER ORDERS
-        dbRef.child(customerOrdersPath).observe(.childChanged) { (snapshot) in
-            let orderId = snapshot.key
-            let orderStatus = OrderStatus(rawValue: (snapshot.value as! Int)) ?? OrderStatus.canceled
-            switch orderStatus {
-            case .received, .preparing, .prepared:
-                self.getOrderBy(orderId: orderId)
-                return
-            default:
-                return
-            }
+        dbRef.child(orderableMealsPath).observe(.childRemoved) { (snapshot) in
+            let mealId = snapshot.key
+            self.removeMeal(mealId: mealId)
         }
     }
     
-    private func removeOrder(orderId: String, orderStatus: OrderStatus){
-        if let index = orders.firstIndex(where: { (order) -> Bool in
-            return order.orderDetails.orderId == orderId
+    private func removeMeal(mealId: String){
+        if let index = allMeals.firstIndex(where: { (meal) -> Bool in
+            return meal.mealId == mealId
         }){
-            orders.remove(at: index)
+            allMeals.remove(at: index)
             attemptReloadOfTableView()
         }
     }
     
-    private func addNewOrderToOrders(_ newOrder:Order){
-        orders.append(newOrder)
+    private func addNewMealToMeals(_ newMeal:Meal){
+        allMeals.append(newMeal)
+        if let chef = chefs[newMeal.chefId]{
+            newMeal.chef = chef
+        }else{
+            getChefBy(chefId: newMeal.chefId)
+        }
         attemptReloadOfTableView()
     }
     
-    private func updateOrderInOrders(_ updatedOrder:Order, index: Int){
-        orders[index] = updatedOrder
+    private func updateMealInMeals(_ updatedMeal:Meal, index: Int){
+        allMeals[index] = updatedMeal
+    }
+    
+    
+    private func updateAllMealsOfChefWithUpdatedChefInfo(_ chef:Chef){
+        for meal in allMeals{
+            if meal.chefId == chef.userId{
+                meal.chef = chef
+            }
+        }
         attemptReloadOfTableView()
     }
     
-    private func getOrderBy(orderId: String){
-        showActivityIndicatorView(isUserInteractionEnabled: false)
-        dbRef.child("orders/\(orderId)").observe(.value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let index = self.orders.firstIndex(where: { (order) -> Bool in
-                    return order.orderDetails.orderId == orderId
+    private func getChefBy(chefId:String){
+        dbRef.child("chefs/\(chefId)").observe(.value) { (snapshot) in
+            if let chefDictionary = snapshot.value as? [String:AnyObject]{
+                let chef = Chef(dictionary: chefDictionary)
+                self.chefs[chefId] = chef
+                self.updateAllMealsOfChefWithUpdatedChefInfo(chef)
+            }
+        }
+    }
+    
+    private func getMealBy(mealId:String){
+        dbRef.child("meals/\(mealId)").observe(.value) { (snapshot) in
+            if let mealDictionary = snapshot.value as? [String:AnyObject]{
+                let meal = Meal(dictionary: mealDictionary)
+                if let index = self.allMeals.firstIndex(where: { (meal) -> Bool in
+                    return meal.mealId == mealId
                 }){
-                    let updatedOrder = Order(dictionary: dictionary)
-                    self.updateOrderInOrders(updatedOrder, index: index)
+                    self.updateMealInMeals(meal, index: index)
                 }else{
-                    let newOrder = Order(dictionary: dictionary)
-                    self.addNewOrderToOrders(newOrder)
+                    self.addNewMealToMeals(meal)
                 }
             }
         }
     }
     
-    // NOT IN USE
-    private func getOrderBy(orderId: String, completion: @escaping (Order?) -> Void){
-        let orderPath = "orders/\(orderId)"
-        dbRef.child(orderPath).observe(.value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let order = Order(dictionary: dictionary)
-                completion(order)
-            }else{
-                completion(nil)
-            }
-        }
-    }
 }

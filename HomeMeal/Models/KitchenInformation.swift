@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class KitchenInformation{
     var latitude: Double
@@ -24,6 +25,10 @@ class KitchenInformation{
             "longitude": longitude,
             "addressDescription": addressDescription
             ] as [String:AnyObject]
+    }
+    
+    func getKitchenLocation() -> CLLocation {
+        return CLLocation(latitude: self.latitude, longitude: self.longitude)
     }
     
 }

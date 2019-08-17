@@ -255,8 +255,6 @@ extension ChefMenuVC {
         }
         let chefMenuPath = "menu/\(uid)"
         
-        showActivityIndicatorView(isUserInteractionEnabled: false)
-        
         // MEAL ADDED TO CHEF MENU
         dbRef.child(chefMenuPath).observe(.childAdded) { (snapshot) in
             let mealId = snapshot.key
@@ -303,6 +301,7 @@ extension ChefMenuVC {
     
     private func getMealBy(mealId: String){
         // GET MEAL FROM MEALS
+        showActivityIndicatorView(isUserInteractionEnabled: false)
         dbRef.child("meals/\(mealId)").observe(.value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let index = self.meals.firstIndex(where: { (meal) -> Bool in

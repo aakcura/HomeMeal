@@ -14,6 +14,7 @@ class ChefTabBarController: UITabBarController {
         super.viewDidLoad()
         setupUIProperties()
         getCurrentUser()
+        AppStoreReviewHelper.checkAndAskForReview()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,12 +53,12 @@ class ChefTabBarController: UITabBarController {
         menuVC.tabBarItem.title = "Menu".getLocalizedString()
         menuVC.tabBarItem.image = AppIcons.cutleryIcon
         
-        let mainVC = MainVC()
-        let mainVCWithNav = UINavigationController(rootViewController: mainVC)
-        mainVC.tabBarItem.title = "Profile".getLocalizedString()
-        mainVC.tabBarItem.image = AppIcons.profileIcon
+        let chefProfileVC = ChefProfileVC()
+        let chefProfileVCWithNav = UINavigationController(rootViewController: chefProfileVC)
+        chefProfileVC.tabBarItem.title = "Profile".getLocalizedString()
+        chefProfileVC.tabBarItem.image = AppIcons.profileIcon
         
-        viewControllers = [ordersVCNavController, menuVCNavController, mainVCWithNav]
+        viewControllers = [ordersVCNavController, menuVCNavController, chefProfileVCWithNav]
     }
 
 }

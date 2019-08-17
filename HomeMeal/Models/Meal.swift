@@ -23,6 +23,7 @@ class Meal {
     var currencySymbol: String
     var startTime: TimeInterval
     var detailedStartTime: DetailedTime?
+    var chef: Chef?
     
     init(dictionary: [String:AnyObject]) {
         self.chefId = dictionary["chefId"] as! String

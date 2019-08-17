@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Chef {
     var bestMeals: [String]?
@@ -19,6 +20,8 @@ class Chef {
     var rating: Double
     var socialAccounts: [SocialAccount]?
     var userId: String
+    
+    var profileImage: UIImage?
     
     init(dictionary: [String:Any]) {
         self.bestMeals = dictionary["bestMeals"] as? [String]

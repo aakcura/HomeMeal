@@ -110,3 +110,19 @@
 
 "hour" = "saat";
 "min" = "dk.";
+
+"searchByPricePlaceholderText" = "X-Y veya >X veya <X";
+"searchByRatingPlaceholderText" = "X-Y veya >X veya <X";
+"Search" = "Ara";
+
+"We are dealing with your complaint" = "HomeMeal'ı daha güvenli ve huzurlu bir platforma çevirmek için verdiğiniz bu destek için teşekkür ederiz. Şikayetiniz ile ilgileniyoruz, en fazla 30 dakika içinde gerekli görülürse size dönüş sağlayacağız.";
+"Your Complaint Was Received" = "Şikayetiniz Alındı";
+"Complaint" = "Şikayet";
+"Complain" = "Şikayet Et";
+"Can you state your complaint" = "Şikayetinizi belirtebilir misiniz?";
+"Are you sure you want to complain" = "Şikayet etmek istediğinizden emin misiniz?";
+"Enter your complaint message" = "Şikayet mesajınızı girin";
+"ComplaintMessageNotEntered" = "Şikayet mesajı girilmedi, işlem sonlandırılıyor.";
+"Your Complaint Was Received" = "Şikayetiniz Alındı";
+"We are dealing with your complaint" = "HomeMeal'ı daha güvenli ve huzurlu bir platforma çevirmek için verdiğiniz bu desteğe teşekkür ederiz. Şikayetiniz ile ilgileniyoruz, en fazla 30 dakika içinde gerekli görülürse size dönüş sağlayacağız.";
+"ComplainErrorMessage" = "Şikayet oluşturulamadı lütfen daha sonra tekrar deneyin.";

@@ -136,3 +136,17 @@
 
 "hour" = "hour";
 "min" = "min.";
+
+"searchByPricePlaceholderText" = "X-Y or >X or <X";
+"searchByRatingPlaceholderText" = "X-Y or >X or <X";
+"Search" = "Search";
+
+"Complaint" = "Complaint";
+"Complain" = "Complain";
+"Can you state your complaint" = "Can you state your complaint";
+"Are you sure you want to complain" = "Are you sure you want to complain?";
+"Enter your complaint message" = "Enter your complaint message";
+"ComplaintMessageNotEntered" = "Complaint message not entered. The process has been terminated.";
+"Your Complaint Was Received" = "Your Complaint Was Received";
+"We are dealing with your complaint" = "Thank you for your support to turn HomeMeal into a more secure and peaceful platform. We are dealing with your complaint,if required within 30 minutes, a return will be provided to you.";
+"ComplainErrorMessage" = "Failed to complain. Please try again later.";

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Customer {
     var allergies: [String]?
@@ -18,6 +19,8 @@ class Customer {
     var profileImageUrl: String?
     var socialAccounts: [SocialAccount]?
     var userId: String
+    
+    var profileImage: UIImage?
     
     init(dictionary: [String:Any]) {
         self.allergies = dictionary["allergies"] as? [String]

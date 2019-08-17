@@ -14,6 +14,7 @@ class CustomerTabBarController: UITabBarController {
         super.viewDidLoad()
         setupUIProperties()
         getCurrentUser()
+        AppStoreReviewHelper.checkAndAskForReview()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,12 +53,12 @@ class CustomerTabBarController: UITabBarController {
         customerMealListVC.tabBarItem.title = "Meal List".getLocalizedString()
         customerMealListVC.tabBarItem.image = AppIcons.cutleryIcon
         
-        let mainVC = MainVC()
-        let mainVCWithNav = UINavigationController(rootViewController: mainVC)
-        mainVC.tabBarItem.title = "Profile".getLocalizedString()
-        mainVC.tabBarItem.image = AppIcons.profileIcon
+        let customerProfileVC = CustomerProfileVC()
+        let customerProfileVCWithNav = UINavigationController(rootViewController: customerProfileVC)
+        customerProfileVC.tabBarItem.title = "Profile".getLocalizedString()
+        customerProfileVC.tabBarItem.image = AppIcons.profileIcon
         
-        viewControllers = [ordersVCNavController,customerMealListVCNavController,mainVCWithNav]
+        viewControllers = [ordersVCNavController,customerMealListVCNavController,customerProfileVCWithNav]
     }
 
 }
