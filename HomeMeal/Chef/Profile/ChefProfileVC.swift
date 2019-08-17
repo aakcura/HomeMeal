@@ -7,29 +7,72 @@
 
 import UIKit
 import Firebase
+import Cosmos
+import MapKit
 
 class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     
-    func showActivityScreen(){
-        let activityScreen = ActivityVC()
-        self.navigationController?.pushViewController(activityScreen, animated: true)
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var btnClose: UIButton!
+    
+    // CHEF PROFILE DETAILS SECTION
+    @IBOutlet weak var profileSectionView: UIView!
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var lblChefName: UILabel!
+    @IBOutlet weak var ratingView: CosmosView!
+    @IBOutlet weak var btnSeeChefReviews: UIButton!
+    
+    @IBOutlet weak var socialAccountsSectionView: UIView!
+    @IBOutlet weak var lblSocialAccountsSectionTitle: UILabel!
+    @IBOutlet weak var socialAccountsButtonStack: UIStackView!
+    
+    @IBOutlet weak var biographySectionView: UIView!
+    @IBOutlet weak var lblBiographySectionTitle: UILabel!
+    @IBOutlet weak var tvBiography: UITextView!
+    
+    @IBOutlet weak var chefBestMealsSectionView: UIView!
+    @IBOutlet weak var lblChefBestMealsSectionTitle: UILabel!
+    @IBOutlet weak var tableBestMeals: UITableView!
+    
+    // KITCHEN INFORMATION SECTION
+    @IBOutlet weak var kitchenInformationSectionView: UIView!
+    @IBOutlet weak var lblKitchenInformationSectionTitle: UILabel!
+    @IBOutlet weak var tvKitchenAddressDescription: UITextView!
+    @IBOutlet weak var btnKitchenLocation: UIButton!
+
+    @IBAction func closeTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    var userId: String?{
-        didSet{
-            if let userId = self.userId {
-                
-            }
-        }
+    
+    @IBAction func seeChefReviewsTapped(_ sender: Any) {
+        // see chef reviews
     }
     
-    var user: Chef? {
-        didSet{
-            // configureUI
-            print(user)
-            print(user?.email,user?.name)
-        }
+    @IBAction func kitchenLocationTapped(_ sender: Any) {
+        guard let kitchenLocation = self.kitchenLocation else { return }
+        
+        let regionDistance:CLLocationDistance = 10000
+        let regionSpan = MKCoordinateRegion(center: kitchenLocation, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: kitchenLocation, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = "Chef's Kitchen Location".getLocalizedString()
+        mapItem.openInMaps(launchOptions: options)
     }
+    
+    var kitchenLocation: CLLocationCoordinate2D?
+    var defaultProfileImage = AppIcons.profileIcon
+    var bestMeals: [String] = []
+    let ingredientsTableCellId = "ingredientsTableCellId"
+    var informationVC: InformationVC?
+
+    
+    var user: Chef?
     
     var chooseEmailActionSheet: UIAlertController? {
         return setupChooseEmailActionSheet(withTitle: "Contact Us".getLocalizedString())
@@ -40,34 +83,80 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         setupUIProperties()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        guard let currentUser = AppDelegate.shared.currentUserAsChef else {
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Error".getLocalizedString(), message: "Profil bilgileriniz bulunamadı lütfen tekrar giriş yapınız".getLocalizedString(), preferredStyle: .alert)
-                let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .destructive) { (action) in
-                    self.signOut()
-                }
-                alert.addAction(closeAction)
-                self.present(alert, animated: true, completion: nil)
-            }
-            return
-        }
-        self.user = currentUser
-    }
-    
     private func setupUIProperties(){
         self.view.backgroundColor = AppColors.appWhiteColor
+        self.informationVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "InformationVC") as! InformationVC
+        
+        btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
+        btnClose.setTitle("X", for: .normal)
+        
+        // PROFILE SECTION
+        profileSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        profileSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        profileImageView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
+        ratingView.settings.updateOnTouch = false
+        ratingView.settings.fillMode = .precise
+        btnSeeChefReviews.setTitle("see chef's reviews".getLocalizedString(), for: .normal)
+        
+        // SOCIAL MEDIA ACCOUNTS SECTION
+        socialAccountsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        socialAccountsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblSocialAccountsSectionTitle.text = "Social Media Accounts".getLocalizedString()
+        
+        // BIOGRAPHY SECTION
+        biographySectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        biographySectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblBiographySectionTitle.text = "Biography".getLocalizedString()
+        
+        // CHEF'S BEST MEALS SECTION
+        chefBestMealsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        chefBestMealsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblChefBestMealsSectionTitle.text = "Chef's Best Meals".getLocalizedString()
+        tableBestMeals.delegate = self
+        tableBestMeals.dataSource = self
+        tableBestMeals.tableFooterView = UIView(frame: .zero)
+        
+        // KITCHEN INFORMATION SECTION
+        kitchenInformationSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        kitchenInformationSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblKitchenInformationSectionTitle.text = "Chef's Kitchen Information".getLocalizedString()
+        
         configureUIForCurrentUser()
     }
     
     private func configureUIForCurrentUser(){
         customizeNavBarForCurrentUser()
+        btnClose.isHidden = true
+        configurePageWithUserInformations()
     }
     
     private func configureUIForAnyUser(){
         customizeNavBarForAnyUser()
+        btnClose.isHidden = false
+        configurePageWithUserInformations()
     }
+    
+    private func configurePageWithUserInformations(){
+        guard let user = self.user else {return}
+        DispatchQueue.main.async {
+            if let profileImageUrl = user.profileImageUrl {
+                self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl, defaultImage: AppIcons.profileIcon)
+            }else{
+                self.profileImageView.image = AppIcons.profileIcon
+            }
+            
+            self.lblChefName.text = user.name
+            self.ratingView.rating = user.rating
+            
+            // TODO: CONFIGURE SOCIAL ACCOUNTS
+            
+            self.tvBiography.text = user.biography
+            self.bestMeals = user.bestMeals ?? []
+            self.kitchenLocation = user.kitchenInformation.getKitchenLocationAsCLLocationCoordinate2D()
+            self.tvKitchenAddressDescription.text = user.kitchenInformation.addressDescription
+        }
+    }
+    
     
     private func customizeNavBarForAnyUser(){
         self.setNavBarTitle("Profile".getLocalizedString())
@@ -153,6 +242,73 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     }
 }
 
+// INFORMATION VIEW METHODS
+extension ChefProfileVC {
+    private func showInformationView(withMessage:String, showAsLoadingPage:Bool){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            self.addChild(informationVC)
+            informationVC.didMove(toParent: self)
+            informationVC.view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(informationVC.view)
+            informationVC.view.fillSuperView()
+            if showAsLoadingPage {
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
+            }else{
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
+            }
+        }
+    }
+    
+    private func changeInformationView(withMessage:String, shouldAnimating:Bool){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            if shouldAnimating {
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
+            }else{
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
+            }
+        }
+    }
+    
+    private func hideInformationView(){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            informationVC.view.removeFromSuperview()
+        }
+    }
+}
+
+// SHOW OPTIONS
+extension ChefProfileVC {
+    func setShowProperties(isShownForCurrentUser:Bool, chef:Chef? ,chefId:String?){
+        if isShownForCurrentUser {
+            if let currentUser = AppDelegate.shared.currentUserAsChef {
+                self.user = currentUser
+                configureUIForCurrentUser()
+            }
+        }else{
+            if let chef = chef {
+                self.user = chef
+                configureUIForAnyUser()
+            }
+            
+            if let chefId = chefId {
+                self.showInformationView(withMessage: "Chef getiriliyor bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+                self.getUserByUserId(chefId) { (chef) in
+                    if let chef = chef {
+                        self.user = chef
+                        self.configureUIForAnyUser()
+                    }else{
+                        self.changeInformationView(withMessage: "Chef bulunamadı".getLocalizedString(), shouldAnimating: false)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// FIRABASE OPERATIONS
 extension ChefProfileVC {
     private func getUserByUserId(_ userId:String){
         if NetworkManager.isConnectedNetwork(){
@@ -244,5 +400,59 @@ extension ChefProfileVC {
         profileSettingsVC.chef = user
         let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
         self.present(profileSettingsNavigationController, animated: true, completion: nil)
+    }
+}
+
+// TABLE VIEW
+extension ChefProfileVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if bestMeals.isEmpty {
+            return 1
+        }else{
+            return bestMeals.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if bestMeals.isEmpty {
+            let emptyFavoriteMealCell = UITableViewCell()
+            emptyFavoriteMealCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+            emptyFavoriteMealCell.backgroundColor = .white
+            emptyFavoriteMealCell.textLabel?.numberOfLines = 0
+            emptyFavoriteMealCell.textLabel?.textAlignment = .center
+            emptyFavoriteMealCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
+            return emptyFavoriteMealCell
+        }else{
+            let cell = UITableViewCell()
+            cell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+            cell.backgroundColor = AppColors.appGoldColor
+            let myBestMeal = bestMeals[indexPath.row]
+            cell.textLabel?.text = myBestMeal
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if bestMeals.isEmpty{
+            return tableView.frame.height
+        }else{
+            return 30
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return UITableViewCell.EditingStyle.delete
+    }
+    
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        bestMeals.remove(at: indexPath.row)
+        tableView.reloadData()
     }
 }

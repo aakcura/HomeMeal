@@ -31,4 +31,8 @@ class KitchenInformation{
         return CLLocation(latitude: self.latitude, longitude: self.longitude)
     }
     
+    func getKitchenLocationAsCLLocationCoordinate2D() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude:  self.latitude, longitude: self.longitude)
+    }
+    
 }
