@@ -93,7 +93,7 @@ class MealDetailVC: UIViewController {
                 }
                 self.configurePage()
             }else{
-                let errorMessage = "Meal bulunamadı".getLocalizedString()
+                let errorMessage = "Meal Not Found".getLocalizedString()
                 self.changeInformationView(withMessage: errorMessage, shouldAnimating: false)
             }
         }
@@ -144,7 +144,7 @@ class MealDetailVC: UIViewController {
         ratingView.settings.updateOnTouch = false
         ratingView.settings.fillMode = .precise
         
-        btnGoToChefProfile.setTitle("go to chef's profile".getLocalizedString(), for: .normal)
+        btnGoToChefProfile.setTitle("Go To Chef's Profile Button Title".getLocalizedString(), for: .normal)
         
         //lblMealName.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         //lblMealName.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
@@ -161,9 +161,9 @@ class MealDetailVC: UIViewController {
         
         
         btnGiveOrder.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
-        btnGiveOrder.setTitle("Give Order".getLocalizedString(), for: .normal)
+        btnGiveOrder.setTitle("Place an Order".getLocalizedString(), for: .normal)
         
-        self.showInformationView(withMessage: "Yemek getirilirken lütfen bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+        self.showInformationView(withMessage: "Please wait while fetching meal information".getLocalizedString(), showAsLoadingPage: true)
     }
     
     @IBAction func closeTapped(_ sender: Any) {
@@ -198,19 +198,19 @@ class MealDetailVC: UIViewController {
             if let meal = self.meal, let chef = self.chef, let customer = AppDelegate.shared.currentUserAsCustomer {
                 guard let newOrderId = Database.database().reference().child("orders").childByAutoId().key else{
                     DispatchQueue.main.async {
-                        AlertService.showAlert(in: self, message: "Siparişiniz Oluşturulamadı tekrar deneyiniz".getLocalizedString(), title: "", style: .alert)
+                        AlertService.showAlert(in: self, message: "Order Creation Failed, Try Again".getLocalizedString(), title: "", style: .alert)
                     }
                     return
                 }
                 
-                let giveOrderAlert = UIAlertController(title: "Give Order".getLocalizedString(), message: "Bu yemek sipariş edilecektir onaylıyormusunuz ?".getLocalizedString(), preferredStyle: .alert)
-                let giveOrderButton =  UIAlertAction(title: "Give Order".getLocalizedString(), style: .default) { (action) in
+                let giveOrderAlert = UIAlertController(title: "Place an Order".getLocalizedString(), message: "Approval for Meal Selection".getLocalizedString(), preferredStyle: .alert)
+                let giveOrderButton =  UIAlertAction(title: "Place an Order".getLocalizedString(), style: .default) { (action) in
                     let newOrder = Order(newOrderId: newOrderId, meal: meal, chef: chef, customer: customer)
                     self.giveOrder(newOrderId: newOrderId, values: newOrder.getDictionary(), completion: { (error) in
                         if let error = error {
                             AlertService.showAlert(in: self, message: error.localizedDescription)
                         }else{
-                            let alert = UIAlertController(title: "Siparişiniz alındı".getLocalizedString(), message: "Afiyet olsun".getLocalizedString(), preferredStyle: .alert)
+                            let alert = UIAlertController(title: "Order Received".getLocalizedString(), message: "Enjoy Your Meal".getLocalizedString(), preferredStyle: .alert)
                             let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: { (action) in
                                 self.closeTapped(true)
                             })
@@ -224,7 +224,7 @@ class MealDetailVC: UIViewController {
                 giveOrderAlert.addAction(giveOrderButton)
                 self.present(giveOrderAlert, animated: true, completion: nil)
             }else{
-                AlertService.showAlert(in: self, message: "Sipariş verilemez".getLocalizedString())
+                AlertService.showAlert(in: self, message: "Order Action Is Not Available".getLocalizedString())
             }
         }else{
             AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)

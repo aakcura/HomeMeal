@@ -145,7 +145,7 @@ class ChefOrderDetailsVC: BaseVC {
         btnUpdateOrderStatus.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnUpdateOrderStatus.setTitle("Update Order Status".getLocalizedString(), for: .normal)
         
-        self.showInformationView(withMessage: "Sipariş getirilirken lütfen bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+        self.showInformationView(withMessage: "Please wait while fetching order information".getLocalizedString(), showAsLoadingPage: true)
     }
     
     var tapped = 0
@@ -218,15 +218,15 @@ class ChefOrderDetailsVC: BaseVC {
                             }else{
                                 order.orderDetails.orderStatus = newOrderStatus
                                 self.currentOrderStatus = order.orderDetails.orderStatus
-                                AlertService.showAlert(in: self, message: "Sipariş durumunuz başarıyla güncellendi")
+                                AlertService.showAlert(in: self, message: "Order Status Update Successful".getLocalizedString())
                             }
                         }
                     }
                 }else{
-                    AlertService.showAlert(in: self, message: "Şipariş durumunda güncellemeye gerek yok")
+                    AlertService.showAlert(in: self, message: "No need to update in order status".getLocalizedString())
                 }
             }else{
-                AlertService.showAlert(in: self, message: "Sipariş bulunamadı")
+                AlertService.showAlert(in: self, message: "Order Not Found".getLocalizedString())
             }
         }else{
             AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)
@@ -259,7 +259,7 @@ extension ChefOrderDetailsVC: UITextFieldDelegate {
         let dbRef = Database.database().reference().child("complaints")
         guard let newComplaintId = dbRef.childByAutoId().key else{
             DispatchQueue.main.async {
-                AlertService.showAlert(in: self, message: "Complaint Oluşturulamadı".getLocalizedString(), title: "", style: .alert)
+                AlertService.showAlert(in: self, message: "Complaint Creation Failed".getLocalizedString(), title: "", style: .alert)
             }
             return
         }

@@ -241,7 +241,7 @@ class ChefProfileEditVC: UIViewController, ActivityIndicatorDisplayProtocol {
             if NetworkManager.isConnectedNetwork(){
                 guard let phoneNumber = (tfPhoneNumber as! FPNTextField).getFormattedPhoneNumber(format: .E164), let biography = biographyText, let chefKitchenInformation = chefKitchenInformation else {
                     DispatchQueue.main.async { [weak self] in
-                        AlertService.showAlert(in: self, message: "İsim mail telefon şifre biografi ve mutfak bilgilerinden herhangi biri boş olamaz !!! ".getLocalizedString(), title: "", style: .alert)
+                        AlertService.showAlert(in: self, message: "Name, mail, phone, password, biography, kitchen information  can not be empty".getLocalizedString(), title: "", style: .alert)
                     }
                     return
                 }
@@ -312,7 +312,7 @@ extension ChefProfileEditVC{
                 if error != nil {
                     self.hideActivityIndicatorView(isUserInteractionEnabled: true)
                     DispatchQueue.main.async {
-                        AlertService.showAlert(in: self, message: "Chef Profile update başarısız".getLocalizedString(), title: "Error".getLocalizedString(), style: .alert, blockUI: false)
+                        AlertService.showAlert(in: self, message: "ChefProfileUpdateFailed".getLocalizedString(), title: "Error".getLocalizedString(), style: .alert, blockUI: false)
                     }
                     return
                 }else{
@@ -427,7 +427,7 @@ extension ChefProfileEditVC: UITableViewDelegate, UITableViewDataSource {
             emptyFavoriteMealCell.backgroundColor = .white
             emptyFavoriteMealCell.textLabel?.numberOfLines = 0
             emptyFavoriteMealCell.textLabel?.textAlignment = .center
-            emptyFavoriteMealCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
+            emptyFavoriteMealCell.textLabel?.text = "No Best Meal Found".getLocalizedString()
             return emptyFavoriteMealCell
         }else{
             let cell = UITableViewCell()

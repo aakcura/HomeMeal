@@ -454,7 +454,7 @@ extension CustomerProfileVC: UITableViewDelegate, UITableViewDataSource {
                 emptyAllergyCell.backgroundColor = .white
                 emptyAllergyCell.textLabel?.numberOfLines = 0
                 emptyAllergyCell.textLabel?.textAlignment = .center
-                emptyAllergyCell.textLabel?.text = "Alerjiniz bulunmamaktadır.".getLocalizedString()
+                emptyAllergyCell.textLabel?.text = "No Allergies Found".getLocalizedString()
                 return emptyAllergyCell
             }else{
                 let allergy = allergies[indexPath.row]
@@ -469,7 +469,7 @@ extension CustomerProfileVC: UITableViewDelegate, UITableViewDataSource {
                 emptyFavoriteMealCell.backgroundColor = .white
                 emptyFavoriteMealCell.textLabel?.numberOfLines = 0
                 emptyFavoriteMealCell.textLabel?.textAlignment = .center
-                emptyFavoriteMealCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır.".getLocalizedString()
+                emptyFavoriteMealCell.textLabel?.text = "No Favorite Meal Found".getLocalizedString()
                 return emptyFavoriteMealCell
             }else{
                 let favoriteMeal = favoriteMeals[indexPath.row]

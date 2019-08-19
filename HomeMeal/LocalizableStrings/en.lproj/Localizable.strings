@@ -26,7 +26,6 @@
 "InstagramTFPlaceHolder" = "type your instagram username";
 "PinterestTFPlaceHolder" = "type your pinterest username";
 
-
 "AllergiesStackTitle" = "I'm allergic to";
 "FavoriteMealsStackTitle" = "is my favorite meal";
 
@@ -108,6 +107,23 @@
 "New Version Released" = "New Version Released";
 "AvailableUpdateMessage" = "We know the connection between you and HomeMeal, so we're working to provide a better experience every day. A more current version of HomeMeal is in the App Store. You can download now to see what's new :)";
 
+"hour" = "hour";
+"min" = "min.";
+
+"searchByPricePlaceholderText" = "X-Y or >X or <X";
+"searchByRatingPlaceholderText" = "X-Y or >X or <X";
+"Search" = "Search";
+
+"We are dealing with your complaint" = "Thank you for your support to turn HomeMeal into a more secure and peaceful platform. We are dealing with your complaint,if required within 30 minutes, a return will be provided to you.";
+"Your Complaint Was Received" = "Your Complaint Was Received";
+"Complaint" = "Complaint";
+"Complain" = "Complain";
+"Can you state your complaint" = "Can you state your complaint";
+"Are you sure you want to complain" = "Are you sure you want to complain?";
+"Enter your complaint message" = "Enter your complaint message";
+"ComplaintMessageNotEntered" = "Complaint message not entered. The process has been terminated.";
+"ComplainErrorMessage" = "Failed to complain. Please try again later.";
+
 // Meal Preparation VC
 "Meal" = "Meal";
 "Meal Name" =  "Meal Name:";
@@ -128,25 +144,113 @@
 "can't be ordered" =  "can't be ordered";
 "Prepare Meal" = "Prepare Meal";
 "Update Meal" = "Update Meal";
-
 "Orders" = "Orders";
 "My Orders" = "My Orders";
 "Menu" = "Menu";
 "Profile" = "Profile";
 
-"hour" = "hour";
-"min" = "min.";
+"ConnectionLostMessage" = "Please connect to the internet\n to continue using HomeMeal.";
 
-"searchByPricePlaceholderText" = "X-Y or >X or <X";
-"searchByRatingPlaceholderText" = "X-Y or >X or <X";
-"Search" = "Search";
+// FROM EXCEL
+"Add Comment" = "Add Comment";
+"No reviews available" = "No reviews available";
+"Comment Creation Failed" = "Comment creation failed!";
+"Comment Added" = "Your comment is added.";
+"ConnectionLostMessage" = "Internet connection lost";
+"Chef Account Creation Successful, Admin Approval Needed, Verification Email Not Sent" = "Chef account creation is successful but could not send verification mail. Verification mail will be sent automatically when you try to log in! Email verification and admin approval is required to log in to your account. You can log in to the application when you verify your email  and the admin confirmation comes to your mail.";
+"Chef Account Creation Successful, Admin Approval Needed, Verification Email Sent" = "Chef account creation is successful and  verification mail sent ! Email verification and admin approval is required to log in to your account. You can log in to the application when you verify your email and the admin confirmation comes to your mail.";
+"An Error Occurred, Try Again" = "An error occured, please try again.";
+"Account Creation Successful, Verification Email Not Sent" = "Account creation is successful but could not send verification mail. Verification mail will be sent automatically when you try to log in! Email verification is required to log in to your account. You can log in to the application when you verify your email.";
+"Account Creation Successful, Verification Email Sent" = "Account creation is successful and  verification mail sent ! Email verification is required to log in to your account. You can log in to the application when you verify your email.";
+"Enter your email" = "Enter your email address";
+"Reset" = "Reset";
+"Email not entered" = "No email entries";
+"Password Reset Sent To Email" = "The password reset mail was sent to your email address, you can follow the steps in your mail";
+"Invalid Mail Address" = "Invalid email address!";
+"Account Blocked, Contact To Developer" = "Your account is blocked, please contact to developer";
+"Admin Approval Needed For Login" = "Pending admin approval to log in to your account. When your account is approved, you can log in to your account";
+"NullUserError" = "Snapshot is null";
+"NoActiveMeals" = "There are no orderable meals on your menu";
+"NoPassiveMeals" = "There are no not orderable meals on your menu";
+"Orderable" = "Orderable";
+"Not Orderable" = "Not Orderable";
+"Meal Created" = "Meal Created";
+"Meal Created Message" = "Your meal created and  added to your menu.";
+"Meal Creation Failed" = "Meal creation failed";
+"Change Order Status" = "Change Order status";
+"Update Order Status" = "Update Order Status";
+"Complaint Creation Failed" = "Complaint creation failed";
+"Incoming Orders" = "Incoming Orders";
+"Past Orders" = "Past Orders";
+"Name, mail, phone, password, biography, kitchen information  can not be empty" = "Any of the name, mail,phone, password, biography, kitchen fields  can not be empty!";
+"ChefProfileUpdateFailed" = "Chef Profile Update Failed";
+"see chef's reviews" = "See Chef's Reviews!";
+"Chef's Best Meals" = "Chef's Best Meals";
+"Please wait while fetching chef information" = "Please wait while fetching chef information";
+"Chef Not Found" = "Chef Not Found";
+"Meal List" = "Meal List";
+"Rating" = "Rating";
+"Chef" = "Chef";
+"List of meals will be listed according to your location" = "List of meals will be listed according to meals nearest to your location, would you like to continue?";
+"Deactivate" = "Deactivate";
+"Activate" = "Activate";
+"No location permission" = "No location permission found!";
+"Location Permission" = "Location Permission";
+"Open Settings" = "Open Settings";
+"Close Meal To Order" = "Close Meal To Order";
+"CloseMeal To Order Alert Message" = "You must remove a meal from the orderable meal list before updating it.";
+"Meal Not Found" = "Meal Not Found";
+"Go To Chef's Profile Button Title" = "Go to Chef's Profile";
+"Order Creation Failed, Try Again" = "Order creation failed, try again";
+"Approval for Meal Selection" = "Do you approve that this meal will be ordered?";
+"Place an Order" = "Place an Order";
+"Enjoy Your Meal" = "Enjoy Your Meal!";
+"Order Received" = "Your Order is Received";
+"Order Action Is Not Available" = "Order Action Is Not Available";
+"Order Details" = "Order Details";
+"Chef's Kitchen Information" = "Chef's Kitchen Information";
+"Chef's Kitchen Location" = "Chef's Kitchen Location";
+"Please wait while fetching meal information" = "Please wait while fetching meal information";
+"Please wait while fetching order information" = "Please wait while fetching order information";
+"Order Not Found" = "Order Not Found";
+"Approval for Order Cancellation" = "Your order will be cancelled and this process can not be retriewed, do you want to continue?";
+"Order Cancellation" = "Order Cancellation";
+"Order Status Update Successful" = "Your order status was updated successfully";
+"No need to update in order status" = "No need to update in order status";
+"Cancel Order" = "Cancel Order";
+"Order Cancellation Successful" = "Order Cancellation is Successful";
+"ComplainErrorMessage" = "Complain Error Message";
+"Current Order Status" = "Current Order Status";
+"Order Time" = "Order Time";
+"My Past Orders" = "My Past Orders";
+"Phone Number must be valid" = "Phone Number must be valid !";
+"Customer Profile Update Failed" = "Customer Profile Update Failed";
+"Your profile information has been updated successfully" = "Your profile information has been updated successfully";
+"No Allergies Found" = "No Allergies Found";
+"No Best Meal Found" = "No Best Meal Found";
+"No Favorite Meal Found" = "No Favorite Meal Found";
+"Settings" = "Settings";
+"Are you sure you want to sign out" = "Are you sure you want to sign out?";
+"No Meals Error Message" = "There is no food you can order.";
+"No Orders Error Message" = "There are no orders in this list.";
+"Can Be Ordered Between" = "Can Be Ordered Between";
+"UnverifiedEmailAlertTitle" = "Unverifed Email";
+"UnverifiedEmailAlertMessage" = "Your email address is not verified. Click 'Send Verification Mail' to receive a verification email.";
+"Send Verification Mail" = "Send Verification Mail";
+"Can not send verification mail" = "Can not send verification mail";
+"Verification mail sent" = "Verification mail sent";
+"Succeeded" = "Succeeded";
 
-"Complaint" = "Complaint";
-"Complain" = "Complain";
-"Can you state your complaint" = "Can you state your complaint";
-"Are you sure you want to complain" = "Are you sure you want to complain?";
-"Enter your complaint message" = "Enter your complaint message";
-"ComplaintMessageNotEntered" = "Complaint message not entered. The process has been terminated.";
-"Your Complaint Was Received" = "Your Complaint Was Received";
-"We are dealing with your complaint" = "Thank you for your support to turn HomeMeal into a more secure and peaceful platform. We are dealing with your complaint,if required within 30 minutes, a return will be provided to you.";
-"ComplainErrorMessage" = "Failed to complain. Please try again later.";
+"Empty text" = "Empty text";
+"Your password should be between 6-32 character, not null and not contain whitespace" = "Your password should be between 6-32 character, not null and not contain whitespace";
+"Name cannot be empty" = "Name cannot be empty";
+"Price should be numeric value and not empty" = "Price should be numeric value and not empty";
+
+"Reject" = "Reject";
+"Preparing" = "Preparing";
+"Prepared" = "Prepared";
+"received" = "received";
+"rejected" = "rejected";
+"canceled" = "canceled";
+"preparing" = "preparing";
+"prepared" = "prepared";

@@ -35,6 +35,7 @@ class RootViewController: UIViewController {
     
     private func handleDeepLink(){
         // make sure we are on the correct screen
+        /*
         if let mainNavigationController = currentVC as? MainNavigationController, let deepLink = deepLink {
             switch deepLink {
             case .activity:
@@ -47,6 +48,7 @@ class RootViewController: UIViewController {
             
             self.deepLink = nil
         }
+        */
     }
     
     func showLoginScreen() {

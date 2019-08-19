@@ -23,7 +23,7 @@ class ChefMenuVC: BaseVC {
        return CGFloat.init(222.0)
     }()
     let emptyMenuTableCellHeight: CGFloat = {
-       return CGFloat.init(50.0)
+       return CGFloat.init(100.0)
     }()
 
     
@@ -242,6 +242,8 @@ extension ChefMenuVC: UITableViewDelegate, UITableViewDataSource{
     private func getEmptyMenuErrorCell(with message:String) -> UITableViewCell{
         let activeMenuEmptyCell = UITableViewCell()
         activeMenuEmptyCell.textLabel?.textAlignment = .center
+        activeMenuEmptyCell.textLabel?.numberOfLines = 0
+        activeMenuEmptyCell.textLabel?.adjustsFontSizeToFitWidth = true
         activeMenuEmptyCell.textLabel?.text = message
         return activeMenuEmptyCell
     }

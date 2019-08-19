@@ -48,7 +48,7 @@ class MealPreparationVC: UIViewController {
     @IBOutlet weak var btnClose: UIButton!
     
     let btnPrepareMealTitle = "Prepare Meal".getLocalizedString()
-    let btnCloseMealTitle = "Close Meal".getLocalizedString()
+    let btnCloseMealTitle = "Close Meal To Order".getLocalizedString()
     let btnUpdateMealTitle = "Update Meal".getLocalizedString()
     
     let currencySymbols = ["₺","$","£","€"]
@@ -290,7 +290,7 @@ extension MealPreparationVC{
             // TODO: Error handling
             self.hideActivityIndicatorView(isUserInteractionEnabled: true)
             DispatchQueue.main.async {
-                AlertService.showAlert(in: self, message: "Yemek oluşturulamadı".getLocalizedString(), title: "", style: .alert)
+                AlertService.showAlert(in: self, message: "Meal Creation Failed".getLocalizedString(), title: "", style: .alert)
             }
             return
         }
@@ -335,7 +335,7 @@ extension MealPreparationVC{
                 AlertService.showAlert(in: self, message: error.localizedDescription)
             }else{
                 DispatchQueue.main.async {
-                    let mealCreatedAlert = UIAlertController(title: "Yemek Oluşturuldu", message: "Yemeğiniz oluşturuldu ve menünüze eklen kontrol edebilirsiniz", preferredStyle: .alert)
+                    let mealCreatedAlert = UIAlertController(title: "Meal Created".getLocalizedString(), message: "Meal Created Message".getLocalizedString(), preferredStyle: .alert)
                     let okButton = UIAlertAction(title: "Ok".getLocalizedString(), style: .default, handler: { (action) in
                         self.dismiss(animated: true, completion: nil)
                     })
@@ -374,7 +374,7 @@ extension MealPreparationVC{
     
     func closeMeal(){
         guard let meal = self.meal else {return}
-        let closeMealAlert = UIAlertController(title: "Close Meal", message: "Şiparişte olan bir yemeği update etmeden önce sipariş listesinden çıkarmalısınız.", preferredStyle: .alert)
+        let closeMealAlert = UIAlertController(title: "Close Meal To Order".getLocalizedString(), message: "CloseMeal To Order Alert Message".getLocalizedString(), preferredStyle: .alert)
         let okButton =  UIAlertAction(title: "Ok".getLocalizedString(), style: .default) { (action) in
             self.showActivityIndicatorView(isUserInteractionEnabled: false)
             Database.database().reference().child("meals").child(meal.mealId).updateChildValues(["mealStatus":MealStatus.canNotBeOrdered.rawValue], withCompletionBlock: { (error, dbRef) in

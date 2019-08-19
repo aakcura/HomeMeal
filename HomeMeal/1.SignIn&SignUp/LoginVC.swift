@@ -155,14 +155,14 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
                         // TODO: Error handling
                         AlertService.showAlert(in: self, message: error.localizedDescription, title: "", style: .alert)
                     }else{
-                        AlertService.showAlert(in: self, message: "Şifre sıfırlama maili \(email) adresine gönderildi. Mailinizdeki adımları takip edebilirsiniz".getLocalizedString(), title: "", style: .alert)
+                        AlertService.showAlert(in: self, message: "Password Reset Sent To Email".getLocalizedString(), title: "", style: .alert)
                     }
                 }
             }else{
                 AlertService.showNoInternetConnectionErrorAlert(in: self, style: .actionSheet, blockUI: false)
             }
         }else{
-            AlertService.showAlert(in: self, message: "Geçersiz mail adresi".getLocalizedString(), title: "", style: .alert)
+            AlertService.showAlert(in: self, message: "Invalid Mail Address".getLocalizedString(), title: "", style: .alert)
         }
     }
     
@@ -174,7 +174,7 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
                 AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)
             }
         }else{
-            AlertService.showAlert(in: self, message: "Geçersiz mail veya parola !", title: "", style: .alert)
+            AlertService.showAlert(in: self, message: "Invalid Mail Address or Password".getLocalizedString(), title: "", style: .alert)
         }
     }
     
@@ -196,29 +196,29 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
                                     return
                                 case .disabled:
                                     self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                    AlertService.showAlert(in: self, message: "Hesabınız engellenmiş. Lütfen geliştirici ile iletişime geçiniz".getLocalizedString(), style: .alert)
+                                    AlertService.showAlert(in: self, message: "Account Blocked, Contact To Developer".getLocalizedString(), style: .alert)
                                     return
                                 case .pendingApproval:
                                     self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                    AlertService.showAlert(in: self, message: "Hesabınıza giriş yapabilmek için admin onayı bekleniyor. Hesabınız onaylandıktan sonra giriş yapabilirsiiniz".getLocalizedString(), style: .alert)
+                                    AlertService.showAlert(in: self, message: "Admin Approval Needed For Login".getLocalizedString(), style: .alert)
                                     return
                                 }
                             }
                         }else{
                             self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                            AlertService.showAlert(in: self, message: "snapshot null geldi".getLocalizedString(), style: .alert)
+                            AlertService.showAlert(in: self, message: "NullUserError".getLocalizedString(), style: .alert)
                         }
                     })
                 }else{
                     self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                    let notVerifiedEmailAlert = UIAlertController(title: "NotVerifiedEmailAlertTitle".getLocalizedString(), message: "NotVerifiedEmailAlertMessage".getLocalizedString(), preferredStyle: .alert)
+                    let notVerifiedEmailAlert = UIAlertController(title: "UnverifiedEmailAlertTitle".getLocalizedString(), message: "UnverifiedEmailAlertMessage".getLocalizedString(), preferredStyle: .alert)
                     let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
-                    let sendEmailVerificationAction = UIAlertAction(title: "Send Email Verification".getLocalizedString(), style: .default, handler: { (action) in
+                    let sendEmailVerificationAction = UIAlertAction(title: "Send Verification Mail".getLocalizedString(), style: .default, handler: { (action) in
                         authResult.user.sendEmailVerification(completion: { (error) in
                             if let error = error {
-                                AlertService.showAlert(in: self, message: error.localizedDescription, title: "Can Not Send Verification Email".getLocalizedString())
+                                AlertService.showAlert(in: self, message: error.localizedDescription, title: "Can not send verification mail".getLocalizedString())
                             }else{
-                                AlertService.showAlert(in: self, message: "Verification Email sent", title: "Succeed".getLocalizedString())
+                                AlertService.showAlert(in: self, message: "Verification mail sent".getLocalizedString(), title: "Succeeded".getLocalizedString())
                             }
                         })
                     })

@@ -29,10 +29,10 @@
 "AllergiesStackTitle" = "Alerjilerim:";
 "FavoriteMealsStackTitle" = "benim en sevdiğim yemek";
 
-"BiographyPlaceHolder" = "Kendin hakkında bir şeyler yaz...";
-
 "AllergyTFPlaceHolder" = "alerjini yaz";
 "FavoriteMealTFPlaceHolder" = "Favorini yaz";
+
+"BiographyPlaceHolder" = "Kendin hakkında bir şeyler yaz...";
 
 //GENERAL
 "NoInternetConnectionError" = "İnternet Bağlantısı Yok";
@@ -107,7 +107,6 @@
 "New Version Released" = "Yeni Sürüm Yayınlandı";
 "AvailableUpdateMessage" = "HomeMeal ile aranızdaki bağı biliyoruz, bu yüzden her gün daha iyi bir deneyim sunmak için çalışıyoruz. HomeMeal'ın daha güncel bir sürümü App Store'da. Yenilikleri görmek için hemen indirebilirsiniz :)";
 
-
 "hour" = "saat";
 "min" = "dk.";
 
@@ -123,6 +122,135 @@
 "Are you sure you want to complain" = "Şikayet etmek istediğinizden emin misiniz?";
 "Enter your complaint message" = "Şikayet mesajınızı girin";
 "ComplaintMessageNotEntered" = "Şikayet mesajı girilmedi, işlem sonlandırılıyor.";
-"Your Complaint Was Received" = "Şikayetiniz Alındı";
-"We are dealing with your complaint" = "HomeMeal'ı daha güvenli ve huzurlu bir platforma çevirmek için verdiğiniz bu desteğe teşekkür ederiz. Şikayetiniz ile ilgileniyoruz, en fazla 30 dakika içinde gerekli görülürse size dönüş sağlayacağız.";
 "ComplainErrorMessage" = "Şikayet oluşturulamadı lütfen daha sonra tekrar deneyin.";
+
+// Meal Preparation VC
+"Meal" = "Yemek";
+"Meal Name" =  "Yemek Adı:";
+"Description" = "Açıklama";
+"MealNamePlaceholder" = "yemek adı yazın";
+"MealDescriptionPlaceHolder" = "En fazla 256 karaktere olacak bir yemek açıklaması girmelisin.";
+"Ingredients" = "Malzemeler";
+"Brand" = "Marka";
+"IngredientNamePlaceholder" = "malzemenin adını yazınız";
+"IngredientBrandPlaceholder" = "malzemenin markasını yazınız";
+"No Ingredients" = "Malzeme bulunmamaktadır";
+"Price" = "Fiyat:";
+"Start Time" = "Başlangıç Zamanı";
+"End Time" = "Bitiş Zamanı";
+"Preparation Time" = "Hazırlanma Süresi";
+"Meal Status" = "Yemek Durumu";
+"can be ordered" =  "sipariş edilebilir";
+"can't be ordered" =  "sipariş edilemez";
+"Prepare Meal" = "Yemek Hazırla";
+"Update Meal" = "Yemeği Güncelle";
+"Orders" = "Siparişler";
+"My Orders" = "Siparişlerim";
+"Menu" = "Menü";
+"Profile" = "Profil";
+
+"ConnectionLostMessage" = "HomeMeal'ı kullanmaya devam etmek için\n lütfen internete bağlanın.";
+
+// FROM EXCEL
+"Add Comment"="Yorum Ekle";
+"No reviews available"="Yorum bulunmamaktadır.";
+"Comment Creation Failed"="Yorum oluşturulamadı!";
+"Comment Added"="Yorumunuz eklendi";
+"ConnectionLostMessage"="İnternet bağlantınız yok";
+"Chef Account Creation Successful, Admin Approval Needed, Verification Email Not Sent"="Şef hesabınız başarı ile oluşturuldu ancak doğrulama epostası gönderilemedi. Giriş yapmayı denediğinizde doğrulama epostası otomatik olarak gönderilecektir! Hesabınıza giriş yapabilmeniz için mailinizi doğrulamanız ve admin onayı gerekmektedir. Mail adresinizi doğruladığınızda ve admin onayı mailinize geldiğinde uygulamaya giriş yapabilirsiniz.";
+"Chef Account Creation Successful, Admin Approval Needed, Verification Email Sent"="Şef hesabınız başarı ile oluşturuldu ve doğrulama epostası gönerildi! Hesabınıza giriş yapabilmeniz için mailinizi doğrulamanız ve admin onayı gerekmektedir. Mail adresinizi doğruladığınızda ve admin onayı mailinize geldiğinde uygulamaya giriş yapabilirsiniz.";
+"An Error Occurred, Try Again"="Bir hata meydana geldi, lütfen tekrar deneyiniz";
+"Account Creation Successful, Verification Email Not Sent"="Hesabınız başarı ile oluşturuldu ancak doğrulama epostası gönderilemedi. Giriş yapmayı denediğinizde doğrulama epostası otomatik olarak gönderilecektir! Hesabınıza giriş yapabilmeniz için mailinizi doğrulamanız gerekmektedir. Mail adresinizi doğruladığınızda uygulamaya giriş yapabilirsiniz.";
+"Account Creation Successful, Verification Email Sent"="Hesabınız başarı ile oluşturuldu ve doğrulama epostası gönerildi! Hesabınıza giriş yapabilmeniz için mailinizi doğrulamanız gerekmektedir. Mail adresinizi doğruladığınızda uygulamaya giriş yapabilirsiniz.";
+"Enter your email"="Email adresinizi giriniz";
+"Reset"="Sıfırla";
+"Email not entered"="Email girişi yapılmadı";
+"Password Reset Sent To Email"="Şifre sıfırlama maili email adresinize gönderildi, mailinizdeki adımları takip edebilirsiniz";
+"Invalid Mail Address"="Geçersiz email adresi!";
+"Account Blocked, Contact To Developer"="Hesabınız engellenmiş, geliştirici ile iletişime geçiniz";
+"Admin Approval Needed For Login"="Hesabınıza giriş yapabilmek için admin onayı bekleniyor. Hesabınız onaylandıktan sonra giriş yapabilirsiiniz";
+"NullUserError"="Snapshot boş";
+"NoActiveMeals"="Menünüzde siparişe açık yemek bulunmamaktadır";
+"NoPassiveMeals"="Menünüzde siparişe kapalı yemek bulunmamaktadır";
+"Orderable"="Sipariş Edilebilir";
+"Not Orderable"="Sipariş Edilemez";
+"Meal Created"="Yemek Oluşturuldu";
+"Meal Created Message"="Yemeğiniz oluşturuldu ve menünüze eklendi.";
+"Meal Creation Failed"="Yemek oluşturma başarısız";
+"Change Order Status"="Sipariş Durumunu Değiştir";
+"Update Order Status"="Sipariş Durumunu Güncelle";
+"Complaint Creation Failed"="Şikayet oluşturma başarısız";
+"Incoming Orders"="Gelen Siparişler";
+"Past Orders"="Geçmiş Siparişler";
+"Name, mail, phone, password, biography, kitchen information  can not be empty"= "İsim, mail, telefon, şifre, biografi ve mutfak bilgilerinden herhangi biri boş olamaz!";
+"ChefProfileUpdateFailed"="Şef profili güncellenmesi başarısız!";
+"see chef's reviews"="Şef Değerledirmelerini İncele!";
+"Chef's Best Meals"="Şefin En İyi Yemekleri";
+"Please wait while fetching chef information"="Şef bilgileri alınırken lütfen bekleyin";
+"Chef Not Found"="Şef bulunamadı";
+"Meal List"="Yemek Listesi";
+"Rating"="Değerlendirme";
+"Chef"="Şef";
+"List of meals will be listed according to your location"="Yemek listeniz size en yakın konumdaki yemeklere göre listelenecektir, devam etmek istermisiniz?";
+"Deactivate"="Devre dışı bırak";
+"Activate"="Aktif et";
+"No location permission"="Konum izni bulunamadı!";
+"Location Permission"="Konum İzni";
+"Open Settings"="Ayarları aç";
+"Close Meal To Order"="Yemeği Siparişe Kapat";
+"CloseMeal To Order Alert Message"="Şiparişte olan bir yemeği güncellemeden önce sipariş listesinden çıkarmalısınız.";
+"Meal Not Found"="Yemek bulunamadı";
+"Go To Chef's Profile Button Title"= "Şefin Profiline Git";
+"Order Creation Failed, Try Again"="Sipariş oluşturulamadı, tekrar deneyiniz";
+"Approval for Meal Selection"="Bu yemek sipariş edilecektir, onaylıyor musunuz?";
+"Place an Order"="Sipariş Ver";
+"Enjoy Your Meal"="Afiyet olsun!";
+"Order Received"="Siparişiniz alındı";
+"Order Action Is Not Available"="Sipariş Verilemez";
+"Order Details"="Sipariş Detayları";
+"Chef's Kitchen Information"="Şefin Mutfak Bilgileri";
+"Chef's Kitchen Location"="Şefin Mutfak Lokasyonu";
+"Please wait while fetching meal information"="Yeme bilgileri alınırken lütfen bekleyin";
+"Please wait while fetching order information"="Sipariş bilgileri alınırken lütfen bekleyin";
+"Order Not Found"="Sipariş Bulunamadı";
+"Approval for Order Cancellation"="Şiparişinizi iptal edilecek ve bu işlem geri alınamayacaktır, devam etmek istiyormusunuz?";
+"Order Cancellation"="Sipariş İptali";
+"Order Status Update Successful"="Sipariş durumunuz başarıyla güncellendi";
+"No need to update in order status"= "Sipariş durumunda güncelleme yapmaya gerek yok";
+"Cancel Order"="Siparişi iptal et";
+"Order Cancellation Successful"="Siparişiniz başarılı bir şekilde iptal edilmiştir";
+"ComplainErrorMessage"="Şikayet Hata Mesajı";
+"Current Order Status"="Mevcut Sipariş Durumu";
+"Order Time"="Sipariş Zamanı";
+"My Past Orders"="Geçmiş Siparişlerim";
+"Phone Number must be valid"="Telefon numarası geçerli olmalı!";
+"Customer Profile Update Failed"="Müşteri profili güncellemesi başarısız";
+"Your profile information has been updated successfully"="Profil bilgileriniz başarılı bir şekilde güncellendi";
+"No Allergies Found"="Alerjiniz bulunmamaktadır";
+"No Best Meal Found"="En iyi yaptığınız yemek bulunmamaktadır";
+"No Favorite Meal Found"="Favori yemekleriniz bulunmamaktadır";
+"Settings"="Ayarlar";
+"Are you sure you want to sign out"= "Çıkış yapmak istediğinize emin misiniz?";
+"No Meals Error Message"="Sipariş edebileceğiniz yemek bulunmamaktadır.";
+"No Orders Error Message"="Bu listede siparişiniz bulunmamaktadır.";
+"Can Be Ordered Between"="Sipariş Verilebileceği Tarih Aralığı";
+"UnverifiedEmailAlertTitle"="Doğrulanmamış Email";
+"UnverifiedEmailAlertMessage"="Mail adresiniz doğrulanmamış. Doğrulama e postası almak için 'Doğrulama Maili Gönder' butonuna tıklayınız.";
+"Send Verification Mail"="Doğrulama Maili Gönder";
+"Can not send verification mail"="Doğrulama postası gönderilemiyor";
+"Verification mail sent" = "Doğrulama postası gönderildi";
+"Succeeded"="Başarılı";
+
+"Empty text" = "Boş metin";
+"Your password should be between 6-32 character, not null and not contain whitespace" = "Şifreniz 6-32 karakter arasında olmalı, boş olmamalıdır ve boşluk içermemelidir";
+"Name cannot be empty" = "İsim boş olamaz";
+"Price should be numeric value and not empty" = "Fiyat sayısal olmalı ve boş olmamalıdır";
+
+"Reject" = "Reddet";
+"Preparing" = "Hazırlanıyor";
+"Prepared" = "Hazırlandı";
+"received" = "alındı";
+"rejected" = "reddedildi";
+"canceled" = "iptal edildi";
+"preparing" = "hazırlanıyor";
+"prepared" = "hazırlandı";

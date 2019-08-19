@@ -164,10 +164,10 @@ enum OrderStatusText: String {
 
 enum MyValidationErrors: String, ValidationError {
     case emptyText = "Empty text"
-    case emailInvalid = "Email address is invalid"
-    case passwordInvalid = "Password should between 6-32 and not null. Cannot contain whitespace"
-    case nameInvalid = "Name boş olamaz"
-    case priceInvalid = "Price should be not null numeric value"
+    case emailInvalid = "Invalid Mail Address"
+    case passwordInvalid = "Your password should be between 6-32 character, not null and not contain whitespace"
+    case nameInvalid = "Name cannot be empty"
+    case priceInvalid = "Price should be numeric value and not empty"
     var message: String { return self.rawValue.getLocalizedString() }
 }
 

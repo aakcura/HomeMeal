@@ -143,7 +143,7 @@ class CustomerOrderDetailsVC: BaseVC {
         ratingView.settings.fillMode = .precise
         // Other fill modes: .half, .precise
         
-        btnGoToChefProfile.setTitle("go to chef's profile".getLocalizedString(), for: .normal)
+        btnGoToChefProfile.setTitle("Go To Chef's Profile Button Title".getLocalizedString(), for: .normal)
         
         mealDetailsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         mealDetailsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
@@ -170,7 +170,7 @@ class CustomerOrderDetailsVC: BaseVC {
         btnCancelOrder.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnCancelOrder.setTitle("Cancel Order".getLocalizedString(), for: .normal)
         
-        self.showInformationView(withMessage: "Siparişiniz getirilirken lütfen bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+        self.showInformationView(withMessage: "Please wait while fetching order information".getLocalizedString(), showAsLoadingPage: true)
     }
     
     @IBAction func closeTapped(_ sender: Any) {
@@ -253,7 +253,7 @@ class CustomerOrderDetailsVC: BaseVC {
     @IBAction func cancelOrderTapped(_ sender: Any) {
         if NetworkManager.isConnectedNetwork() {
             if let order = self.order {
-                let cancelOrderAlert = UIAlertController(title: "Sipariş İptali".getLocalizedString(), message: "Şiparişinizi iptal edilecek ve bu işlem geri alınamayacaktır devam etmek istiyormusunuz", preferredStyle: .alert)
+                let cancelOrderAlert = UIAlertController(title: "Order Cancellation".getLocalizedString(), message: "Approval for Order Cancellation".getLocalizedString(), preferredStyle: .alert)
                 let cancelButton =  UIAlertAction(title: "Cancel Order".getLocalizedString(), style: .destructive) { (action) in
                     self.updateOrderStatus(orderId: order.orderDetails.orderId, orderStatus: .canceled) { (error) in
                         if let error = error{
@@ -261,7 +261,7 @@ class CustomerOrderDetailsVC: BaseVC {
                         }else{
                             order.orderDetails.orderStatus = .canceled
                             self.currentOrderStatus = order.orderDetails.orderStatus
-                            AlertService.showAlert(in: self, message: "Siparişiniz başarıyla iptal edilmiştir".getLocalizedString())
+                            AlertService.showAlert(in: self, message: "Order Cancellation Successful".getLocalizedString())
                         }
                     }
                 }
@@ -270,7 +270,7 @@ class CustomerOrderDetailsVC: BaseVC {
                 cancelOrderAlert.addAction(cancelButton)
                 self.present(cancelOrderAlert, animated: true, completion: nil)
             }else{
-                AlertService.showAlert(in: self, message: "Sipariş bulunamadı".getLocalizedString())
+                AlertService.showAlert(in: self, message: "Order Not Found".getLocalizedString())
             }
         }else{
             AlertService.showNoInternetConnectionErrorAlert(in: self, style: .alert, blockUI: false)

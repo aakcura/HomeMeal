@@ -50,7 +50,7 @@ class CustomerMealListVC: BaseVC {
         return CGFloat.init(260.0)
     }()
     let emptyMealsTableCellHeight: CGFloat = {
-        return CGFloat.init(50.0)
+        return CGFloat.init(100.0)
     }()
     
     let searchController = UISearchController(searchResultsController: nil)
@@ -99,7 +99,7 @@ class CustomerMealListVC: BaseVC {
     }
     
     @objc private func locationFilterTapped(){
-        let alert = UIAlertController(title: nil, message: "Yemek listeniz siz en yakın konumdaki yemeklere göre listelenecektir devam etmek istermisiniz".getLocalizedString(), preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "List of meals will be listed according to your location".getLocalizedString(), preferredStyle: .alert)
         let cancelButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
         alert.addAction(cancelButton)
         
@@ -477,6 +477,8 @@ extension CustomerMealListVC: UITableViewDelegate, UITableViewDataSource{
     private func getEmptyOrdersErrorCell(with message:String) -> UITableViewCell{
         let errorCell = UITableViewCell()
         errorCell.textLabel?.textAlignment = .center
+        errorCell.textLabel?.numberOfLines = 0
+        errorCell.textLabel?.adjustsFontSizeToFitWidth = true
         errorCell.textLabel?.text = message
         return errorCell
     }

@@ -109,7 +109,7 @@ class CommentVC: UIViewController {
         self.ratingView.rating = comment.rating
         self.ratingView.text = "\(comment.rating)"
         self.lblMealName.text = comment.mealName
-        self.tvComment.text = comment.commentText ?? "Yorum bulunmamaktadır".getLocalizedString()
+        self.tvComment.text = comment.commentText ?? "No reviews available".getLocalizedString()
         self.tvComment.isEditable = false
         self.btnAddComment.isEnabled = false
         self.btnAddComment.isHidden = true
@@ -132,7 +132,7 @@ class CommentVC: UIViewController {
             let commentsDbRef = Database.database().reference().child("comments")
             guard let newCommentId = commentsDbRef.childByAutoId().key else{
                 DispatchQueue.main.async {
-                    AlertService.showAlert(in: self, message: "Comment Oluşturulamadı".getLocalizedString(), title: "", style: .alert)
+                    AlertService.showAlert(in: self, message: "Comment Creation Failed".getLocalizedString(), title: "", style: .alert)
                 }
                 return
             }
@@ -157,7 +157,7 @@ class CommentVC: UIViewController {
                 if let error = error {
                     AlertService.showAlert(in: self, message: error.localizedDescription)
                 }else{
-                    let alert = UIAlertController(title: nil, message: "Yorumunuz eklendi".getLocalizedString(), preferredStyle: .alert)
+                    let alert = UIAlertController(title: nil, message: "Comment Added".getLocalizedString(), preferredStyle: .alert)
                     let closeButton = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: { (action) in
                         self.dataTransferDelegate?.newCommentAddedWith(commentId: newCommentId)
                         self.closeTapped(true)

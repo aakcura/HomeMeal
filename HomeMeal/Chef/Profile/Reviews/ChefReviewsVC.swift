@@ -144,6 +144,8 @@ extension ChefReviewsVC: UITableViewDelegate, UITableViewDataSource{
     private func getEmptyOrdersErrorCell(with message:String) -> UITableViewCell{
         let errorCell = UITableViewCell()
         errorCell.textLabel?.textAlignment = .center
+        errorCell.textLabel?.numberOfLines = 0
+        errorCell.textLabel?.adjustsFontSizeToFitWidth = true
         errorCell.textLabel?.text = message
         return errorCell
     }

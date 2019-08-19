@@ -212,7 +212,7 @@ extension CustomerSignUpVC{
     private func signUp(){
         guard let name = tfName.text, let email = tfEmail.text, let phoneNumber = (tfPhoneNumber as! FPNTextField).getFormattedPhoneNumber(format: .E164), let password = tfPasswordConfirm.text else {
             DispatchQueue.main.async { [weak self] in
-                AlertService.showAlert(in: self, message: "İsim mail telefon ve şifre boş olamaz !!! ", title: "", style: .alert)
+                AlertService.showAlert(in: self, message: "Name, mail, phone, password, biography, kitchen information  can not be empty".getLocalizedString(), title: "", style: .alert)
             }
             return
         }
@@ -281,7 +281,7 @@ extension CustomerSignUpVC{
             let dbRef = Database.database().reference()
             guard let userId = values["userId"] as? String else {
                 self.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                AlertService.showAlert(in: self, message: "Hata meydana geldi tekrar deneyiniz".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                AlertService.showAlert(in: self, message: "An Error Occurred, Try Again".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
                 return
             }
             dbRef.child("customers").child(userId).setValue(values) {[weak self] (error, databaseRef) in
@@ -309,12 +309,12 @@ extension CustomerSignUpVC{
                                     if let error = error {
                                         DispatchQueue.main.async { [weak self] in
                                             self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                            AlertService.showAlert(in: self, message: error.localizedDescription, title: "Hesabınız oluşturuldu", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                            AlertService.showAlert(in: self, message: error.localizedDescription, title: "Account Creation Successful, Verification Email Not Sent".getLocalizedString(), buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
                                         }
                                     }else{
                                         DispatchQueue.main.async { [weak self] in
                                             self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                            AlertService.showAlert(in: self, message: "Hesabınız başarı ile oluşturuldu ve doğrulama maili gönderildi, lütfen mailiniz doğruladıktan sonra giriş yapınız".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                            AlertService.showAlert(in: self, message: "Account Creation Successful, Verification Email Sent".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
                                         }
                                     }
                                 })
@@ -481,7 +481,7 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
                 emptyAllergyCell.backgroundColor = .white
                 emptyAllergyCell.textLabel?.numberOfLines = 0
                 emptyAllergyCell.textLabel?.textAlignment = .center
-                emptyAllergyCell.textLabel?.text = "Alerjiniz bulunmamaktadır."
+                emptyAllergyCell.textLabel?.text = "No Allergies Found".getLocalizedString()
                 return emptyAllergyCell
             }else{
                 let allergy = allergies[indexPath.row]
@@ -496,7 +496,7 @@ extension CustomerSignUpVC: UITableViewDelegate, UITableViewDataSource {
                 emptyFavoriteMealCell.backgroundColor = .white
                 emptyFavoriteMealCell.textLabel?.numberOfLines = 0
                 emptyFavoriteMealCell.textLabel?.textAlignment = .center
-                emptyFavoriteMealCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır."
+                emptyFavoriteMealCell.textLabel?.text = "No Favorite Meal Found".getLocalizedString()
                 return emptyFavoriteMealCell
             }else{
                 let favoriteMeal = favoriteMeals[indexPath.row]

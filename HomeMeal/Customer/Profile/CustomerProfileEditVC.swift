@@ -281,7 +281,7 @@ extension CustomerProfileEditVC{
                 if error != nil {
                     self.hideActivityIndicatorView(isUserInteractionEnabled: true)
                     DispatchQueue.main.async {
-                        AlertService.showAlert(in: self, message: "Customer Profile update başarısız".getLocalizedString(), title: "Error".getLocalizedString(), style: .alert, blockUI: false)
+                        AlertService.showAlert(in: self, message: "Customer Profile Update Failed".getLocalizedString(), title: "Error".getLocalizedString(), style: .alert, blockUI: false)
                     }
                     return
                 }else{
@@ -383,7 +383,7 @@ extension CustomerProfileEditVC: UITableViewDelegate, UITableViewDataSource {
                 emptyAllergyCell.backgroundColor = .white
                 emptyAllergyCell.textLabel?.numberOfLines = 0
                 emptyAllergyCell.textLabel?.textAlignment = .center
-                emptyAllergyCell.textLabel?.text = "Alerjiniz bulunmamaktadır.".getLocalizedString()
+                emptyAllergyCell.textLabel?.text = "No Allergies Found".getLocalizedString()
                 return emptyAllergyCell
             }else{
                 let allergy = allergies[indexPath.row]
@@ -398,7 +398,7 @@ extension CustomerProfileEditVC: UITableViewDelegate, UITableViewDataSource {
                 emptyFavoriteMealCell.backgroundColor = .white
                 emptyFavoriteMealCell.textLabel?.numberOfLines = 0
                 emptyFavoriteMealCell.textLabel?.textAlignment = .center
-                emptyFavoriteMealCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır.".getLocalizedString()
+                emptyFavoriteMealCell.textLabel?.text = "No Favorite Meal Found".getLocalizedString()
                 return emptyFavoriteMealCell
             }else{
                 let favoriteMeal = favoriteMeals[indexPath.row]

@@ -22,7 +22,7 @@ class ChefPastOrdersVC: BaseVC {
         return CGFloat.init(200.0)
     }()
     let emptyOrdersTableCellHeight: CGFloat = {
-        return CGFloat.init(50.0)
+        return CGFloat.init(100.0)
     }()
     
     
@@ -272,6 +272,8 @@ extension ChefPastOrdersVC: UITableViewDelegate, UITableViewDataSource{
     private func getEmptyOrdersErrorCell(with message:String) -> UITableViewCell{
         let errorCell = UITableViewCell()
         errorCell.textLabel?.textAlignment = .center
+        errorCell.textLabel?.numberOfLines = 0
+        errorCell.textLabel?.adjustsFontSizeToFitWidth = true
         errorCell.textLabel?.text = message
         return errorCell
     }

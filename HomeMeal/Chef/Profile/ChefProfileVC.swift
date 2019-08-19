@@ -108,14 +108,14 @@ class ChefProfileVC: BaseVC, ChooseEmailActionSheetPresenter {
                 configurePageWith(user: chef, presentationType: presentationType)
             }else{
                 if let chefId = chefId {
-                    self.showInformationView(withMessage: "Chef getiriliyor bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+                    self.showInformationView(withMessage: "Please wait while fetching chef information".getLocalizedString(), showAsLoadingPage: true)
                     self.getUserByUserId(chefId) { (chef) in
                         if let chef = chef {
                             self.chef = chef
                             self.configurePageWith(user: chef, presentationType: presentationType)
                             self.hideInformationView()
                         }else{
-                            self.changeInformationView(withMessage: "Chef bulunamadı".getLocalizedString(), shouldAnimating: false)
+                            self.changeInformationView(withMessage: "Chef Not Found".getLocalizedString(), shouldAnimating: false)
                         }
                     }
                 }
@@ -465,7 +465,7 @@ extension ChefProfileVC: UITableViewDelegate, UITableViewDataSource {
             emptyFavoriteMealCell.backgroundColor = .clear
             emptyFavoriteMealCell.textLabel?.numberOfLines = 0
             emptyFavoriteMealCell.textLabel?.textAlignment = .center
-            emptyFavoriteMealCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
+            emptyFavoriteMealCell.textLabel?.text = "No Best Meal Found".getLocalizedString()
             return emptyFavoriteMealCell
         }else{
             let cell = UITableViewCell()
