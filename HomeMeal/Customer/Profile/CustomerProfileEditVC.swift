@@ -82,6 +82,8 @@ class CustomerProfileEditVC: UIViewController, ActivityIndicatorDisplayProtocol 
             self.tfName.text = customer.name
             self.tfEmail.text = customer.email
             (self.tfPhoneNumber as! FPNTextField).set(phoneNumber: customer.phoneNumber)
+            self.phoneNumber = customer.phoneNumber
+            self.isPhoneNumberValid = true
             self.tvBiography.textColor = .black
             self.tvBiography.text = customer.biography
             if let socialAccountsList = customer.socialAccounts {

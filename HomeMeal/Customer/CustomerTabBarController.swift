@@ -53,10 +53,11 @@ class CustomerTabBarController: UITabBarController {
         customerMealListVC.tabBarItem.title = "Meal List".getLocalizedString()
         customerMealListVC.tabBarItem.image = AppIcons.cutleryIcon
         
-        let customerProfileVC = CustomerProfileVC()
+        let customerProfileVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerProfileVC") as! CustomerProfileVC
         let customerProfileVCWithNav = UINavigationController(rootViewController: customerProfileVC)
         customerProfileVC.tabBarItem.title = "Profile".getLocalizedString()
         customerProfileVC.tabBarItem.image = AppIcons.profileIcon
+        customerProfileVC.setPresentationProperties(.currentUser, customer: nil, customerId: nil)
         
         viewControllers = [ordersVCNavController,customerMealListVCNavController,customerProfileVCWithNav]
     }

@@ -217,3 +217,21 @@ struct PriceValidationRule: ValidationRule {
 }
 
 
+class MailInformations{
+    private static let developerMail = "arinakcura1@gmail.com"
+    private static let mailsubject = "HomeMeal - Contact".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "HomeMeal"
+   
+    private static let mailBody: String = {
+        let deviceAndAppInfo = DeviceAndAppInfo.init()
+        let mailBody = "\n\n\nHomeMeal v\(deviceAndAppInfo.applicationVersionNumber ?? "") - \(deviceAndAppInfo.deviceModel)\(deviceAndAppInfo.deviceOSName) \(deviceAndAppInfo.deviceOSVersionName)".addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed) ?? ""
+        return mailBody
+    }()
+    static let appleMailURL = "mailto:\(developerMail)?subject=\(mailsubject)&body=\(mailBody)"
+    static let gmailURL = "googlegmail://co?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
+    static let outlookURL = "ms-outlook://compose?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
+}
+
+enum ProfileScreensPresentationType{
+    case currentUser
+    case anyUser
+}

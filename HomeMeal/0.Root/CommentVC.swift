@@ -33,6 +33,7 @@ class CommentVC: UIViewController {
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var ratingView: CosmosView!
     
+    @IBOutlet weak var lblMealName: UILabel!
     @IBOutlet weak var tvComment: UITextView!
     @IBOutlet weak var btnAddComment: UIButton!
     
@@ -75,6 +76,8 @@ class CommentVC: UIViewController {
         popupView.setCornerRadius(radiusValue: 10.0, makeRoundCorner: false)
         btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
         ratingView.settings.fillMode = .precise
+        lblMealName.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        lblMealName.setBorder(borderWidth: 1, borderColor: .black)
         tvComment.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         btnAddComment.setTitle("Add Comment".getLocalizedString(), for: .normal)
         btnAddComment.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
@@ -96,12 +99,16 @@ class CommentVC: UIViewController {
     
     private func configureViewForNewComment(){
         setupRatingView(for: .newComment)
+        if let mealName = self.order?.mealDetails.mealName{
+            lblMealName.text = mealName
+        }
     }
     
     private func configureViewForExistingComment(_ comment: Comment){
         setupRatingView(for: .existingComment)
         self.ratingView.rating = comment.rating
         self.ratingView.text = "\(comment.rating)"
+        self.lblMealName.text = comment.mealName
         self.tvComment.text = comment.commentText ?? "Yorum bulunmamaktadır".getLocalizedString()
         self.tvComment.isEditable = false
         self.btnAddComment.isEnabled = false
@@ -138,6 +145,7 @@ class CommentVC: UIViewController {
                 "customerId": order.orderDetails.customerId,
                 "customerName": order.orderDetails.customerName,
                 "orderId": order.orderDetails.orderId,
+                "mealName": order.mealDetails.mealName,
                 "rating": self.rating ?? 0.0
                 ] as [String:AnyObject]
             
@@ -154,7 +162,6 @@ class CommentVC: UIViewController {
                         self.dataTransferDelegate?.newCommentAddedWith(commentId: newCommentId)
                         self.closeTapped(true)
                     })
-                    
                     alert.addAction(closeButton)
                     self.present(alert, animated: true, completion: nil)
                 }

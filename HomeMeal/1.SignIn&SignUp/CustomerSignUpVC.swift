@@ -281,7 +281,7 @@ extension CustomerSignUpVC{
             let dbRef = Database.database().reference()
             guard let userId = values["userId"] as? String else {
                 self.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                AlertService.showAlert(in: self, message: "Hata meydana geldi tekrar deneyiniz", title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                AlertService.showAlert(in: self, message: "Hata meydana geldi tekrar deneyiniz".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
                 return
             }
             dbRef.child("customers").child(userId).setValue(values) {[weak self] (error, databaseRef) in
@@ -304,9 +304,20 @@ extension CustomerSignUpVC{
                             AlertService.showAlert(in: self, message:error.localizedDescription, title:"", style: .alert)
                             return
                         }else{
-                            DispatchQueue.main.async { [weak self] in
-                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                AlertService.showAlert(in: self, message: "Hesabınız başarı ile oluşturuldu, lütfen giriş yapınız", title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                            if let authUser = Auth.auth().currentUser {
+                                authUser.sendEmailVerification(completion: { (error) in
+                                    if let error = error {
+                                        DispatchQueue.main.async { [weak self] in
+                                            self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                            AlertService.showAlert(in: self, message: error.localizedDescription, title: "Hesabınız oluşturuldu", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                        }
+                                    }else{
+                                        DispatchQueue.main.async { [weak self] in
+                                            self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                            AlertService.showAlert(in: self, message: "Hesabınız başarı ile oluşturuldu ve doğrulama maili gönderildi, lütfen mailiniz doğruladıktan sonra giriş yapınız".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                        }
+                                    }
+                                })
                             }
                         }
                     })

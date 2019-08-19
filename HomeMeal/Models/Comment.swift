@@ -18,6 +18,7 @@ class Comment {
     var customerId: String
     var customerName: String
     var orderId: String
+    var mealName: String
     var rating: Double
     
     init(dictionary: [String: Any]) {
@@ -30,6 +31,7 @@ class Comment {
         self.customerId = dictionary["customerId"] as! String
         self.customerName = dictionary["customerName"] as! String
         self.orderId = dictionary["orderId"] as! String
+        self.mealName = dictionary["mealName"] as! String
         self.rating = dictionary["rating"] as! Double
     }
     
@@ -42,6 +44,7 @@ class Comment {
             "customerId": self.customerId,
             "customerName": self.customerName,
             "orderId": self.orderId,
+            "mealName": self.mealName,
             "rating": self.rating
             ] as [String:AnyObject]
         

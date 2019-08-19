@@ -10,7 +10,7 @@ import Firebase
 import Cosmos
 import MapKit
 
-class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
+class ChefProfileVC: BaseVC, ChooseEmailActionSheetPresenter {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
@@ -45,9 +45,9 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         self.dismiss(animated: true, completion: nil)
     }
     
-    
     @IBAction func seeChefReviewsTapped(_ sender: Any) {
-        // see chef reviews
+        guard let chefId = self.chef?.userId else {return}
+        showChefReviewsPopup(with: chefId)
     }
     
     @IBAction func kitchenLocationTapped(_ sender: Any) {
@@ -72,7 +72,9 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     var informationVC: InformationVC?
 
     
-    var user: Chef?
+    var chefId: String?
+    var chef: Chef?
+    var presentationType: ProfileScreensPresentationType?
     
     var chooseEmailActionSheet: UIAlertController? {
         return setupChooseEmailActionSheet(withTitle: "Contact Us".getLocalizedString())
@@ -81,10 +83,48 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIProperties()
+        self.determinePresantationTypeAndConfigureUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let presentationType = self.presentationType, presentationType == .currentUser {
+            guard let currentChef = AppDelegate.shared.currentUserAsChef else {return}
+            self.chef = currentChef
+            configurePageWith(user: self.chef!, presentationType: presentationType)
+        }
+    }
+    
+    private func determinePresantationTypeAndConfigureUI(){
+        guard let presentationType = self.presentationType else {return}
+        if presentationType == .currentUser {
+            guard let currentChef = AppDelegate.shared.currentUserAsChef else {return}
+            self.chef = currentChef
+            configurePageWith(user: self.chef!, presentationType: presentationType)
+        }
+        
+        if presentationType == .anyUser {
+            if let chef = self.chef {
+                configurePageWith(user: chef, presentationType: presentationType)
+            }else{
+                if let chefId = chefId {
+                    self.showInformationView(withMessage: "Chef getiriliyor bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+                    self.getUserByUserId(chefId) { (chef) in
+                        if let chef = chef {
+                            self.chef = chef
+                            self.configurePageWith(user: chef, presentationType: presentationType)
+                            self.hideInformationView()
+                        }else{
+                            self.changeInformationView(withMessage: "Chef bulunamadı".getLocalizedString(), shouldAnimating: false)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func setupUIProperties(){
-        self.view.backgroundColor = AppColors.appWhiteColor
+        self.view.backgroundColor = .white
         self.informationVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "InformationVC") as! InformationVC
         
         btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
@@ -120,24 +160,25 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         kitchenInformationSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
         kitchenInformationSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
         lblKitchenInformationSectionTitle.text = "Chef's Kitchen Information".getLocalizedString()
+    }
+    
+    
+    private func configurePageWith(user:Chef, presentationType: ProfileScreensPresentationType){
+        if presentationType == .currentUser {
+            customizeNavBarForCurrentUser()
+            btnClose.isHidden = true
+        }
         
-        configureUIForCurrentUser()
+        if presentationType == .anyUser {
+            customizeNavBarForAnyUser()
+            btnClose.isHidden = false
+        }
+        
+        configurePageWithUserInformations(user)
     }
     
-    private func configureUIForCurrentUser(){
-        customizeNavBarForCurrentUser()
-        btnClose.isHidden = true
-        configurePageWithUserInformations()
-    }
     
-    private func configureUIForAnyUser(){
-        customizeNavBarForAnyUser()
-        btnClose.isHidden = false
-        configurePageWithUserInformations()
-    }
-    
-    private func configurePageWithUserInformations(){
-        guard let user = self.user else {return}
+    private func configurePageWithUserInformations(_ user:Chef){
         DispatchQueue.main.async {
             if let profileImageUrl = user.profileImageUrl {
                 self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl, defaultImage: AppIcons.profileIcon)
@@ -149,9 +190,31 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
             self.ratingView.rating = user.rating
             
             // TODO: CONFIGURE SOCIAL ACCOUNTS
+            for view in self.socialAccountsButtonStack.arrangedSubviews{
+                self.socialAccountsButtonStack.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+            if let socialAccounts = user.socialAccounts {
+                for item in socialAccounts{
+                    let btn = SocialMediaAccountButton(type: .system)
+                    btn.translatesAutoresizingMaskIntoConstraints = false
+                    btn.heightAnchor.constraint(equalToConstant: 40).isActive = true
+                    btn.widthAnchor.constraint(equalToConstant: 40).isActive = true
+                    btn.setSocialMediaAccount(item)
+                    self.socialAccountsButtonStack.addArrangedSubview(btn)
+                }
+            }else{
+                let lblNoSocialMediaAccounts = UILabel()
+                lblNoSocialMediaAccounts.textAlignment = .center
+                lblNoSocialMediaAccounts.textColor = .black
+                lblNoSocialMediaAccounts.font = UIFont.boldSystemFont(ofSize: 14)
+                lblNoSocialMediaAccounts.text = "No Social Media Accounts".getLocalizedString()
+                self.socialAccountsButtonStack.addArrangedSubview(lblNoSocialMediaAccounts)
+            }
             
             self.tvBiography.text = user.biography
             self.bestMeals = user.bestMeals ?? []
+            self.tableBestMeals.reloadData()
             self.kitchenLocation = user.kitchenInformation.getKitchenLocationAsCLLocationCoordinate2D()
             self.tvKitchenAddressDescription.text = user.kitchenInformation.addressDescription
         }
@@ -177,13 +240,18 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     @objc func settingsButtonClicked() {
         let alert = UIAlertController(title: "Settings".getLocalizedString(), message: nil, preferredStyle: .actionSheet)
         
+        let goToProfileSettingsAction = UIAlertAction(title: "Go to Profile Settings".getLocalizedString(), style: .default) { (action) in
+            self.goToProfileSettings()
+        }
+        
         let contactUsViaMailAction = UIAlertAction(title: "Contact Us".getLocalizedString(), style: .default) { (action) in
             self.contactUsViaMail()
         }
         
-        let goToProfileSettingsAction = UIAlertAction(title: "Go to Profile Settings".getLocalizedString(), style: .default) { (action) in
-            self.goToProfileSettings()
+        let shareAppAction = UIAlertAction(title: "Share App".getLocalizedString(), style: .default) { (action) in
+            self.shareApp()
         }
+        
         
         let signOutAction = UIAlertAction(title: "Sign Out".getLocalizedString(), style: .destructive) { (action) in
             let alert = UIAlertController(title: nil, message: "Are you sure you want to sign out".getLocalizedString(), preferredStyle: .alert)
@@ -200,6 +268,7 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         
         alert.addAction(goToProfileSettingsAction)
         alert.addAction(contactUsViaMailAction)
+        alert.addAction(shareAppAction)
         alert.addAction(signOutAction)
         alert.addAction(closeAction)
         self.present(alert, animated: true, completion: nil)
@@ -242,6 +311,24 @@ class ChefProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     }
 }
 
+
+// SHOW OPTIONS
+extension ChefProfileVC {
+    func setPresentationProperties(_ presentationType:ProfileScreensPresentationType, chef:Chef?, chefId: String?){
+        self.presentationType = presentationType
+        if presentationType == .anyUser {
+            if let chef = chef {
+                self.chef = chef
+            }else{
+                if let chefId = chefId {
+                    self.chefId = chefId
+                }
+            }
+        }
+    }
+}
+
+
 // INFORMATION VIEW METHODS
 extension ChefProfileVC {
     private func showInformationView(withMessage:String, showAsLoadingPage:Bool){
@@ -279,53 +366,8 @@ extension ChefProfileVC {
     }
 }
 
-// SHOW OPTIONS
-extension ChefProfileVC {
-    func setShowProperties(isShownForCurrentUser:Bool, chef:Chef? ,chefId:String?){
-        if isShownForCurrentUser {
-            if let currentUser = AppDelegate.shared.currentUserAsChef {
-                self.user = currentUser
-                configureUIForCurrentUser()
-            }
-        }else{
-            if let chef = chef {
-                self.user = chef
-                configureUIForAnyUser()
-            }
-            
-            if let chefId = chefId {
-                self.showInformationView(withMessage: "Chef getiriliyor bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
-                self.getUserByUserId(chefId) { (chef) in
-                    if let chef = chef {
-                        self.user = chef
-                        self.configureUIForAnyUser()
-                    }else{
-                        self.changeInformationView(withMessage: "Chef bulunamadı".getLocalizedString(), shouldAnimating: false)
-                    }
-                }
-            }
-        }
-    }
-}
-
 // FIRABASE OPERATIONS
 extension ChefProfileVC {
-    private func getUserByUserId(_ userId:String){
-        if NetworkManager.isConnectedNetwork(){
-            Database.database().reference().child("chefs/\(userId)").observe(.value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject]{
-                    let user = Chef(dictionary: dictionary)
-                    self.user = user
-                }
-            }
-        }else{
-            DispatchQueue.main.async {
-                AlertService.showNoInternetConnectionErrorAlert(in: self)
-            }
-        }
-    }
-    
-    // NOT IN USE
     private func getUserByUserId(_ userId:String, completion: @escaping (Chef?) -> Void){
         if NetworkManager.isConnectedNetwork(){
             Database.database().reference().child("chefs/\(userId)").observe(.value) { (snapshot) in
@@ -337,39 +379,41 @@ extension ChefProfileVC {
                 }
             }
         }else{
-            DispatchQueue.main.async {
-                AlertService.showNoInternetConnectionErrorAlert(in: self)
-            }
+            self.changeInformationView(withMessage: "NoInternetConnectionErrorMessage".getLocalizedString(), shouldAnimating: false)
         }
     }
 }
 
 // SETTINGS SECTION
 extension ChefProfileVC {
+    
+    @objc func shareApp(){
+        self.getAppShareMessage { (message) in
+            if let message = message {
+                DispatchQueue.main.async {
+                    let activityController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+                    self.present(activityController, animated: true)
+                }
+            }else{
+                return
+            }
+        }
+    }
+    
     @objc func contactUsViaMail() {
         guard let emailActionSheet = chooseEmailActionSheet else{
             return
         }
-        
-        let developerMail = "aakcura2001@gmail.com"
-        let mailsubject = "HomeMeal - Contact".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "HomeMeal"
-        let deviceAndAppInfo = DeviceAndAppInfo.init()
-        let mailBody = "\n\n\nHomeMeal v\(deviceAndAppInfo.applicationVersionNumber ?? "") - \(deviceAndAppInfo.deviceModel)\(deviceAndAppInfo.deviceOSName) \(deviceAndAppInfo.deviceOSVersionName)".addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed) ?? ""
-        
-        let appleMailURL = "mailto:\(developerMail)?subject=\(mailsubject)&body=\(mailBody)"
-        let gmailURL = "googlegmail://co?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
-        let outlookURL = "ms-outlook://compose?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
-        
-        
-        if let action = openAction(withURL: appleMailURL, andTitleActionTitle: "Through Mail".getLocalizedString()) {
+      
+        if let action = openAction(withURL: MailInformations.appleMailURL, andTitleActionTitle: "Through Mail".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
-        if let action = openAction(withURL: gmailURL, andTitleActionTitle: "Through Gmail".getLocalizedString()) {
+        if let action = openAction(withURL: MailInformations.gmailURL, andTitleActionTitle: "Through Gmail".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
-        if let action = openAction(withURL: outlookURL, andTitleActionTitle: "Through Outlook".getLocalizedString()) {
+        if let action = openAction(withURL: MailInformations.outlookURL, andTitleActionTitle: "Through Outlook".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
@@ -395,7 +439,7 @@ extension ChefProfileVC {
     }
     
     private func goToProfileSettings(){
-        guard let user = self.user else { return }
+        guard let user = self.chef else { return }
         let profileSettingsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefProfileEditVC") as! ChefProfileEditVC
         profileSettingsVC.chef = user
         let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
@@ -418,7 +462,7 @@ extension ChefProfileVC: UITableViewDelegate, UITableViewDataSource {
         if bestMeals.isEmpty {
             let emptyFavoriteMealCell = UITableViewCell()
             emptyFavoriteMealCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
-            emptyFavoriteMealCell.backgroundColor = .white
+            emptyFavoriteMealCell.backgroundColor = .clear
             emptyFavoriteMealCell.textLabel?.numberOfLines = 0
             emptyFavoriteMealCell.textLabel?.textAlignment = .center
             emptyFavoriteMealCell.textLabel?.text = "En iyi yemeğiniz bulunmamaktadır ..."
@@ -440,19 +484,20 @@ extension ChefProfileVC: UITableViewDelegate, UITableViewDataSource {
             return 30
         }
     }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.delete
+}
+
+// COMMENT VC DELEGATES
+extension ChefProfileVC: ChefReviewsVCPresentationDelegate{
+    func closeChefReviewsPopup() {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else { return }
-        bestMeals.remove(at: indexPath.row)
-        tableView.reloadData()
+    func showChefReviewsPopup(with chefId:String){
+        let chefReviewsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefReviewsVC") as! ChefReviewsVC
+        chefReviewsVC.presentationDelegate = self
+        chefReviewsVC.modalPresentationStyle = .overCurrentContext
+        chefReviewsVC.modalTransitionStyle = .crossDissolve
+        chefReviewsVC.chefId = chefId
+        self.present(chefReviewsVC, animated: true, completion: nil)
     }
 }

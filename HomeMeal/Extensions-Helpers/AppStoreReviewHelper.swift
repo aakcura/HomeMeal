@@ -15,6 +15,7 @@ struct AppStoreReviewHelper {
             return
         }
         appOpenCount += 1
+        print(appOpenCount)
         UserDefaults.standard.set(appOpenCount, forKey: UserDefaultsKeys.appOpenedCount)
     }
     

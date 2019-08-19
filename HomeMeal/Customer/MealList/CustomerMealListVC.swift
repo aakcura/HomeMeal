@@ -250,6 +250,54 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
         filterSearchController(searchBar)
     }
     
+    private func isMealsSortedByUserLocation() -> Bool{
+        if let isLocationSortActive = self.isLocationSortActive {
+            return isLocationSortActive
+        }else{
+            return false
+        }
+    }
+    
+    private func sortMealsByChefNameASC(){
+        self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
+            return meal2.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
+        })
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
+        }
+    }
+    
+    private func sortMealsByMealNameASC(){
+        self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
+            return meal2.mealName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.mealName    .trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
+        })
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
+        }
+    }
+    
+    private func sortMealsByPriceASC(){
+        self.searchedMeals.sort { (meal2, meal1) -> Bool in
+            return meal2.price < meal1.price
+        }
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
+        }
+    }
+    
+    private func sortMealsByRatingDESC(){
+        self.searchedMeals.sort { (meal2, meal1) -> Bool in
+            if let meal2Rating = meal2.chef?.rating, let meal1Rating = meal1.chef?.rating{
+                return meal2Rating > meal1Rating
+            }else{
+                return false
+            }
+        }
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
+        }
+    }
+    
     func filterSearchController(_ searchBar: UISearchBar){
         let searchText = searchBar.text ?? ""
         switch self.selectedSearchType {
@@ -259,30 +307,20 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 return isMatchingSearchText
             }
             
-            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                self.sortMealsByUserLocation(self.userLocation)
-                break
-            }else{
-                self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
-                    return meal2.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.chefName.trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
-                })
-                break
+            if !isMealsSortedByUserLocation() {
+                sortMealsByChefNameASC()
             }
+            return
         case .searchByMealName:
             self.searchedMeals = allMeals.filter { meal in
                 let isMatchingSearchText =    meal.mealName.localizedLowercase.contains(searchText.localizedLowercase) || searchText.localizedLowercase.count == 0
                 return isMatchingSearchText
             }
             
-            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                self.sortMealsByUserLocation(self.userLocation)
-                break
-            }else{
-                self.searchedMeals.sort(by: { (meal2, meal1) -> Bool in
-                    return meal2.mealName.trimmingCharacters(in: CharacterSet.whitespaces).localizedCaseInsensitiveCompare(meal1.mealName    .trimmingCharacters(in: CharacterSet.whitespaces).localizedLowercase) == ComparisonResult.orderedAscending
-                })
-                break
+            if !isMealsSortedByUserLocation() {
+                sortMealsByMealNameASC()
             }
+            return
         case .searchByPrice:
             var priceText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
             if !priceText.isEmpty && priceText.count == 2, let firstPrice = Double(priceText[0]), let secondPrice = Double(priceText[1]){
@@ -290,15 +328,10 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = (firstPrice <= meal.price && meal.price <= secondPrice) || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return meal2.price < meal1.price
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByPriceASC()
                 }
+                return
             }
             
             let priceGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
@@ -307,16 +340,10 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = meal.price > price || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return meal2.price < meal1.price
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByPriceASC()
                 }
+                return
             }
             
             let priceLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
@@ -325,28 +352,17 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = meal.price < price || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return meal2.price < meal1.price
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByPriceASC()
                 }
+                return
             }
             
             self.searchedMeals = allMeals
-            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                self.sortMealsByUserLocation(self.userLocation)
-                break
-            }else{
-                self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                    return meal2.price < meal1.price
-                }
-                break
+            if !isMealsSortedByUserLocation() {
+                sortMealsByPriceASC()
             }
+            return
         case .searchByRating:
             var ratingText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
             if !ratingText.isEmpty && ratingText.count == 2, let firstRating = Double(ratingText[0]), let secondRating = Double(ratingText[1]){
@@ -354,15 +370,10 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = (firstRating <= (meal.chef?.rating)! && (meal.chef?.rating)! <= secondRating) || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByRatingDESC()
                 }
+                return
             }
             
             let ratingGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
@@ -371,15 +382,10 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = (meal.chef?.rating)! > rating || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByRatingDESC()
                 }
+                return
             }
             
             let ratingLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
@@ -388,31 +394,17 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                     let isMatchingSearchText = (meal.chef?.rating)! < rating || searchText.localizedLowercase.count == 0
                     return isMatchingSearchText
                 })
-                if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                    self.sortMealsByUserLocation(self.userLocation)
-                    break
-                }else{
-                    self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                        return (meal2.chef?.rating)! > (meal1.chef?.rating)!
-                    }
-                    break
+                if !isMealsSortedByUserLocation() {
+                    sortMealsByRatingDESC()
                 }
+                return
             }
             
             self.searchedMeals = allMeals
-            if let isLocationSortActive = self.isLocationSortActive, isLocationSortActive {
-                self.sortMealsByUserLocation(self.userLocation)
-                break
-            }else{
-                self.searchedMeals.sort { (meal2, meal1) -> Bool in
-                    return (meal2.chef?.rating)! > (meal1.chef?.rating)!
-                }
-                break
+            if !isMealsSortedByUserLocation() {
+                sortMealsByRatingDESC()
             }
-        }
-        
-        DispatchQueue.main.async {
-            self.mealsTable.reloadData()
+            return
         }
     }
 }
@@ -549,7 +541,7 @@ extension CustomerMealListVC {
     }
     
     private func getMealBy(mealId:String){
-        dbRef.child("meals/\(mealId)").observe(.value) { (snapshot) in
+        dbRef.child("meals/\(mealId)").observeSingleEvent(of: .value) { (snapshot) in
             if let mealDictionary = snapshot.value as? [String:AnyObject]{
                 let meal = Meal(dictionary: mealDictionary)
                 if let index = self.allMeals.firstIndex(where: { (meal) -> Bool in

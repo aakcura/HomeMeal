@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class BaseVC: UIViewController {
 
@@ -27,6 +28,52 @@ class BaseVC: UIViewController {
         super.viewDidLoad()
     }
 }
+
+// SHARE APP SECTION
+extension BaseVC {
+    func getAppShareMessage(completion: @escaping (String?) -> Void){
+        if NetworkManager.isConnectedNetwork(){
+            Database.database().reference().child("appShareLinks").child("shareMessages").observeSingleEvent(of: .value) { (snapshot) in
+                if let value = snapshot.value as? [String:String] {
+                    var message:String
+                    if self.isUserPreferredLanguageTurkish(){
+                        message = value["tr"]!
+                    }else{
+                        message = value["en"]!
+                    }
+                    UserDefaults.standard.set(message, forKey:  UserDefaultsKeys.appShareMessage)
+                    completion(message)
+                }else{
+                    completion(nil)
+                }
+            }
+        }else{
+            completion(self.getCachedAppShareMessage())
+        }
+    }
+    
+    private func getCachedAppShareMessage() -> String?{
+        if let appShareMessage = UserDefaults.standard.string(forKey: UserDefaultsKeys.appShareMessage) {
+            return appShareMessage
+        }else{
+            return nil
+        }
+    }
+    
+    ///Controls user preferred language. If the preferred language is turkish it returns true.
+    private func isUserPreferredLanguageTurkish() -> Bool{
+        if let userPreferredLanguageCode = Locale.current.languageCode{
+            if userPreferredLanguageCode.elementsEqual("tr") || userPreferredLanguageCode.elementsEqual("tur"){
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return false
+        }
+    }
+}
+
 
 extension BaseVC: ActivityIndicatorDisplayProtocol{
     

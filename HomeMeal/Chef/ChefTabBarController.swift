@@ -57,9 +57,9 @@ class ChefTabBarController: UITabBarController {
         let chefProfileVCWithNav = UINavigationController(rootViewController: chefProfileVC)
         chefProfileVC.tabBarItem.title = "Profile".getLocalizedString()
         chefProfileVC.tabBarItem.image = AppIcons.profileIcon
+        chefProfileVC.setPresentationProperties(.currentUser, chef: nil, chefId: nil)
         
         viewControllers = [ordersVCNavController, menuVCNavController, chefProfileVCWithNav]
-        chefProfileVC.setShowProperties(isShownForCurrentUser: true, chef: nil, chefId: nil)
     }
 
 }

@@ -7,29 +7,49 @@
 
 import UIKit
 import Firebase
+import Cosmos
 
-class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
-
-    func showActivityScreen(){
-        let activityScreen = ActivityVC()
-        self.navigationController?.pushViewController(activityScreen, animated: true)
+class CustomerProfileVC: BaseVC, ChooseEmailActionSheetPresenter {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var btnClose: UIButton!
+    
+    // CHEF PROFILE DETAILS SECTION
+    @IBOutlet weak var profileSectionView: UIView!
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var lblCustomerName: UILabel!
+    
+    @IBOutlet weak var socialAccountsSectionView: UIView!
+    @IBOutlet weak var lblSocialAccountsSectionTitle: UILabel!
+    @IBOutlet weak var socialAccountsButtonStack: UIStackView!
+    
+    @IBOutlet weak var biographySectionView: UIView!
+    @IBOutlet weak var lblBiographySectionTitle: UILabel!
+    @IBOutlet weak var tvBiography: UITextView!
+    
+    @IBOutlet weak var allergiesSectionView: UIView!
+    @IBOutlet weak var lblAllergiesSectionTitle: UILabel!
+    @IBOutlet weak var tableAllergies: UITableView!
+    
+    @IBOutlet weak var favoriteMealsSectionView: UIView!
+    @IBOutlet weak var lblFavoriteMealsSectionTitle: UILabel!
+    @IBOutlet weak var tableFavoriteMeals: UITableView!
+    
+    
+    @IBAction func closeTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    var userId: String?{
-        didSet{
-            if let userId = self.userId {
-                
-            }
-        }
-    }
     
-    var user: Customer? {
-        didSet{
-            // configureUI
-            print(user)
-            print(user?.email,user?.name)
-        }
-    }
+    var defaultProfileImage = AppIcons.profileIcon
+    var informationVC: InformationVC?
+    var allergies: [String] = []
+    var favoriteMeals: [String] = []
+    
+    var customerId: String?
+    var customer: Customer?
+    var presentationType: ProfileScreensPresentationType?
     
     var chooseEmailActionSheet: UIAlertController? {
         return setupChooseEmailActionSheet(withTitle: "Contact Us".getLocalizedString())
@@ -38,36 +58,142 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIProperties()
+        self.determinePresantationTypeAndConfigureUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let currentUser = AppDelegate.shared.currentUserAsCustomer else {
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Error".getLocalizedString(), message: "Profil bilgileriniz bulunamadı lütfen tekrar giriş yapınız".getLocalizedString(), preferredStyle: .alert)
-                let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .destructive) { (action) in
-                    self.signOut()
-                }
-                alert.addAction(closeAction)
-                self.present(alert, animated: true, completion: nil)
-            }
-            return
+        if let presentationType = self.presentationType, presentationType == .currentUser {
+            guard let currentCustomer = AppDelegate.shared.currentUserAsCustomer else {return}
+            self.customer = currentCustomer
+            configurePageWith(user: self.customer!, presentationType: presentationType)
         }
-        self.user = currentUser
+    }
+    
+    private func determinePresantationTypeAndConfigureUI(){
+        guard let presentationType = self.presentationType else {return}
+        if presentationType == .currentUser {
+            guard let currentCustomer = AppDelegate.shared.currentUserAsCustomer else {return}
+            self.customer = currentCustomer
+            configurePageWith(user: self.customer!, presentationType: presentationType)
+        }
+        
+        if presentationType == .anyUser {
+            if let customer = self.customer {
+                configurePageWith(user: customer, presentationType: presentationType)
+            }else{
+                if let customerId = customerId {
+                    self.showInformationView(withMessage: "Customer getiriliyor bekleyiniz".getLocalizedString(), showAsLoadingPage: true)
+                    self.getUserByUserId(customerId) { (customer) in
+                        if let customer = customer {
+                            self.customer = customer
+                            self.configurePageWith(user: customer, presentationType: presentationType)
+                            self.hideInformationView()
+                        }else{
+                            self.changeInformationView(withMessage: "Customer bulunamadı".getLocalizedString(), shouldAnimating: false)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func setupUIProperties(){
-        self.view.backgroundColor = AppColors.appWhiteColor
-        configureUIForCurrentUser()
+        self.view.backgroundColor = .white
+        self.informationVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "InformationVC") as! InformationVC
+        
+        btnClose.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
+        btnClose.setTitle("X", for: .normal)
+        
+        // PROFILE SECTION
+        profileSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        profileSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        profileImageView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: true)
+        
+        // SOCIAL MEDIA ACCOUNTS SECTION
+        socialAccountsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        socialAccountsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblSocialAccountsSectionTitle.text = "Social Media Accounts".getLocalizedString()
+        
+        // BIOGRAPHY SECTION
+        biographySectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        biographySectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblBiographySectionTitle.text = "Biography".getLocalizedString()
+        
+        // ALLERGIES SECTION
+        allergiesSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        allergiesSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblAllergiesSectionTitle.text = "Allergies".getLocalizedString()
+        tableAllergies.delegate = self
+        tableAllergies.dataSource = self
+        tableAllergies.tableFooterView = UIView(frame: .zero)
+        
+        // FAVORITE MEAL SECTION
+        favoriteMealsSectionView.setCornerRadius(radiusValue: 5.0, makeRoundCorner: false)
+        favoriteMealsSectionView.setBorder(borderWidth: 1, borderColor: AppColors.appBlackColor)
+        lblFavoriteMealsSectionTitle.text = "Favorite Meals".getLocalizedString()
+        tableFavoriteMeals.delegate = self
+        tableFavoriteMeals.dataSource = self
+        tableFavoriteMeals.tableFooterView = UIView(frame: .zero)
     }
     
-    private func configureUIForCurrentUser(){
-        customizeNavBarForCurrentUser()
+    
+    private func configurePageWith(user:Customer, presentationType: ProfileScreensPresentationType){
+        if presentationType == .currentUser {
+            customizeNavBarForCurrentUser()
+            btnClose.isHidden = true
+        }
+        
+        if presentationType == .anyUser {
+            customizeNavBarForAnyUser()
+            btnClose.isHidden = false
+        }
+        
+        configurePageWithUserInformations(user)
     }
     
-    private func configureUIForAnyUser(){
-        customizeNavBarForAnyUser()
+    
+    private func configurePageWithUserInformations(_ user:Customer){
+        DispatchQueue.main.async {
+            if let profileImageUrl = user.profileImageUrl {
+                self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl, defaultImage: AppIcons.profileIcon)
+            }else{
+                self.profileImageView.image = AppIcons.profileIcon
+            }
+            
+            self.lblCustomerName.text = user.name
+            
+            // TODO: CONFIGURE SOCIAL ACCOUNTS
+            for view in self.socialAccountsButtonStack.arrangedSubviews{
+                self.socialAccountsButtonStack.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+            if let socialAccounts = user.socialAccounts {
+                for item in socialAccounts{
+                    let btn = SocialMediaAccountButton(type: .system)
+                    btn.translatesAutoresizingMaskIntoConstraints = false
+                    btn.heightAnchor.constraint(equalToConstant: 40).isActive = true
+                    btn.widthAnchor.constraint(equalToConstant: 40).isActive = true
+                    btn.setSocialMediaAccount(item)
+                    self.socialAccountsButtonStack.addArrangedSubview(btn)
+                }
+            }else{
+                let lblNoSocialMediaAccounts = UILabel()
+                lblNoSocialMediaAccounts.textAlignment = .center
+                lblNoSocialMediaAccounts.textColor = .black
+                lblNoSocialMediaAccounts.font = UIFont.boldSystemFont(ofSize: 14)
+                lblNoSocialMediaAccounts.text = "No Social Media Accounts".getLocalizedString()
+                self.socialAccountsButtonStack.addArrangedSubview(lblNoSocialMediaAccounts)
+            }
+            
+            self.tvBiography.text = user.biography
+            self.allergies = user.allergies ?? []
+            self.favoriteMeals = user.favoriteMeals ?? []
+            self.tableAllergies.reloadData()
+            self.tableFavoriteMeals.reloadData()
+        }
     }
+    
     
     private func customizeNavBarForAnyUser(){
         self.setNavBarTitle("Profile".getLocalizedString())
@@ -88,12 +214,16 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     @objc func settingsButtonClicked() {
         let alert = UIAlertController(title: "Settings".getLocalizedString(), message: nil, preferredStyle: .actionSheet)
         
+        let goToProfileSettingsAction = UIAlertAction(title: "Go to Profile Settings".getLocalizedString(), style: .default) { (action) in
+            self.goToProfileSettings()
+        }
+        
         let contactUsViaMailAction = UIAlertAction(title: "Contact Us".getLocalizedString(), style: .default) { (action) in
             self.contactUsViaMail()
         }
         
-        let goToProfileSettingsAction = UIAlertAction(title: "Go to Profile Settings".getLocalizedString(), style: .default) { (action) in
-            self.goToProfileSettings()
+        let shareAppAction = UIAlertAction(title: "Share App".getLocalizedString(), style: .default) { (action) in
+            self.shareApp()
         }
         
         let signOutAction = UIAlertAction(title: "Sign Out".getLocalizedString(), style: .destructive) { (action) in
@@ -111,11 +241,12 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
         
         alert.addAction(goToProfileSettingsAction)
         alert.addAction(contactUsViaMailAction)
+        alert.addAction(shareAppAction)
         alert.addAction(signOutAction)
         alert.addAction(closeAction)
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     @objc private func signOut(){
         // store the user session (example only, not for the production)
         if NetworkManager.isConnectedNetwork(){
@@ -153,23 +284,61 @@ class CustomerProfileVC: UIViewController, ChooseEmailActionSheetPresenter {
     }
 }
 
+// SHOW OPTIONS
 extension CustomerProfileVC {
-    private func getUserByUserId(_ userId:String){
-        if NetworkManager.isConnectedNetwork(){
-            Database.database().reference().child("customers/\(userId)").observe(.value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject]{
-                    let user = Customer(dictionary: dictionary)
-                    self.user = user
+    func setPresentationProperties(_ presentationType:ProfileScreensPresentationType, customer:Customer?, customerId: String?){
+        self.presentationType = presentationType
+        if presentationType == .anyUser {
+            if let customer = customer {
+                self.customer = customer
+            }else{
+                if let customerId = customerId {
+                    self.customerId = customerId
                 }
             }
-        }else{
-            DispatchQueue.main.async {
-                AlertService.showNoInternetConnectionErrorAlert(in: self)
+        }
+    }
+}
+
+// INFORMATION VIEW METHODS
+extension CustomerProfileVC {
+    private func showInformationView(withMessage:String, showAsLoadingPage:Bool){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            self.addChild(informationVC)
+            informationVC.didMove(toParent: self)
+            informationVC.view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(informationVC.view)
+            informationVC.view.fillSuperView()
+            if showAsLoadingPage {
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
+            }else{
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
             }
         }
     }
     
-    // NOT IN USE
+    private func changeInformationView(withMessage:String, shouldAnimating:Bool){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            if shouldAnimating {
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: true, showCloseButton: false)
+            }else{
+                informationVC.configureInformationVC(message: withMessage, shouldAnimate: false, showCloseButton: true)
+            }
+        }
+    }
+    
+    private func hideInformationView(){
+        guard let informationVC = self.informationVC else {return}
+        DispatchQueue.main.async {
+            informationVC.view.removeFromSuperview()
+        }
+    }
+}
+
+// FIRABASE OPERATIONS
+extension CustomerProfileVC {
     private func getUserByUserId(_ userId:String, completion: @escaping (Customer?) -> Void){
         if NetworkManager.isConnectedNetwork(){
             Database.database().reference().child("customers/\(userId)").observe(.value) { (snapshot) in
@@ -181,39 +350,41 @@ extension CustomerProfileVC {
                 }
             }
         }else{
-            DispatchQueue.main.async {
-                AlertService.showNoInternetConnectionErrorAlert(in: self)
-            }
+            self.changeInformationView(withMessage: "NoInternetConnectionErrorMessage".getLocalizedString(), shouldAnimating: false)
         }
     }
 }
 
 // SETTINGS SECTION
 extension CustomerProfileVC {
+    
+    @objc func shareApp(){
+        self.getAppShareMessage { (message) in
+            if let message = message {
+                DispatchQueue.main.async {
+                    let activityController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+                    self.present(activityController, animated: true)
+                }
+            }else{
+                return
+            }
+        }
+    }
+    
     @objc func contactUsViaMail() {
         guard let emailActionSheet = chooseEmailActionSheet else{
             return
         }
         
-        let developerMail = "aakcura2001@gmail.com"
-        let mailsubject = "HomeMeal - Contact".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "HomeMeal"
-        let deviceAndAppInfo = DeviceAndAppInfo.init()
-        let mailBody = "\n\n\nHomeMeal v\(deviceAndAppInfo.applicationVersionNumber ?? "") - \(deviceAndAppInfo.deviceModel)\(deviceAndAppInfo.deviceOSName) \(deviceAndAppInfo.deviceOSVersionName)".addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed) ?? ""
-        
-        let appleMailURL = "mailto:\(developerMail)?subject=\(mailsubject)&body=\(mailBody)"
-        let gmailURL = "googlegmail://co?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
-        let outlookURL = "ms-outlook://compose?to=\(developerMail)&subject=\(mailsubject)&body=\(mailBody)"
-        
-        
-        if let action = openAction(withURL: appleMailURL, andTitleActionTitle: "Through Mail".getLocalizedString()) {
+        if let action = openAction(withURL: MailInformations.appleMailURL, andTitleActionTitle: "Through Mail".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
-        if let action = openAction(withURL: gmailURL, andTitleActionTitle: "Through Gmail".getLocalizedString()) {
+        if let action = openAction(withURL: MailInformations.gmailURL, andTitleActionTitle: "Through Gmail".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
-        if let action = openAction(withURL: outlookURL, andTitleActionTitle: "Through Outlook".getLocalizedString()) {
+        if let action = openAction(withURL: MailInformations.outlookURL, andTitleActionTitle: "Through Outlook".getLocalizedString()) {
             emailActionSheet.addAction(action)
         }
         
@@ -239,11 +410,92 @@ extension CustomerProfileVC {
     }
     
     private func goToProfileSettings(){
-        guard let user = self.user else { return }
+        guard let user = self.customer else { return }
         let profileSettingsVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "CustomerProfileEditVC") as! CustomerProfileEditVC
         profileSettingsVC.customer = user
-        self.present(profileSettingsVC, animated: true, completion: nil)
-        //let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
-        //self.present(profileSettingsNavigationController, animated: true, completion: nil)
+        let profileSettingsNavigationController = UINavigationController(rootViewController: profileSettingsVC)
+        self.present(profileSettingsNavigationController, animated: true, completion: nil)
+    }
+}
+
+// TABLE VIEW
+extension CustomerProfileVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == tableAllergies {
+            if allergies.isEmpty {
+                return 1
+            }else{
+                return allergies.count
+            }
+        }
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty {
+                return 1
+            }else{
+                return favoriteMeals.count
+            }
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell()
+        cell.setBorder(borderWidth: 1, borderColor: .black)
+        cell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+        cell.backgroundColor = AppColors.appGoldColor
+        
+        if tableView == tableAllergies {
+            if allergies.isEmpty {
+                let emptyAllergyCell = UITableViewCell()
+                //emptyAllergyCell.setBorder(borderWidth: 1, borderColor: .black)
+                emptyAllergyCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+                emptyAllergyCell.backgroundColor = .white
+                emptyAllergyCell.textLabel?.numberOfLines = 0
+                emptyAllergyCell.textLabel?.textAlignment = .center
+                emptyAllergyCell.textLabel?.text = "Alerjiniz bulunmamaktadır.".getLocalizedString()
+                return emptyAllergyCell
+            }else{
+                let allergy = allergies[indexPath.row]
+                cell.textLabel?.text = allergy
+            }
+        }
+        
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty {
+                let emptyFavoriteMealCell = UITableViewCell()
+                emptyFavoriteMealCell.setCornerRadius(radiusValue: 5, makeRoundCorner: false)
+                emptyFavoriteMealCell.backgroundColor = .white
+                emptyFavoriteMealCell.textLabel?.numberOfLines = 0
+                emptyFavoriteMealCell.textLabel?.textAlignment = .center
+                emptyFavoriteMealCell.textLabel?.text = "Favori yemeğiniz bulunmamaktadır.".getLocalizedString()
+                return emptyFavoriteMealCell
+            }else{
+                let favoriteMeal = favoriteMeals[indexPath.row]
+                cell.textLabel?.text = favoriteMeal
+            }
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == tableAllergies {
+            if allergies.isEmpty{
+                return tableView.frame.height
+            }else{
+                return 30
+            }
+        }
+        if tableView == tableFavoriteMeals {
+            if favoriteMeals.isEmpty{
+                return tableView.frame.height
+            }else{
+                return 30
+            }
+        }
+        
+        return 30
     }
 }

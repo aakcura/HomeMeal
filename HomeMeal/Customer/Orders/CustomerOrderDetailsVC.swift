@@ -183,12 +183,10 @@ class CustomerOrderDetailsVC: BaseVC {
     }
     
     @IBAction func goToChefProfileTapped(_ sender: Any) {
-        // TODO: Go chef profile
-        print("GO CHEF PROFİLE")
         guard let chef = self.chef else {return}
         let chefProfileVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefProfileVC") as! ChefProfileVC
+        chefProfileVC.setPresentationProperties(.anyUser, chef: chef, chefId: nil)
         self.present(chefProfileVC, animated: true, completion: nil)
-        chefProfileVC.setShowProperties(isShownForCurrentUser: false, chef: chef, chefId: nil)
     }
     
     @IBAction func complaintTapped(_ sender: Any) {

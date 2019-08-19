@@ -24,12 +24,12 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
     var signUpOptionsBackgroundView: SignUpOptionsBackgroundView!
     let btnSignUpAsChef: ImageButton = {
         let button = ImageButton(type: .system)
-        button.setImageButtonProperties(buttonImage: AppIcons.chefIcon, buttonTitle: "As Chef".getLocalizedString(), buttonBackgroundColor: AppColors.appGoldColor, textColor: .black)
+        button.setImageButtonProperties(buttonImage: AppIcons.chefIcon, buttonTitle: "As Chef".getLocalizedString(), buttonBackgroundColor: AppColors.appGreenColor, textColor: .black)
         return button
     }()
     let btnSignUpAsCustomer: ImageButton = {
         let button = ImageButton(type: .system)
-        button.setImageButtonProperties(buttonImage: AppIcons.customerIcon, buttonTitle: "As Customer".getLocalizedString(), buttonBackgroundColor: AppColors.appYellowColor, textColor: .black)
+        button.setImageButtonProperties(buttonImage: AppIcons.customerIcon, buttonTitle: "As Customer".getLocalizedString(), buttonBackgroundColor: AppColors.appGreenColor, textColor: .black)
         return button
     }()
     
@@ -178,35 +178,56 @@ class LoginVC: UIViewController, ActivityIndicatorDisplayProtocol {
         }
     }
     
+    
     private func signIn(){
         let email = tfEmail.text!
         let password = tfPassword.text!
         showActivityIndicatorView(isUserInteractionEnabled: false)
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let authResult = authResult {
-                Database.database().reference().child("users").child(authResult.user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let dictionary = snapshot.value as? [String:AnyObject], let accountInfoDictionary = dictionary["accountInfo"] as? [String:AnyObject]{
-                        let accountInfo = AccountInfo(dictionary: accountInfoDictionary)
-                        if let accountStatus = accountInfo.status, let accountType = accountInfo.accountType {
-                            switch accountStatus {
-                            case .enabled:
-                                self?.createUserSession(userId: authResult.user.uid, accountType: accountType)
-                                return
-                            case .disabled:
-                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                AlertService.showAlert(in: self, message: "Hesabınız engellenmiş. Lütfen geliştirici ile iletişime geçiniz".getLocalizedString(), style: .alert)
-                                return
-                            case .pendingApproval:
-                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                AlertService.showAlert(in: self, message: "Hesabınıza giriş yapabilmek için admin onayı bekleniyor. Hesabınız onaylandıktan sonra giriş yapabilirsiiniz".getLocalizedString(), style: .alert)
-                                return
+                if authResult.user.isEmailVerified {
+                    Database.database().reference().child("users").child(authResult.user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let dictionary = snapshot.value as? [String:AnyObject], let accountInfoDictionary = dictionary["accountInfo"] as? [String:AnyObject]{
+                            let accountInfo = AccountInfo(dictionary: accountInfoDictionary)
+                            if let accountStatus = accountInfo.status, let accountType = accountInfo.accountType {
+                                switch accountStatus {
+                                case .enabled:
+                                    self?.createUserSession(userId: authResult.user.uid, accountType: accountType)
+                                    return
+                                case .disabled:
+                                    self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                    AlertService.showAlert(in: self, message: "Hesabınız engellenmiş. Lütfen geliştirici ile iletişime geçiniz".getLocalizedString(), style: .alert)
+                                    return
+                                case .pendingApproval:
+                                    self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                    AlertService.showAlert(in: self, message: "Hesabınıza giriş yapabilmek için admin onayı bekleniyor. Hesabınız onaylandıktan sonra giriş yapabilirsiiniz".getLocalizedString(), style: .alert)
+                                    return
+                                }
                             }
+                        }else{
+                            self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                            AlertService.showAlert(in: self, message: "snapshot null geldi".getLocalizedString(), style: .alert)
                         }
-                    }else{
-                        self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                        AlertService.showAlert(in: self, message: "snapshot null geldi".getLocalizedString(), style: .alert)
+                    })
+                }else{
+                    self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                    let notVerifiedEmailAlert = UIAlertController(title: "NotVerifiedEmailAlertTitle".getLocalizedString(), message: "NotVerifiedEmailAlertMessage".getLocalizedString(), preferredStyle: .alert)
+                    let closeAction = UIAlertAction(title: "Close".getLocalizedString(), style: .cancel, handler: nil)
+                    let sendEmailVerificationAction = UIAlertAction(title: "Send Email Verification".getLocalizedString(), style: .default, handler: { (action) in
+                        authResult.user.sendEmailVerification(completion: { (error) in
+                            if let error = error {
+                                AlertService.showAlert(in: self, message: error.localizedDescription, title: "Can Not Send Verification Email".getLocalizedString())
+                            }else{
+                                AlertService.showAlert(in: self, message: "Verification Email sent", title: "Succeed".getLocalizedString())
+                            }
+                        })
+                    })
+                    notVerifiedEmailAlert.addAction(closeAction)
+                    notVerifiedEmailAlert.addAction(sendEmailVerificationAction)
+                    DispatchQueue.main.async {
+                        self?.present(notVerifiedEmailAlert, animated: true, completion: nil)
                     }
-                })
+                }
             }else{
                 self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
                 DispatchQueue.main.async {

@@ -52,5 +52,9 @@ class AppColors{
     static let appRedColor = UIColor.colorFromHex("#F03A22")
     
     static let textViewPlaceHolderColor =  UIColor(red: 122/255, green: 122/255, blue: 128/255, alpha: 1.0)
-    
+
+    static let linkedinColor = UIColor.colorFromHex("#1273B0")
+    static let twitterColor = UIColor.colorFromHex("#1DA1F2")
+    static let instagramColor = UIColor.colorFromHex("#E1306C")
+    static let pinterestColor = UIColor.colorFromHex("#E60D23")
 }

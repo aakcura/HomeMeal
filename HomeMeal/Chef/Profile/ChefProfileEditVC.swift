@@ -96,8 +96,12 @@ class ChefProfileEditVC: UIViewController, ActivityIndicatorDisplayProtocol {
             self.tfName.text = chef.name
             self.tfEmail.text = chef.email
             (self.tfPhoneNumber as! FPNTextField).set(phoneNumber: chef.phoneNumber)
+            self.phoneNumber = chef.phoneNumber
+            self.isPhoneNumberValid = true
             self.tvBiography.textColor = .black
             self.tvBiography.text = chef.biography
+            self.biographyText = chef.biography
+            self.isBiographyValid = true
             if let socialAccountsList = chef.socialAccounts {
                 for item in socialAccountsList {
                     switch item.accountType {

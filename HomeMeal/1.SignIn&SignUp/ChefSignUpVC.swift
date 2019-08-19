@@ -327,9 +327,21 @@ extension ChefSignUpVC{
                             AlertService.showAlert(in: self, message:error.localizedDescription, title:"", style: .alert)
                             return
                         }else{
-                            DispatchQueue.main.async { [weak self] in
-                                self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
-                                AlertService.showAlert(in: self, message: "Şef Hesabınız başarı ile oluşturuldu. Hesabınıza giriş yapabilmeniz için admin onayı gerekmektedir. Admin onayı mailinize geldiğinde uygulamaya giriş yapabilirsiniz", title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                            if let authUser = Auth.auth().currentUser {
+                                authUser.sendEmailVerification(completion: { (error) in
+                                    if let error = error {
+                                        DispatchQueue.main.async { [weak self] in
+                                            self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                            AlertService.showAlert(in: self, message: error.localizedDescription, title: "Hesabınız oluşturuldu", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                        }
+                                    }else{
+                                        
+                                        DispatchQueue.main.async { [weak self] in
+                                            self?.hideActivityIndicatorView(isUserInteractionEnabled: true)
+                                            AlertService.showAlert(in: self, message: "Şef Hesabınız başarı ile oluşturuldu ve doğrulama maili gönderildi. Hesabınıza giriş yapabilmeniz için öncelikle mailinizi onaylamanız sonrasında admin onayı almanız gerekmektedir. Admin onayı mailinize geldiğinde uygulamaya giriş yapabilirsiniz".getLocalizedString(), title: "", buttonTitle: "OK".getLocalizedString(), style: .alert, dismissVCWhenButtonClicked: true, isVCInNavigationStack: true)
+                                        }
+                                    }
+                                })
                             }
                         }
                     })

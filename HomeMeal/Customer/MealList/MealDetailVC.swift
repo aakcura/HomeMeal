@@ -174,8 +174,8 @@ class MealDetailVC: UIViewController {
         // TODO: Go chef profile
         guard let chef = self.meal?.chef else {return}
         let chefProfileVC = AppDelegate.storyboard.instantiateViewController(withIdentifier: "ChefProfileVC") as! ChefProfileVC
+        chefProfileVC.setPresentationProperties(.anyUser, chef: chef, chefId: nil)
         self.present(chefProfileVC, animated: true, completion: nil)
-        chefProfileVC.setShowProperties(isShownForCurrentUser: false, chef: chef, chefId: nil)
     }
     
     @IBAction func kitchenLocationTapped(_ sender: Any) {
