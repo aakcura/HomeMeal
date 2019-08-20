@@ -309,8 +309,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
             
             if !isMealsSortedByUserLocation() {
                 sortMealsByChefNameASC()
+                return
             }
-            return
+            break
         case .searchByMealName:
             self.searchedMeals = allMeals.filter { meal in
                 let isMatchingSearchText =    meal.mealName.localizedLowercase.contains(searchText.localizedLowercase) || searchText.localizedLowercase.count == 0
@@ -319,8 +320,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
             
             if !isMealsSortedByUserLocation() {
                 sortMealsByMealNameASC()
+                return
             }
-            return
+            break
         case .searchByPrice:
             var priceText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
             if !priceText.isEmpty && priceText.count == 2, let firstPrice = Double(priceText[0]), let secondPrice = Double(priceText[1]){
@@ -330,8 +332,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByPriceASC()
+                    return
                 }
-                return
+                break
             }
             
             let priceGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
@@ -342,8 +345,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByPriceASC()
+                    return
                 }
-                return
+                break
             }
             
             let priceLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
@@ -354,15 +358,17 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByPriceASC()
+                    return
                 }
-                return
+                break
             }
             
             self.searchedMeals = allMeals
             if !isMealsSortedByUserLocation() {
                 sortMealsByPriceASC()
+                return
             }
-            return
+            break
         case .searchByRating:
             var ratingText = searchText.replacingOccurrences(of: " ", with: "").split(separator: "-")
             if !ratingText.isEmpty && ratingText.count == 2, let firstRating = Double(ratingText[0]), let secondRating = Double(ratingText[1]){
@@ -372,8 +378,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByRatingDESC()
+                    return
                 }
-                return
+                break
             }
             
             let ratingGreaterThanText = searchText.replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
@@ -384,8 +391,9 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByRatingDESC()
+                    return
                 }
-                return
+                break
             }
             
             let ratingLessThanText = searchText.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: " ", with: "")
@@ -396,15 +404,20 @@ extension CustomerMealListVC: UISearchResultsUpdating, UISearchBarDelegate{
                 })
                 if !isMealsSortedByUserLocation() {
                     sortMealsByRatingDESC()
+                    return
                 }
-                return
+                break
             }
             
             self.searchedMeals = allMeals
             if !isMealsSortedByUserLocation() {
                 sortMealsByRatingDESC()
+                return
             }
-            return
+            break
+        }
+        DispatchQueue.main.async {
+            self.mealsTable.reloadData()
         }
     }
 }
