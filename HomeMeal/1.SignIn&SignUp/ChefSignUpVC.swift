@@ -427,7 +427,7 @@ extension ChefSignUpVC: UITextFieldDelegate{
             }else{
                 DispatchQueue.main.async { [weak self] in
                     self?.tfPasswordConfirm.backgroundColor = AppColors.blockedRedColor.withAlphaComponent(0.5)
-                    self?.lblPasswordValidationInfo.text = "Şifre eşleşmiyor"
+                    self?.lblPasswordValidationInfo.text = "Password does not match".getLocalizedString()
                 }
             }
         }

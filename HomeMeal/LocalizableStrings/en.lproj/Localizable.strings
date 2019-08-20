@@ -254,3 +254,6 @@
 "canceled" = "canceled";
 "preparing" = "preparing";
 "prepared" = "prepared";
+
+"No Comments Error Message" = "There are no comments yet";
+"Password does not match" = "Password does not match";

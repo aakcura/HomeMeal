@@ -254,3 +254,6 @@
 "canceled" = "iptal edildi";
 "preparing" = "hazırlanıyor";
 "prepared" = "hazırlandı";
+
+"No Comments Error Message" = "Henüz yorum yapılmamış";
+"Password does not match" = "Şifre eşleşmiyor";
